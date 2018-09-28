@@ -1,8 +1,0 @@
-*.iml
-.idea
-target
-.settings
-.classpath
-.project
-*.log
-logs
