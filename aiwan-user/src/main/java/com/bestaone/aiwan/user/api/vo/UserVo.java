@@ -12,20 +12,58 @@ public class UserVo {
 	
 	public interface UserSimpleView {};
 	public interface UserDetailView extends UserSimpleView {};
-	
-	private String id;
-	
+
+	@JsonView(UserSimpleView.class)
+	@ApiModelProperty(value = "主键")
+	private Long id;
+
+	@JsonView(UserSimpleView.class)
+	@ApiModelProperty(value = "姓名")
+	private String name;
+
+	@JsonView(UserSimpleView.class)
+	@ApiModelProperty(value = "性别")
+	private String gender;
+
+	@JsonView(UserSimpleView.class)
 	@MyConstraint(message = "这是一个测试")
 	@ApiModelProperty(value = "用户名")
 	private String username;
-	
+
+	@JsonView(UserDetailView.class)
+	@ApiModelProperty(value = "密码")
 	@NotBlank(message = "密码不能为空")
 	private String password;
-	
-	@Past(message = "生日必须是过去的时间")
-	private Date birthday;
 
-	@JsonView(UserSimpleView.class)
+	@JsonView(UserDetailView.class)
+	@ApiModelProperty(value = "创建时间")
+	@Past(message = "创建时间")
+	private Date createTime;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -34,7 +72,6 @@ public class UserVo {
 		this.username = username;
 	}
 
-	@JsonView(UserDetailView.class)
 	public String getPassword() {
 		return password;
 	}
@@ -43,22 +80,12 @@ public class UserVo {
 		this.password = password;
 	}
 
-	@JsonView(UserSimpleView.class)
-	public String getId() {
-		return id;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	@JsonView(UserSimpleView.class)
-	public Date getBirthday() {
-		return birthday;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-	
 }

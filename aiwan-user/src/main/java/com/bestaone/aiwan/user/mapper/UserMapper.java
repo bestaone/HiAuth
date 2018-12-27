@@ -25,4 +25,8 @@ public interface UserMapper {
     @Select("SELECT * FROM user")
     List<User> findAll();
 
+    @ResultMap("BaseResultMap")
+    @Select("SELECT * FROM user WHERE name like #{name}")
+    List<User> findByName(String name);
+
 }

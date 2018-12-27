@@ -1,5 +1,7 @@
 ## Spring MVC
 
+http://127.0.0.1:8080/swagger-ui.html
+
 ### Restful
 - url描述资源，用http方法来描述行为
 - rest 成熟度模型：level0:http协议，level1:使用url描述资源，level2:http verbs（使用方法描述行为），level3:Hypermedia Controls

@@ -40,4 +40,9 @@ public class UserServiceImpl implements UserService {
         mapper.delete(id);
     }
 
+    @Override
+    public List<User> findByName(String name) {
+        return mapper.findByName("%" + name + "%");
+    }
+
 }

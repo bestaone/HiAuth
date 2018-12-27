@@ -3,15 +3,23 @@ package com.bestaone.aiwan.user.api.dto;
 import io.swagger.annotations.ApiModelProperty;
 
 public class UserDto {
-	
+
+	@ApiModelProperty(value = "姓名")
+	private String name;
+
+	@ApiModelProperty(value = "用户名")
 	private String username;
-	
-	@ApiModelProperty(value = "用户年龄起始值")
-	private int age;
-	@ApiModelProperty(value = "用户年龄终止值")
-	private int ageTo;
-	
-	private String xxx;
+
+	@ApiModelProperty(value = "密码")
+	private String password;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getUsername() {
 		return username;
@@ -21,28 +29,11 @@ public class UserDto {
 		this.username = username;
 	}
 
-	public int getAge() {
-		return age;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public int getAgeTo() {
-		return ageTo;
-	}
-
-	public void setAgeTo(int ageTo) {
-		this.ageTo = ageTo;
-	}
-
-	public String getXxx() {
-		return xxx;
-	}
-
-	public void setXxx(String xxx) {
-		this.xxx = xxx;
-	}
-	
 }

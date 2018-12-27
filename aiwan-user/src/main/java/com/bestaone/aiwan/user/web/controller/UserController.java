@@ -1,18 +1,17 @@
 package com.bestaone.aiwan.user.web.controller;
 
+import com.bestaone.aiwan.user.api.UserApi;
 import com.bestaone.aiwan.user.api.dto.UserDto;
+import com.bestaone.aiwan.user.api.vo.PageVo;
 import com.bestaone.aiwan.user.api.vo.UserVo;
-import com.bestaone.aiwan.user.domain.Account;
-import com.bestaone.aiwan.user.exception.UserNotExistException;
+import com.bestaone.aiwan.user.domain.User;
+import com.bestaone.aiwan.user.domain.enums.Gender;
 import com.bestaone.aiwan.user.service.AccountService;
-import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import com.bestaone.aiwan.user.service.UserService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,73 +21,72 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements UserApi {
 
 	@Autowired
 	AccountService accountService;
 
+	@Autowired
+	UserService userService;
+
+	@Override
 	@PostMapping
-	@ApiOperation(value = "创建用户")
-	public UserVo create(@Valid @RequestBody UserVo user) {
-
-		System.out.println(user.getId());
-		System.out.println(user.getUsername());
-		System.out.println(user.getPassword());
-		System.out.println(user.getBirthday());
-
-		user.setId("1");
-		return user;
+	public String create(@Valid @RequestBody UserDto userDto) {
+		User user = new User();
+		user.setPassword(userDto.getPassword());
+		user.setUsername(userDto.getUsername());
+		user.setName(userDto.getName());
+		user.setGender(Gender.UNKNOWN);
+		userService.save(user);
+		return user.getId().toString();
 	}
 
+	@Override
 	@PutMapping("/{id:\\d+}")
-	public UserVo update(@Valid @RequestBody UserVo user, BindingResult errors) {
-
-		System.out.println(user.getId());
-		System.out.println(user.getUsername());
-		System.out.println(user.getPassword());
-		System.out.println(user.getBirthday());
-
-		user.setId("1");
-		return user;
+	public void update(@PathVariable Long id, @Valid @RequestBody UserDto userDto, BindingResult errors) {
+		User user = userService.findById(id);
+		user.setPassword(userDto.getPassword());
+		user.setUsername(userDto.getUsername());
+		user.setName(userDto.getName());
+		user.setGender(Gender.UNKNOWN);
+		userService.save(user);
 	}
 
+	@Override
 	@DeleteMapping("/{id:\\d+}")
-	public void delete(@PathVariable String id) {
-		System.out.println(id);
+	public void delete(@PathVariable Long id) {
+		userService.delete(id);
 	}
 
+	@Override
 	@GetMapping
-	@JsonView(UserVo.UserSimpleView.class)
-	@ApiOperation(value = "用户查询服务")
-	public List<UserVo> query(UserDto condition,
-							  @PageableDefault(page = 2, size = 17, sort = "username,asc") Pageable pageable) {
-
-		System.out.println(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
-
-		System.out.println(pageable.getPageSize());
-		System.out.println(pageable.getPageNumber());
-		System.out.println(pageable.getSort());
-
-		List<UserVo> users = new ArrayList<>();
-		users.add(new UserVo());
-		users.add(new UserVo());
-		users.add(new UserVo());
-		return users;
+	public PageVo<UserVo> query(Pageable pageable, UserDto userDto) {
+		Page<User> pageinfo = PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+		List<User> users = userService.findByName(userDto.getName());
+		List<UserVo> userVos = new ArrayList<>();
+		for(User user : users){
+			UserVo vo = new UserVo();
+			vo.setUsername(user.getUsername());
+			vo.setId(user.getId());
+			vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
+			vo.setName(user.getName());
+			userVos.add(vo);
+		}
+		return new PageVo<>(pageinfo.getPageNum(), pageinfo.getPageSize(),pageinfo.getTotal(),pageinfo.getPages(),userVos);
 	}
 
+	@Override
 	@GetMapping("/{id:\\d+}")
-	@JsonView(UserVo.UserDetailView.class)
-	public UserVo getInfo(@ApiParam("用户id") @PathVariable String id) {
-
-		Account account = accountService.findById(1L);
-
-		if(id.endsWith("0")){
-			throw new UserNotExistException("user not exist");
-		}
-		System.out.println("进入getInfo服务");
-		UserVo user = new UserVo();
-		user.setUsername("tom");
-		return user;
+	public UserVo getInfo(@PathVariable Long id) {
+		User user = userService.findById(id);
+		UserVo vo = new UserVo();
+		vo.setUsername(user.getUsername());
+		vo.setId(user.getId());
+		vo.setPassword(user.getPassword());
+		vo.setCreateTime(user.getCreateTime());
+		vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
+		vo.setName(user.getName());
+		return vo;
 	}
 
 }
