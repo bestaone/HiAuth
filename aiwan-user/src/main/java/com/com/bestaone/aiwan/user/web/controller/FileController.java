@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.com.bestaone.aiwan.user.dto.FileInfo;
+import com.com.bestaone.aiwan.user.api.dto.FileInfoDto;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class FileController {
 	private String folder = "/Users/apple/Documents/zgs/ws";
 
 	@PostMapping
-	public FileInfo upload(MultipartFile file) throws Exception {
+	public FileInfoDto upload(MultipartFile file) throws Exception {
 
 		System.out.println(file.getName());
 		System.out.println(file.getOriginalFilename());
@@ -34,7 +34,7 @@ public class FileController {
 
 		file.transferTo(localFile);
 
-		return new FileInfo(localFile.getAbsolutePath());
+		return new FileInfoDto(localFile.getAbsolutePath());
 	}
 
 	@GetMapping("/{id}")

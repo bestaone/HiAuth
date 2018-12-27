@@ -1,34 +1,27 @@
 package com.com.bestaone.aiwan.user.web.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-//@Component
 public class TimeFilter implements Filter {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@Override
-	public void destroy() {
-		System.out.println("time filter destroy");
-	}
+	public void destroy() { }
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		System.out.println("time filter start");
 		long start = System.currentTimeMillis();
 		chain.doFilter(request, response);
-		System.out.println("time filter 耗时:"+ (System.currentTimeMillis() - start));
-		System.out.println("time filter finish");
+		logger.debug("接口[{}]耗时{}毫秒", ((HttpServletRequest) request).getRequestURI(), (System.currentTimeMillis() - start));
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
-		System.out.println("time filter init");
-	}
+	public void init(FilterConfig arg0) {}
 
 }
