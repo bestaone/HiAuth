@@ -17,8 +17,8 @@ public interface AccountMapper {
     @Update("UPDATE Account SET userId=#{user.id} WHERE id =#{id}")
     int update(Account account);
 
-//    @ResultMap("BaseResultMap")
-//    @Select("SELECT id,userId FROM Account WHERE id=#{id}")
+    @ResultMap("BaseResultMap")
+    @Select("SELECT id,userId FROM Account WHERE id=#{id}")
     Account findById(Long id);
 
     @ResultMap("BaseResultMap")

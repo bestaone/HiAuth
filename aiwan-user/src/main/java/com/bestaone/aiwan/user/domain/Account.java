@@ -3,7 +3,7 @@ package com.bestaone.aiwan.user.domain;
 public class Account {
 
     private Long id;
-    private Long userId;
+    private User user;
 
     public Long getId() {
         return id;
@@ -13,11 +13,11 @@ public class Account {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
