@@ -8,21 +8,21 @@ import java.util.List;
 @Mapper
 public interface AccountMapper {
 
-    @Insert("INSERT INTO Account(id,userId) VALUES(#{id},#{user.id})")
+    @Insert("INSERT INTO account(id,userId) VALUES(#{id},#{user.id})")
     void insert(Account account);
 
-    @Delete("DELETE FROM Account WHERE id = #{id}")
+    @Delete("DELETE FROM account WHERE id = #{id}")
     void delete(Long id);
 
-    @Update("UPDATE Account SET userId=#{user.id} WHERE id =#{id}")
+    @Update("UPDATE account SET userId=#{user.id} WHERE id =#{id}")
     int update(Account account);
 
     @ResultMap("BaseResultMap")
-    @Select("SELECT id,userId FROM Account WHERE id=#{id}")
+    @Select("SELECT id,userId FROM account WHERE id=#{id}")
     Account findById(Long id);
 
     @ResultMap("BaseResultMap")
-    @Select("SELECT id,userId FROM Account")
+    @Select("SELECT id,userId FROM account")
     List<Account> findAll();
 
 }

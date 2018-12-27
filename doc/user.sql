@@ -34,7 +34,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
-  `id` int(20) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `operate` varchar(10) DEFAULT NULL,
   `code` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -70,6 +70,7 @@ CREATE TABLE `user` (
   `password` varchar(128) NOT NULL,
   `tel` varchar(20) DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
+  `createTime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
