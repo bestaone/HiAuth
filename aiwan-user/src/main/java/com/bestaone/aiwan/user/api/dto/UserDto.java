@@ -2,6 +2,8 @@ package com.bestaone.aiwan.user.api.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
+
 public class UserDto {
 
 	@ApiModelProperty(value = "姓名")
