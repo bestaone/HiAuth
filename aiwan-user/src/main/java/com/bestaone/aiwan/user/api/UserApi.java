@@ -4,6 +4,7 @@ import com.bestaone.aiwan.user.api.dto.UserDto;
 import com.bestaone.aiwan.user.api.vo.ApiResponse;
 import com.bestaone.aiwan.user.api.vo.Page;
 import com.bestaone.aiwan.user.api.vo.UserVo;
+import com.bestaone.aiwan.user.exception.CommonException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,6 @@ public interface UserApi {
     ApiResponse<Page<UserVo>> query(Pageable pageable, UserDto userDto);
 
     @ApiOperation(value = "查询用户详情")
-    ApiResponse<UserVo> getInfo(Long id);
+    ApiResponse<UserVo> getInfo(Long id) throws CommonException;
 
 }

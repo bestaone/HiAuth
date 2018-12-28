@@ -9,7 +9,6 @@ import com.bestaone.aiwan.user.domain.User;
 import com.bestaone.aiwan.user.domain.enums.Gender;
 import com.bestaone.aiwan.user.exception.Assert;
 import com.bestaone.aiwan.user.exception.CommonException;
-import com.bestaone.aiwan.user.exception.DataNotExistException;
 import com.bestaone.aiwan.user.service.AccountService;
 import com.bestaone.aiwan.user.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -86,25 +85,17 @@ public class UserController implements UserApi {
 
 	@Override
 	@GetMapping("/{id:\\d+}")
-	public ApiResponse<UserVo> getInfo(@PathVariable Long id) {
-		try {
-			User user = userService.findById(id);
-			Assert.notNull(user,20001,"数据不存");
-			UserVo vo = new UserVo();
-			vo.setUsername(user.getUsername());
-			vo.setId(user.getId());
-			vo.setPassword(user.getPassword());
-			vo.setCreateTime(user.getCreateTime());
-			vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
-			vo.setName(user.getName());
-			return ApiResponse.sucess(vo);
-		}catch (CommonException ex){
-			logger.debug(ex.getMessage(),ex);
-			return ApiResponse.fail(ex);
-		}catch (Exception ex){
-			logger.debug(ex.getMessage(),ex);
-			return ApiResponse.fail(ex.getMessage());
-		}
+	public ApiResponse<UserVo> getInfo(@PathVariable Long id) throws CommonException{
+		User user = userService.findById(id);
+		Assert.notNull(user,20001,"数据不存");
+		UserVo vo = new UserVo();
+		vo.setUsername(user.getUsername());
+		vo.setId(user.getId());
+		vo.setPassword(user.getPassword());
+		vo.setCreateTime(user.getCreateTime());
+		vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
+		vo.setName(user.getName());
+		return ApiResponse.sucess(vo);
 	}
 
 }
