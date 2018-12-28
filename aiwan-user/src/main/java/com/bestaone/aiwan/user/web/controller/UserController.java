@@ -3,7 +3,7 @@ package com.bestaone.aiwan.user.web.controller;
 import com.bestaone.aiwan.user.api.UserApi;
 import com.bestaone.aiwan.user.api.dto.UserDto;
 import com.bestaone.aiwan.user.api.vo.ApiResponse;
-import com.bestaone.aiwan.user.api.vo.Page;
+import com.bestaone.aiwan.user.api.vo.PageVo;
 import com.bestaone.aiwan.user.api.vo.UserVo;
 import com.bestaone.aiwan.user.domain.User;
 import com.bestaone.aiwan.user.domain.enums.Gender;
@@ -11,11 +11,11 @@ import com.bestaone.aiwan.user.exception.Assert;
 import com.bestaone.aiwan.user.exception.CommonException;
 import com.bestaone.aiwan.user.service.AccountService;
 import com.bestaone.aiwan.user.service.UserService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,9 @@ public class UserController implements UserApi {
 
 	@Override
 	@PostMapping
-	public ApiResponse<String> create(@Valid @RequestBody UserDto userDto) {
+	public ApiResponse<String> create(@Valid @RequestBody UserDto userDto) throws CommonException {
+		Assert.notNull(userDto.getUsername(),50000, "用户名不存在");
+		Assert.notNull(userDto.getPassword(),50000, "密码不存在");
 		User user = new User();
 		user.setPassword(userDto.getPassword());
 		user.setUsername(userDto.getUsername());
@@ -68,9 +70,9 @@ public class UserController implements UserApi {
 
 	@Override
 	@GetMapping
-	public ApiResponse<Page<UserVo>> query(Pageable pageable, UserDto userDto) {
-		com.github.pagehelper.Page pageinfo = PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-		List<User> users = userService.findByName(userDto.getName());
+	public ApiResponse<PageVo<UserVo>> query(Integer pageNum, Integer pageSize, String name) {
+		Page pageinfo = PageHelper.startPage(pageNum, pageSize);
+		List<User> users = userService.findByName(name);
 		List<UserVo> userVos = new ArrayList<>();
 		for(User user : users){
 			UserVo vo = new UserVo();
@@ -80,7 +82,7 @@ public class UserController implements UserApi {
 			vo.setName(user.getName());
 			userVos.add(vo);
 		}
-		return ApiResponse.sucess(new Page<>(pageinfo.getPageNum(), pageinfo.getPageSize(),pageinfo.getTotal(),pageinfo.getPages(),userVos));
+		return ApiResponse.sucess(new PageVo<>(pageinfo.getPageNum(), pageinfo.getPageSize(),pageinfo.getTotal(),pageinfo.getPages(),userVos));
 	}
 
 	@Override

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2018-12-27 15:30:44
+Date: 2018-12-28 14:16:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,6 +28,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
+INSERT INTO `account` VALUES ('1', '1');
 
 -- ----------------------------
 -- Table structure for resource
@@ -35,8 +36,8 @@ CREATE TABLE `account` (
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
   `id` bigint(20) NOT NULL,
-  `operate` varchar(10) DEFAULT NULL,
-  `code` varchar(128) DEFAULT NULL,
+  `operate` varchar(10) DEFAULT NULL COMMENT '操作类型：GET,POST,PUT',
+  `code` varchar(128) DEFAULT NULL COMMENT '资源标识，如果是接口则为url',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -77,3 +78,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', '张三', 'zhangsan', '123456', '13788888881', 'UNKNOWN', '2018-12-03 17:57:12');
+INSERT INTO `user` VALUES ('2', '李四', 'lisi', '123456', '13788888882', 'UNKNOWN', '2018-12-03 17:57:12');
+INSERT INTO `user` VALUES ('3', '王五', 'wangwu', '123456', '13788888883', 'UNKNOWN', '2018-12-04 17:57:32');

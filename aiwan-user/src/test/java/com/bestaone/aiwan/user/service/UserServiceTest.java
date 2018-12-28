@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
-//@Transactional
+@Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class UserServiceTest {

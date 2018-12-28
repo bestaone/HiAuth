@@ -2,7 +2,7 @@ package com.bestaone.aiwan.user.api.vo;
 
 import java.util.List;
 
-public class Page<T> {
+public class PageVo<T> {
 
     private Integer pageNum;
     private Integer pageSize;
@@ -10,7 +10,7 @@ public class Page<T> {
     private Integer pages;
     private List<T> list;
 
-    public Page(Integer pageNum, Integer pageSize, Long totle, Integer pages, List<T> list) {
+    public PageVo(Integer pageNum, Integer pageSize, Long totle, Integer pages, List<T> list) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.totle = totle;

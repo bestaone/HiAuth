@@ -2,7 +2,6 @@ package com.bestaone.aiwan.user.service;
 
 import com.bestaone.aiwan.user.Application;
 import com.bestaone.aiwan.user.domain.Resource;
-import com.bestaone.aiwan.user.domain.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.junit.Assert;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//@Transactional
+@Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class ResourceServiceTest {
