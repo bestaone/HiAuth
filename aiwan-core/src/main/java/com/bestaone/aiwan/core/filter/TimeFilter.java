@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.auth.web.filter;
+package com.bestaone.aiwan.core.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

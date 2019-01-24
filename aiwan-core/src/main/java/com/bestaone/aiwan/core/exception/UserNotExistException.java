@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.user.exception;
+package com.bestaone.aiwan.core.exception;
 
 public class UserNotExistException extends RuntimeException {
 

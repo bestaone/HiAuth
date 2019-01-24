@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.auth.api.vo;
+package com.bestaone.aiwan.core.api;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
 package com.bestaone.aiwan.user.api;
 
+import com.bestaone.aiwan.core.api.ApiResponse;
+import com.bestaone.aiwan.core.api.PageVo;
+import com.bestaone.aiwan.core.exception.CommonException;
 import com.bestaone.aiwan.user.api.dto.UserDto;
-import com.bestaone.aiwan.user.api.vo.ApiResponse;
-import com.bestaone.aiwan.user.api.vo.PageVo;
 import com.bestaone.aiwan.user.api.vo.UserVo;
-import com.bestaone.aiwan.user.exception.CommonException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;

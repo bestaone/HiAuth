@@ -1,6 +1,6 @@
-package com.bestaone.aiwan.auth.exception;
+package com.bestaone.aiwan.core.exception;
 
-import com.bestaone.aiwan.auth.api.vo.ApiResponse;
+import com.bestaone.aiwan.core.api.ApiResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;

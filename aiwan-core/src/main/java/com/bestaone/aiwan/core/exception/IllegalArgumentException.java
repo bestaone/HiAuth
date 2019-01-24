@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.auth.exception;
+package com.bestaone.aiwan.core.exception;
 
 public class IllegalArgumentException extends ArgumentException {
 

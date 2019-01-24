@@ -1,6 +1,6 @@
-package com.bestaone.aiwan.auth.web.controller;
+package com.bestaone.aiwan.core.advice;
 
-import com.bestaone.aiwan.auth.exception.UserNotExistException;
+import com.bestaone.aiwan.core.exception.UserNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

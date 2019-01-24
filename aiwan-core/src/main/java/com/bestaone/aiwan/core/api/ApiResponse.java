@@ -1,6 +1,6 @@
-package com.bestaone.aiwan.auth.api.vo;
+package com.bestaone.aiwan.core.api;
 
-import com.bestaone.aiwan.auth.exception.CommonException;
+import com.bestaone.aiwan.core.exception.CommonException;
 
 public class ApiResponse<T> {
 

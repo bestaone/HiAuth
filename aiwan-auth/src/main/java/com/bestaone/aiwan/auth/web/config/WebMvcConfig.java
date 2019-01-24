@@ -1,7 +1,7 @@
 package com.bestaone.aiwan.auth.web.config;
 
-import com.bestaone.aiwan.auth.web.filter.TimeFilter;
-import com.bestaone.aiwan.auth.web.interceptor.TimeInterceptor;
+import com.bestaone.aiwan.core.filter.TimeFilter;
+import com.bestaone.aiwan.core.interceptor.TimeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
