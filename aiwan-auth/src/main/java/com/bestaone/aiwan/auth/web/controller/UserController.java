@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.auth.web.controller;
 
-import com.bestaone.aiwan.auth.api.AuthApi;
+import com.bestaone.aiwan.auth.api.UserApi;
 import com.bestaone.aiwan.auth.service.AccountService;
 import com.bestaone.aiwan.core.api.ApiResponse;
 import com.bestaone.aiwan.core.exception.CommonException;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-public class AuthController implements AuthApi {
+public class UserController implements UserApi {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -20,17 +20,12 @@ public class AuthController implements AuthApi {
 	AccountService accountService;
 
 	@Override
-	public ApiResponse authorize() throws CommonException {
+	public ApiResponse login(String username, String password) throws CommonException {
 		return null;
 	}
 
 	@Override
-	public ApiResponse token() throws CommonException {
-		return null;
-	}
-
-	@Override
-	public ApiResponse thirdToken() throws CommonException {
+	public ApiResponse registe(String username, String password) throws CommonException {
 		return null;
 	}
 
