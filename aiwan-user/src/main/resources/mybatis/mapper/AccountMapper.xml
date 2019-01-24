@@ -4,13 +4,20 @@
 
     <resultMap id="BaseResultMap" type="Account" >
         <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="accessToken" property="accessToken" jdbcType="VARCHAR" />
+        <result column="refreshToken" property="refreshToken" jdbcType="VARCHAR" />
+        <result column="expireTime" property="expireTime" jdbcType="TIMESTAMP" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="lastLoginTime" property="lastLoginTime" jdbcType="TIMESTAMP" />
         <association property="user" javaType="User">
             <id column="userId" property="id"/>
         </association>
     </resultMap>
 
     <sql id="Base_Column_List" >
-      id,userId
+      id,userId,type,openid,accessToken,refreshToken,expireTime,createTime,lastLoginTime
     </sql>
 
 </mapper>

@@ -1,6 +1,6 @@
-package com.bestaone.aiwan.user.domain;
+package com.bestaone.aiwan.auth.domain;
 
-import com.bestaone.aiwan.user.domain.enums.AccountType;
+import com.bestaone.aiwan.auth.domain.enums.AccountType;
 
 import java.util.Date;
 

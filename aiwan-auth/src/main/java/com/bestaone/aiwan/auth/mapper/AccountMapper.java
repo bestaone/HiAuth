@@ -1,6 +1,6 @@
-package com.bestaone.aiwan.user.mapper;
+package com.bestaone.aiwan.auth.mapper;
 
-import com.bestaone.aiwan.user.domain.Account;
+import com.bestaone.aiwan.auth.domain.Account;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

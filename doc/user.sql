@@ -21,9 +21,20 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
   `id` bigint(20) NOT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `userId` bigint(20) DEFAULT NULL COMMENT '管理用户',
+  `type` varchar(20) DEFAULT NULL COMMENT '第三方账号类型',
+  `openid` int(64) DEFAULT NULL COMMENT '第三方用户表示',
+  `accessToken` varchar(100) DEFAULT NULL COMMENT 'accessToken',
+  `refreshToken` varchar(100) DEFAULT NULL COMMENT 'refreshToken',
+  `expireTime` datetime DEFAULT NULL COMMENT '失效时间',
+  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  `lastLoginTime` datetime DEFAULT NULL COMMENT '最后一次登录时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_accessToken` (`accessToken`),
+  UNIQUE KEY `unique_bindUser` (`userId`,`type`,`openid`) USING BTREE COMMENT '确定user与第三方账号的绑定唯一性'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 
 -- ----------------------------
 -- Records of account
