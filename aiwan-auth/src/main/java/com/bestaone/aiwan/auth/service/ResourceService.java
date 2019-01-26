@@ -14,4 +14,6 @@ public interface ResourceService {
 
     void delete(Long id);
 
+    List<Resource> findByUserId(Long userId);
+
 }

@@ -4,6 +4,7 @@
 
     <resultMap id="BaseResultMap" type="Role" >
         <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="description" property="description" jdbcType="VARCHAR" />
     </resultMap>
@@ -11,5 +12,12 @@
     <sql id="Base_Column_List" >
       id,name,description
     </sql>
+
+    <select id="findByUserId" resultMap="BaseResultMap" >
+        SELECT DISTINCT R.*
+        FROM role R
+        LEFT JOIN user_role UR ON UR.roleId=R.id
+        WHERE UR.userId=#{userId}
+    </select>
 
 </mapper>

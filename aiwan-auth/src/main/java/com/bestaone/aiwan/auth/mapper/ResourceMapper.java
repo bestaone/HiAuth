@@ -25,4 +25,6 @@ public interface ResourceMapper {
     @Select("SELECT * FROM resource")
     List<Resource> findAll();
 
+    List<Resource> findByUserId(Long userId);
+
 }

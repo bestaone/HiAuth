@@ -40,4 +40,9 @@ public class RoleServiceImpl implements RoleService {
         mapper.delete(id);
     }
 
+    @Override
+    public List<Role> findByUserId(Long userId) {
+        return mapper.findByUserId(userId);
+    }
+
 }

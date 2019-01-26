@@ -40,4 +40,9 @@ public class ResourceServiceImpl implements ResourceService {
         mapper.delete(id);
     }
 
+    @Override
+    public List<Resource> findByUserId(Long userId) {
+        return mapper.findByUserId(userId);
+    }
+
 }

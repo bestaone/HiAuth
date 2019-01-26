@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h1>OAuth Approval</h1>
+    应用名 : <span th:text="${session.authorizationRequest.clientId}" /><br/>
+    申请权限 :
+　　<div class="student" th:each="scope:${scopeList}">
+        <span th:text="${scope}" />
+    </div>
+    <form id='confirmationForm' name='confirmationForm' th:action="@{/oauth/authorize}" method='post'>
+        <input name='user_oauth_approval' value='true' type='hidden'/>
+        <input value="true" type="radio" th:name="${scope}" th:each="scope:${scopeList}">Approve</input>
+        <input value="false" type="radio" th:name="${scope}" th:each="scope:${scopeList}" checked>Deny</input>
+        <br/>
+        <label><input name='authorize' value='提交' type='submit'/></label>
+    </form>
+</body>
+</html>

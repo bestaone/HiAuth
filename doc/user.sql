@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2018-12-28 14:16:04
+Date: 2019-01-26 17:47:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,12 +34,10 @@ CREATE TABLE `account` (
   UNIQUE KEY `unique_bindUser` (`userId`,`type`,`openid`) USING BTREE COMMENT '确定user与第三方账号的绑定唯一性'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', '1');
+INSERT INTO `account` VALUES ('1', '1', null, null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for resource
@@ -55,6 +53,8 @@ CREATE TABLE `resource` (
 -- ----------------------------
 -- Records of resource
 -- ----------------------------
+INSERT INTO `resource` VALUES ('1', 'GET', '/user/me');
+INSERT INTO `resource` VALUES ('2', 'GET', '/user/list');
 
 -- ----------------------------
 -- Table structure for role
@@ -62,6 +62,7 @@ CREATE TABLE `resource` (
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL,
+  `code` varchar(20) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -70,6 +71,26 @@ CREATE TABLE `role` (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
+INSERT INTO `role` VALUES ('1', 'ROLE_ADMIN', '管理员', null);
+INSERT INTO `role` VALUES ('2', 'ROLE_USER', '普通用户', null);
+
+-- ----------------------------
+-- Table structure for role_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `role_resource`;
+CREATE TABLE `role_resource` (
+  `id` bigint(20) NOT NULL,
+  `roleId` bigint(20) DEFAULT NULL,
+  `resourceId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of role_resource
+-- ----------------------------
+INSERT INTO `role_resource` VALUES ('1', '1', '1');
+INSERT INTO `role_resource` VALUES ('2', '1', '2');
+INSERT INTO `role_resource` VALUES ('3', '2', '1');
 
 -- ----------------------------
 -- Table structure for user
@@ -83,12 +104,30 @@ CREATE TABLE `user` (
   `tel` varchar(20) DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
   `createTime` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_username` (`username`),
+  UNIQUE KEY `unique_tel` (`tel`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', '张三', 'zhangsan', '123456', '13788888881', 'UNKNOWN', '2018-12-03 17:57:12');
-INSERT INTO `user` VALUES ('2', '李四', 'lisi', '123456', '13788888882', 'UNKNOWN', '2018-12-03 17:57:12');
-INSERT INTO `user` VALUES ('3', '王五', 'wangwu', '123456', '13788888883', 'UNKNOWN', '2018-12-04 17:57:32');
+INSERT INTO `user` VALUES ('1', '张三', 'admin', '123', '137', 'UNKNOWN', '2018-12-03 17:57:12');
+INSERT INTO `user` VALUES ('2', '李四', 'user', '123', '138', 'UNKNOWN', '2018-12-03 17:57:12');
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role` (
+  `id` bigint(20) NOT NULL,
+  `userId` bigint(20) DEFAULT NULL,
+  `roleId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of user_role
+-- ----------------------------
+INSERT INTO `user_role` VALUES ('1', '1', '1');
+INSERT INTO `user_role` VALUES ('2', '2', '2');

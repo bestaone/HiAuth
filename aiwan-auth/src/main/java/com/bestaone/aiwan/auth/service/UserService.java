@@ -10,10 +10,14 @@ public interface UserService {
 
     User findById(Long id);
 
+    User findByUsername(String username);
+
     List<User> findAll();
 
     void delete(Long id);
 
     List<User> findByName(String name);
+
+    User findByTel(String tel);
 
 }

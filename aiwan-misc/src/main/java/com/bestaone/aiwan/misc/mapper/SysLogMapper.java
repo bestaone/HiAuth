@@ -8,21 +8,21 @@ import java.util.List;
 @Mapper
 public interface SysLogMapper {
 
-    @Insert("INSERT INTO sysLog(id,content,createTime) VALUES(#{id},#{content},#{createTime})")
+    @Insert("INSERT INTO sys_log(id,content,createTime) VALUES(#{id},#{content},#{createTime})")
     void insert(SysLog user);
 
-    @Delete("DELETE FROM sysLog WHERE id = #{id}")
+    @Delete("DELETE FROM sys_log WHERE id = #{id}")
     void delete(Long id);
 
-    @Update("UPDATE sysLog SET content=#{content},createTime=#{createTime} WHERE id =#{id}")
+    @Update("UPDATE sys_log SET content=#{content},createTime=#{createTime} WHERE id =#{id}")
     int update(SysLog user);
 
     @ResultMap("BaseResultMap")
-    @Select("SELECT * FROM sysLog WHERE id=#{id}")
+    @Select("SELECT * FROM sys_log WHERE id=#{id}")
     SysLog findById(Long id);
 
     @ResultMap("BaseResultMap")
-    @Select("SELECT * FROM sysLog")
+    @Select("SELECT * FROM sys_log")
     List<SysLog> findAll();
 
 }

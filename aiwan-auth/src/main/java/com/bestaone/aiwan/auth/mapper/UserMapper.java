@@ -22,6 +22,14 @@ public interface UserMapper {
     User findById(Long id);
 
     @ResultMap("BaseResultMap")
+    @Select("SELECT * FROM user WHERE username=#{username}")
+    User findByUsername(String username);
+
+    @ResultMap("BaseResultMap")
+    @Select("SELECT * FROM user WHERE tel=#{tel}")
+    User findByTel(String tel);
+
+    @ResultMap("BaseResultMap")
     @Select("SELECT * FROM user")
     List<User> findAll();
 

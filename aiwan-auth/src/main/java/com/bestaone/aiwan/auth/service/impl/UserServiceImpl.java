@@ -31,6 +31,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return mapper.findByUsername(username);
+    }
+
+    @Override
+    public User findByTel(String tel) {
+        return mapper.findByTel(tel);
+    }
+
+    @Override
     public List<User> findAll() {
         return mapper.findAll();
     }

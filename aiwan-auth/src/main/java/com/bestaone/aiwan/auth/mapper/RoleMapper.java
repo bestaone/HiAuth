@@ -8,13 +8,13 @@ import java.util.List;
 @Mapper
 public interface RoleMapper {
 
-    @Insert("INSERT INTO role(id,name,description) VALUES(#{id},#{name},#{description})")
+    @Insert("INSERT INTO role(id,code,name,description) VALUES(#{id},#{code},#{name},#{description})")
     void insert(Role role);
 
     @Delete("DELETE FROM role WHERE id = #{id}")
     void delete(Long id);
 
-    @Update("UPDATE role SET name=#{name},description=#{description} WHERE id =#{id}")
+    @Update("UPDATE role SET code=#{code},name=#{name},description=#{description} WHERE id =#{id}")
     int update(Role role);
 
     @ResultMap("BaseResultMap")
@@ -24,5 +24,7 @@ public interface RoleMapper {
     @ResultMap("BaseResultMap")
     @Select("SELECT * FROM role")
     List<Role> findAll();
+
+    List<Role> findByUserId(Long userId);
 
 }

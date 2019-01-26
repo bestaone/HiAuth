@@ -12,4 +12,12 @@
       id,operate,code
     </sql>
 
+    <select id="findByUserId" resultMap="BaseResultMap" >
+        SELECT DISTINCT R.*
+        FROM resource R
+        LEFT JOIN role_resource RR ON RR.resourceId=R.id
+        LEFT JOIN user_role UR ON UR.roleId=RR.roleId
+        WHERE UR.userId=#{userId}
+    </select>
+
 </mapper>
