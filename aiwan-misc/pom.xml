@@ -14,7 +14,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bestaone.aiwan</groupId>
-			<artifactId>aiwan-app</artifactId>
+			<artifactId>aiwan-core</artifactId>
 			<version>${aiwan.version}</version>
 		</dependency>
 		<dependency>
