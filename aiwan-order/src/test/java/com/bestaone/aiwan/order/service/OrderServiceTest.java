@@ -1,7 +1,8 @@
 package com.bestaone.aiwan.order.service;
 
 import com.bestaone.aiwan.order.Application;
-import com.bestaone.aiwan.order.domain.User;
+import com.bestaone.aiwan.order.domain.Order;
+import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.junit.Assert;
@@ -18,20 +19,21 @@ import java.util.List;
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class UserServiceTest {
+public class OrderServiceTest {
 
     @Autowired
-    public UserService service;
+    public OrderService service;
 
     @Test
     public void CRUDTest() {
 
         //CREATE
-        User o = new User();
-        o.setUsername("test");
-        o.setPassword("test");
+        Order o = new Order();
+        o.setTitle("test");
+        o.setTotalAmount(1F);
         o.setCreateTime(new Date());
-        o.setName("CRUDTest");
+        o.setStatus(OrderStatus.UNPAY);
+        o.setCreateTime(new Date());
         service.save(o);
         Assert.assertNotNull(o.getId());
 
@@ -40,15 +42,15 @@ public class UserServiceTest {
         Assert.assertNotNull(o.getId());
 
         //UPDATE
-        o.setName("CRUDTest1");
+        o.setTitle("CRUDTest1");
         service.save(o);
         o = service.findById(o.getId());
-        Assert.assertTrue(o.getName().equals("CRUDTest1"));
+        Assert.assertTrue(o.getTitle().equals("CRUDTest1"));
 
         //PAGE
         PageHelper.startPage(1,1);
-        List<User> list = service.findAll();
-        PageInfo<User> page = new PageInfo<>(list);
+        List<Order> list = service.findAll();
+        PageInfo<Order> page = new PageInfo<>(list);
         Assert.assertTrue(page.getTotal()>0);
 
         //DELETE

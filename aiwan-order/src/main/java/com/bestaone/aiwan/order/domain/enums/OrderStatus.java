@@ -1,7 +1,7 @@
 package com.bestaone.aiwan.order.domain.enums;
 
-public enum  Gender {
+public enum OrderStatus {
 
-    MALE,FEMALE,UNKNOWN;
+    UNPAY,PAID;
 
 }

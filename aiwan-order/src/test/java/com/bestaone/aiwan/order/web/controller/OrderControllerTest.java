@@ -1,6 +1,8 @@
 package com.bestaone.aiwan.order.web.controller;
 
-import com.bestaone.aiwan.order.api.dto.UserDto;
+import com.bestaone.aiwan.order.api.dto.OrderDto;
+import com.bestaone.aiwan.order.domain.Order;
+import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserControllerTest {
+public class OrderControllerTest {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -43,10 +45,10 @@ public class UserControllerTest {
     @Test
     public void whenQuerySuccess() throws Exception {
         String result = mockMvc.perform(
-                get("/user")
+                get("/order")
                         .param("pageNum", "1")
                         .param("pageSize", "10")
-                        .param("name", "1")
+                        .param("status", OrderStatus.PAID.name())
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -56,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     public void whenGetInfoSuccess() throws Exception {
-        String result = mockMvc.perform(get("/user/1")
+        String result = mockMvc.perform(get("/order/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -66,7 +68,7 @@ public class UserControllerTest {
 
     @Test
     public void whenGetInfoFail() throws Exception {
-        String result = mockMvc.perform(get("/user/a")
+        String result = mockMvc.perform(get("/order/a")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResponse().getContentAsString();
@@ -75,8 +77,8 @@ public class UserControllerTest {
 
     @Test
     public void whenCreateSuccess() throws Exception {
-        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
-        String result = mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
+        OrderDto dto = new OrderDto().setTitle("iphone x 1").setTotalAmount(10001F);
+        String result = mockMvc.perform(post("/order").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -86,8 +88,8 @@ public class UserControllerTest {
 
     @Test
     public void whenCreateFail() throws Exception {
-        UserDto dto = new UserDto();
-        String result = mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
+        OrderDto dto = new OrderDto();
+        String result = mockMvc.perform(post("/order").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(50000))
@@ -97,8 +99,8 @@ public class UserControllerTest {
 
     @Test
     public void whenUpdateSuccess() throws Exception {
-        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
-        String result = mockMvc.perform(put("/user/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+        OrderDto dto = new OrderDto().setTitle("iphone x 2").setTotalAmount(10001F);
+        String result = mockMvc.perform(put("/order/1").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -108,7 +110,7 @@ public class UserControllerTest {
 
     @Test
     public void whenDeleteSuccess() throws Exception {
-        String result = mockMvc.perform(delete("/user/1")
+        String result = mockMvc.perform(delete("/order/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
