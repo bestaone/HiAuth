@@ -47,11 +47,10 @@
 	
 	<modules>
 		<module>../aiwan-core</module>
-		<module>../aiwan-app</module>
-		<module>../aiwan-browser</module>
 		<module>../aiwan-auth</module>
-		<module>../aiwan-user</module>
+		<module>../aiwan-misc</module>
 		<module>../aiwan-order</module>
+		<module>../aiwan-web</module>
 	</modules>
 
 </project>
