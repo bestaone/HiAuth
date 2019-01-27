@@ -1,6 +1,7 @@
-package com.bestaone.aiwan.misc.web.config;
+package com.bestaone.aiwan.core.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,10 +16,9 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableResourceServer
+@ConditionalOnProperty(prefix = "oauth2", name = "datasource.url")
 public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
@@ -51,7 +51,14 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/**").access("#oauth2.hasScope('read')")
-                .antMatchers(HttpMethod.POST, "/api/**").access("#oauth2.hasScope('write')");
+                .antMatchers(HttpMethod.POST, "/api/**").access("#oauth2.hasScope('write')")
+                .antMatchers(
+                        "/webjars/**",
+                        "/resources/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/api-docs")
+                .permitAll();
     }
 
 }

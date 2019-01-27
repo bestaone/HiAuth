@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2019-01-27 10:11:55
+Date: 2019-01-27 18:02:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,6 +33,10 @@ CREATE TABLE `account` (
   UNIQUE KEY `unique_accessToken` (`accessToken`),
   UNIQUE KEY `unique_bindUser` (`userId`,`type`,`openid`) USING BTREE COMMENT '确定user与第三方账号的绑定唯一性'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of account
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for clientdetails
@@ -115,7 +119,7 @@ CREATE TABLE `oauth_client_details` (
 -- ----------------------------
 -- Records of oauth_client_details
 -- ----------------------------
-INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'read,write', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8080', 'ROLE_USER', '1800', '86400', null, 'false');
+INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'read,write', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8081/callback,http://localhost:9081/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9080/webjars/springfox-swagger-ui/oauth2-redirect.html', 'ROLE_USER', '1800', '86400', null, 'false');
 
 -- ----------------------------
 -- Table structure for oauth_client_token

@@ -49,7 +49,7 @@ public class OrderControllerTest {
     @Test
     public void whenQuerySuccess() throws Exception {
         String result = mockMvc.perform(
-                get("/order")
+                get("/api/order")
                         .param("pageNum", "1")
                         .param("pageSize", "10")
                         .param("status", OrderStatus.PAID.name())
@@ -62,7 +62,7 @@ public class OrderControllerTest {
 
     @Test
     public void whenGetInfoSuccess() throws Exception {
-        String result = mockMvc.perform(get("/order/1")
+        String result = mockMvc.perform(get("/api/order/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -72,7 +72,7 @@ public class OrderControllerTest {
 
     @Test
     public void whenGetInfoFail() throws Exception {
-        String result = mockMvc.perform(get("/order/a")
+        String result = mockMvc.perform(get("/api/order/a")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResponse().getContentAsString();
@@ -82,7 +82,7 @@ public class OrderControllerTest {
     @Test
     public void whenCreateSuccess() throws Exception {
         OrderDto dto = new OrderDto().setTitle("iphone x 1").setTotalAmount(10001F);
-        String result = mockMvc.perform(post("/order").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(post("/api/order").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -93,7 +93,7 @@ public class OrderControllerTest {
     @Test
     public void whenCreateFail() throws Exception {
         OrderDto dto = new OrderDto();
-        String result = mockMvc.perform(post("/order").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(post("/api/order").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(50000))
@@ -104,7 +104,7 @@ public class OrderControllerTest {
     @Test
     public void whenUpdateSuccess() throws Exception {
         OrderDto dto = new OrderDto().setTitle("iphone x 2").setTotalAmount(10001F);
-        String result = mockMvc.perform(put("/order/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(put("/api/order/1").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -114,7 +114,7 @@ public class OrderControllerTest {
 
     @Test
     public void whenDeleteSuccess() throws Exception {
-        String result = mockMvc.perform(delete("/order/1")
+        String result = mockMvc.perform(delete("/api/order/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))

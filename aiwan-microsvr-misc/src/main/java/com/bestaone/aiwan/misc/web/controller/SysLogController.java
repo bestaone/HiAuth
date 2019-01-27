@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/sys_log")
+@RequestMapping("/api/sys_log")
 public class SysLogController implements SysLogApi {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
