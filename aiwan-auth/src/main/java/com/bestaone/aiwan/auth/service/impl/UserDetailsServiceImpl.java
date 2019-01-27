@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.auth.web.config;
+package com.bestaone.aiwan.auth.service.impl;
 
 import com.bestaone.aiwan.auth.domain.Resource;
 import com.bestaone.aiwan.auth.domain.Role;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class SimpleUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

@@ -1,5 +1,6 @@
 package com.bestaone.aiwan.auth.web.config;
 
+import com.bestaone.aiwan.auth.service.impl.UserDetailsServiceImpl;
 import com.bestaone.aiwan.auth.web.config.smscode.SmsCodeAuthenticationSecurityConfig;
 import com.bestaone.aiwan.auth.web.config.validatecode.ValidateCodeSecurityConfig;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public UserDetailsService simpleUserDetailsService(){
-        return new SimpleUserDetailsService();
+        return new UserDetailsServiceImpl();
     }
 
     @Override
