@@ -29,7 +29,7 @@ public class ValidateCodeController {
 
     @RequestMapping("/code/mobile")
     public void mobile(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-        Cache.send("137", "1234");
+        Cache.send("13712345678", "1234");
     }
 
 }
