@@ -47,10 +47,10 @@
 	
 	<modules>
 		<module>../aiwan-core</module>
-		<module>../aiwan-auth</module>
-		<module>../aiwan-misc</module>
-		<module>../aiwan-order</module>
-		<module>../aiwan-web</module>
+		<module>../aiwan-microsvr-misc</module>
+		<module>../aiwan-microsvr-order</module>
+		<module>../aiwan-web-auth</module>
+		<module>../aiwan-web-crm</module>
 	</modules>
 
 </project>

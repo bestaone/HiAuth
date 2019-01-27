@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>aiwan-misc</artifactId>
+	<artifactId>aiwan-microsvr-order</artifactId>
 
 	<parent>
 		<groupId>com.bestaone.aiwan</groupId>
@@ -22,10 +22,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>2.9.2</version>
@@ -35,10 +31,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>com.github.tomakehurst</groupId>-->
-			<!--<artifactId>wiremock</artifactId>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
@@ -58,7 +50,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>user</finalName>
+		<finalName>order</finalName>
 	</build>
 
 </project>
