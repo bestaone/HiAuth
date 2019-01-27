@@ -9,6 +9,7 @@
 
 ### 安装
 - 使用mysql，执行脚本位于 /doc/user.sql
+> oauth2 数据库 https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql
 - 下载源码，进入aiwan目录
 - 执行以下命令
 ```
