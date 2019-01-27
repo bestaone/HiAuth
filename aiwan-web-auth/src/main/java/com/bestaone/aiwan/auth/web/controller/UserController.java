@@ -11,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -43,6 +47,16 @@ public class UserController {
 	public String list(Model model, Authentication auth) {
 		model.addAttribute("auth", auth);
 		return "/user/list";
+	}
+
+	@ResponseBody
+	@GetMapping("/profile")
+	public Map<String, String> profile() {
+		Map<String, String> map = new HashMap<>();
+		map.put("id","10001");
+		map.put("name","bestaone");
+		map.put("email","117919482@qq.com");
+		return map;
 	}
 
 }

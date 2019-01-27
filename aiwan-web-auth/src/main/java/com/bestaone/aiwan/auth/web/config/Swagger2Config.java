@@ -20,14 +20,14 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.bestaone.aiwan.user"))
+                .apis(RequestHandlerSelectors.basePackage("com.bestaone.aiwan"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo apiInfo(){
-        return new ApiInfoBuilder().title("用户系统接口文档")
-                .description("提供用户系统接口文档")
+        return new ApiInfoBuilder().title("系统接口文档")
+                .description("提供系统接口文档")
                 .version("1.0").build();
     }
 

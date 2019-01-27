@@ -1,5 +1,6 @@
 package com.bestaone.aiwan.auth.web.config.smscode;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,13 +20,13 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 
     //defaultFilterProcessesUrl为要拦截的url
     public SmsCodeAuthenticationFilter(String defaultFilterProcessesUrl, String failureUrl) {
-        super(new AntPathRequestMatcher(defaultFilterProcessesUrl, "POST"));
+        super(new AntPathRequestMatcher(defaultFilterProcessesUrl, HttpMethod.POST.name()));
         setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(failureUrl));
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if (postOnly && !request.getMethod().equals("POST")) {
+        if (postOnly && !request.getMethod().equals(HttpMethod.POST.name())) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
         String mobile = obtainMobile(request);

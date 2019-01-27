@@ -2,6 +2,7 @@ package com.bestaone.aiwan.auth.web.config.smscode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 
 //模拟缓存
 public class Cache {

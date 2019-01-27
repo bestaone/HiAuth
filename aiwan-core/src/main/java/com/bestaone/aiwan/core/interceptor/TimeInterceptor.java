@@ -14,15 +14,17 @@ public class TimeInterceptor implements HandlerInterceptor {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	private final static String API_START_TIME_SESSION_KEY = "API_START_TIME_SESSION_KEY";
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		request.setAttribute("startTime", System.currentTimeMillis());
+		request.setAttribute(API_START_TIME_SESSION_KEY, System.currentTimeMillis());
 		return true;
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView){
-		Long start = (Long) request.getAttribute("startTime");
+		Long start = (Long) request.getAttribute(API_START_TIME_SESSION_KEY);
 		logger.debug("接口[{}]耗时{}毫秒", request.getRequestURI(), (System.currentTimeMillis() - start));
 	}
 

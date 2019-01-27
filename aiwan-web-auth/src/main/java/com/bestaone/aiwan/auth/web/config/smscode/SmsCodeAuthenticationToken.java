@@ -36,6 +36,7 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
         return this.mobile;
     }
 
+    @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
         if (isAuthenticated) {
             throw new IllegalArgumentException("Cannot set this token to trusted - use constructor which takes a GrantedAuthority list instead");

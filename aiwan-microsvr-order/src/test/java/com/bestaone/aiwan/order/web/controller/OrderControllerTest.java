@@ -1,7 +1,6 @@
 package com.bestaone.aiwan.order.web.controller;
 
 import com.bestaone.aiwan.order.api.dto.OrderDto;
-import com.bestaone.aiwan.order.domain.Order;
 import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WebAppConfiguration
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +37,9 @@ public class OrderControllerTest {
     private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
+//
+//    @Autowired
+//    private FilterChainProxy springSecurityFilterChain;
 
     @Before
     public void setup() {

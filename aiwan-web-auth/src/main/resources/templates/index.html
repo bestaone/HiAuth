@@ -9,12 +9,17 @@
 
 <h1>首页</h1>
 <div>
+
     <a th:href="@{/user/detail}" th:if="${#httpServletRequest.remoteUser}">个人中心</a>
 
     <a th:href="@{/user/me}">个人信息（user可以看）</a>
     <a th:href="@{/user/list}">用户列表（admin可以看）</a>
 
     <a th:href="@{/signout}" th:if="${#httpServletRequest.remoteUser}">退出</a>
+
+    <br /><br />
+    <a th:href="@{/user/profile}">用户信息(都可见，测试通过接口获取用户信息)</a>
+
 </div>
 
 </body>

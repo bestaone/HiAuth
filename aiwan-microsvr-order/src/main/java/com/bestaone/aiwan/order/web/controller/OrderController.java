@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderController implements OrderApi {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
