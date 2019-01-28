@@ -20,12 +20,12 @@
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
-- aiwan-microsvr-order ： order微服务，包含订单业务接口 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-microsvr-order/README.md)
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
-- aiwan-web-auth ： 授权服务 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-auth/README.md)
-- aiwan-web-crm ： crm演示项目 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-crm/README.md)
+- aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
+- aiwan-web-crm ： crm演示项目 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-crm/README.md)：介绍如何集成认证服务 ]
 
 
 ## 快速启动
