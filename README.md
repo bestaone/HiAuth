@@ -2,7 +2,6 @@
 # AIWAN
 
 ## 功能介绍
-
 - 这个脚手架可以帮助你快速启动一个基于spring技术栈的微服务项目开发（不包含服务治理等，便于自己集成spring cloud、k8s等）
 - 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
 - 认证服务器支持了图形验证码、短信验证码功能
@@ -17,23 +16,21 @@
 - 演示了swagger2通过oauth2认证后查看功能
 
 ## 目录介绍
-
 - aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
-- aiwan-microsvr-order ： order微服务，包含订单业务接口 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-microsvr-order/README.md)
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-microsvr-order/README.md)
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
-- aiwan-web-auth ： 授权服务 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-auth/README.md)
-- aiwan-web-crm ： crm演示项目 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-crm/README.md)
+- aiwan-web-auth ： 授权服务 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-auth/README.md)
+- aiwan-web-crm ： crm演示项目 [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-crm/README.md)
 
 
 ## 快速启动
 
 ### 创建数据库
-
 - 数据使用的是mysql5.6
 - 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
 - 创建数据库misc，运行脚本 aiwan-microsvr-misc/doc/misc.sql
@@ -46,7 +43,6 @@ spring.datasource.password = 123456
 ```
 
 ### 构建、测试
-
 - 执行如下命名会编译、测试
 ```
 cd aiwan
@@ -54,7 +50,6 @@ mvn clean install
 ```
 
 ### 启动
-
 - 这个项目包含4个可运行项目，分别是auth（端口：8080）、crm（端口：8081）、misc（端口：9080）、order（端口：9081）
 - 启动这4个项目
 ```
@@ -91,3 +86,9 @@ mvn spring-boot:run
 - 再次测试接口，获取正确数据
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
+
+### 未完事项
+- auth事项 user/profile 接口
+- 整合docker
+- 整合Kubernetes
+- 整合Istio
