@@ -1,475 +1,93 @@
-## Spring MVC
 
-### 说明
-这个项目主要是提供快速构建基于spring boot技术栈的后台api系统
+# AIWAN
 
-### 主要技术
-- spring security
-- mybatis
+## 功能介绍
 
-### 安装
-- 使用mysql，执行脚本位于 /doc/user.sql
-> oauth2 数据库 https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql
-- 下载源码，进入aiwan目录
-- 执行以下命令
+- 这个脚手架可以帮助你快速启动一个基于spring技术栈的微服务项目开发（不包含服务治理等，便于自己集成spring cloud、k8s等）
+- 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
+- 认证服务器支持了图形验证码、短信验证码功能
+- 包含了两个微服务的演示模块misc、order，需要通过oauth2认证后才能访问
+- 包含一个web demo web-crm，演示如何通过oauth2授权后访问各个微服务
+- 演示web服务通过oauth2认证后，调用微服务接口获取数据的完整流程
+- 演示了如何通过starter扩展功能(oauth2、swagger2、monitor)
+- 演示了如何统一控制接口规范
+- 演示了如何规范异常处理
+- 演示了如何规范使用mybaits、分页
+- 演示了单元测试、mock测试、测试数据回滚，包括对controller、service的测试
+- 演示了swagger2通过oauth2认证后查看功能
+
+## 目录介绍
+
+- aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
+- aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
+- aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
+- aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [README.MD](http://10.6.1.2:8080/jenkins)
+- aiwan-starter-monitor ： 监控功能的starter项目
+- aiwan-starter-oauth2 ： oauth2功能的starter项目
+- aiwan-starter-swagger2 ： swagger2功能的starter项目
+- aiwan-web-auth ： 授权服务 [README.MD](http://10.6.1.2:8080/jenkins)
+- aiwan-web-crm ： crm演示项目 [README.MD](http://10.6.1.2:8080/jenkins)
+
+
+## 快速启动
+
+### 创建数据库
+
+- 数据使用的是mysql5.6
+- 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
+- 创建数据库misc，运行脚本 aiwan-microsvr-misc/doc/misc.sql
+- 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
+- 默认数据库配置为，如果不正确请修改 resources\application.properties 文件
+```
+spring.datasource.url = jdbc:mysql://127.0.0.1:3306/user
+spring.datasource.username = root
+spring.datasource.password = 123456
+```
+
+### 构建、测试
+
+- 执行如下命名会编译、测试
 ```
 cd aiwan
 mvn clean install
-cd ../aiwan-user
+```
+
+### 启动
+
+- 这个项目包含4个可运行项目，分别是auth（端口：8080）、crm（端口：8081）、misc（端口：9080）、order（端口：9081）
+- 启动这4个项目
+```
+cd aiwan-web-auth
+mvn spring-boot:run
+
+cd aiwan-web-crm
+mvn spring-boot:run
+
+cd aiwan-microsvr-misc
+mvn spring-boot:run
+
+cd aiwan-microsvr-order
 mvn spring-boot:run
 ```
 
 ### 验证
-- 访问 swagger，地址：http://127.0.0.1:8081/swagger-ui.html
 
-### 模块划分
-- aiwan-core:核心包，包含公共的系统代码
-- aiwan-user：用户管理模块
-- aiwan-order：订单管理
-
-本项目为前后端分离的微服务架构，所有本项目添加了两个模块，来验证。
-
-
-### Restful
-- url描述资源，用http方法来描述行为
-- rest 成熟度模型：level0:http协议，level1:使用url描述资源，level2:http verbs（使用方法描述行为），level3:Hypermedia Controls
-- 除了数据主键，其他入参使用content json，出参使用body json
-```java
-
-@RestController
-@RequestMapping("/user")
-public class UserController{
-
-    //创建使用 POST /user  入参、出参使用JSON
-	@PostMapping
-	public ApiResponse<String> create(@Valid @RequestBody UserDto userDto){
-        return ApiResponse.sucess();
-	}
-
-    //修改使用 PUT /user/{id}  入参、出参使用JSON
-	@PutMapping("/{id:\\d+}")
-	public ApiResponse update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        return ApiResponse.sucess();
-	}
-
-    //删除使用 DELETE /user/{id}  
-	@DeleteMapping("/{id:\\d+}")
-	public ApiResponse delete(@PathVariable Long id) {
-        return ApiResponse.sucess();
-	}
-
-    //查询使用 GET /user  入参、出参使用JSON
-	@GetMapping
-	public ApiResponse<PageVo<UserVo>> query(Integer pageNum, Integer pageSize, String name) {
-        return ApiResponse.sucess();
-	}
-
-    //查询详细使用 GET /user/{id}  出参使用JSON
-	@GetMapping("/{id:\\d+}")
-	public ApiResponse<UserVo> getInfo(@PathVariable Long id){
-		return ApiResponse.sucess();
-	}
-
-}
-
-```
-
-### 单元测试
-
-- service做最基础的增删改查单元测试
-```java
-
-//添加此注解可以使单元测试完后的数据库数据全部回滚，避免造成脏数据
-@Transactional  
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
-public class UserServiceTest {
-
-    @Autowired
-    public UserService service;
-
-    @Test
-    public void CRUDTest() {
-
-        //CREATE
-        User o = new User();
-        o.setUsername("test");
-        o.setPassword("test");
-        o.setCreateTime(new Date());
-        o.setName("CRUDTest");
-        service.save(o);
-        Assert.assertNotNull(o.getId());
-
-        //READ
-        o = service.findById(o.getId());
-        Assert.assertNotNull(o.getId());
-
-        //UPDATE
-        o.setName("CRUDTest1");
-        service.save(o);
-        o = service.findById(o.getId());
-        Assert.assertTrue(o.getName().equals("CRUDTest1"));
-
-        //PAGE
-        PageHelper.startPage(1,1);
-        List<User> list = service.findAll();
-        PageInfo<User> page = new PageInfo<>(list);
-        Assert.assertTrue(page.getTotal()>0);
-
-        //DELETE
-        service.delete(o.getId());
-        o = service.findById(o.getId());
-        Assert.assertNull(o);
-
-    }
-
-}
-
-```
-
-- controller的单元测试
-
-### 分页查询
-- 引入插件
-```
-<dependency>
-	<groupId>com.github.pagehelper</groupId>
-	<artifactId>pagehelper-spring-boot-starter</artifactId>
-	<version>1.2.10</version>
-</dependency>
-```
-
-- 配置插件
-```
-pagehelper.helperDialect = mysql
-pagehelper.supportMethodsArguments = true
-pagehelper.autoRuntimeDialect = true
-pagehelper.offsetAsPageNum = true
-pagehelper.rowBoundsWithCount = true
-pagehelper.reasonable = false
-pagehelper.returnPageInfo = true
-pagehelper.params = count=countSql
-```
-
-- 分页代码
-```
-@GetMapping
-public ApiResponse<PageVo<User>> query(Integer pageNum, Integer pageSize, String name) {
-	Page pageinfo = PageHelper.startPage(pageNum, pageSize);
-	List<User> users = userService.findByName(name);
-	return ApiResponse.sucess(new PageVo<>(pageinfo.getPageNum(), pageinfo.getPageSize(),pageinfo.getTotal(),pageinfo.getPages(),users));
-}
-```
-
-### JsonView
-- 使用JsonView标记Vo，使同一个返回数据，显示不同结果
-- 在实际使用中，如果使用ApiResponse、PageVo等对Vo进行包装后，则无法生效
-```
-public class UserVo {
-	
-	public interface UserSimpleView {};
-	public interface UserDetailView extends UserSimpleView {};
-
-	@JsonView(UserSimpleView.class)
-	private Long id;
-
-	@JsonView(UserSimpleView.class)
-	private String name;
-
-	@JsonView(UserSimpleView.class)
-	private String gender;
-
-	@JsonView(UserSimpleView.class)
-	private String username;
-
-	@JsonView(UserDetailView.class)
-	private String password;
-
-	@JsonView(UserDetailView.class)
-	private Date createTime;
-
-}
-```
-
-### 时间传递
-出、入参使用Long类型时间戳避免不同的格式化问题和时区问题
-```
-#剔除返回结果的null值
-spring.jackson.default-property-inclusion = non_null
-#返回时间类型时，使用Long时间戳
-spring.jackson.serialization.write-dates-as-timestamps = true
-```
-
-### @Valid 和 BindingResult
-- @Valid 申明需要进行参数校验
-- @NotBlank @Past 参数校验的规则设置
-- BindingResult 获取到参数校验的所有异常结果
-```
-//如果UserDto中有未通过校验的参数，则异常信息可以从BindingResult中获取
-public ApiResponse update(@PathVariable Long id, @Valid @RequestBody UserDto userDto, BindingResult errors)
-```
-
-### 自定义参数校验器
-
-- 定义注解
-```
-@Target({ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = MyConstraintValidator.class)
-public @interface MyConstraint {
-
-	String message();
-	Class<?>[] groups() default { };
-	Class<? extends Payload>[] payload() default { };
-	
-}
-
-```
-
-- 添加注解，申明需要校验
-```
-@MyConstraint(message = "这是一个测试")
-private String username;
-```
-
-- 校验逻辑
-```
-public class MyConstraintValidator implements ConstraintValidator<MyConstraint, Object> {
-
-	@Override
-	public void initialize(MyConstraint constraintAnnotation) {
-		System.out.println("my validator init");
-	}
-
-	@Override
-	public boolean isValid(Object value, ConstraintValidatorContext context) {
-		System.out.println(value);
-		return true;
-	}
-
-}
-```
-
-### 异常处理
-- 系统接口抛出的异常都要包含 code码和message
-```
-public class CommonException extends Exception {
-
-    private Integer code;
-    private String msg;
-
-    public CommonException(Integer code, String msg) {
-        super(msg);
-        this.msg = msg;
-        this.code = code;
-    }
-
-    public CommonException(Integer code, String msg, Throwable cause) {
-        super(msg, cause);
-        this.msg = msg;
-        this.code = code;
-    }
-
-}
-
-```
-
-- Api接口需要统一处理异常
-```
-@ControllerAdvice
-public class CommonExceptionHandler {
-
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public ApiResponse exceptionHandler(Exception e){
-        CommonException ce = null;
-        if(e instanceof CommonException){
-            ce = (CommonException) e;
-        } else {
-            ce = new CommonException(50000, e.getMessage());
-        }
-        return ApiResponse.fail(ce);
-    }
-
-}
-```
-
-- 添加异常工具类，负责异常处理
-```
-public class Assert {
-
-    public static void notNull(Object obj, Integer errorCode, String errorMsg) throws CommonException {
-        if(obj==null){
-            throwCommonException(errorCode, errorMsg);
-        }
-    }
-
-    public static void isTrue(boolean expression, Integer errorCode, String errorMsg) throws CommonException {
-        if(expression){
-            throwCommonException(errorCode, errorMsg);
-        }
-    }
-
-    private static void throwCommonException(Integer errorCode, String errorMsg) throws CommonException{
-        throw new CommonException(errorCode, errorMsg);
-    }
-
-}
-
-```
-
-- 工具类的使用
-```
-@PostMapping
-public ApiResponse<String> create(@Valid @RequestBody UserDto userDto) throws CommonException {
-	Assert.notNull(userDto.getUsername(),50000, "用户名不存在");
-	Assert.notNull(userDto.getPassword(),50000, "密码不存在");
-    ...
-}
-```
-
-### swwarger
-- 引入依赖
-```
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger2</artifactId>
-	<version>2.9.2</version>
-</dependency>
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger-ui</artifactId>
-	<version>2.9.2</version>
-</dependency>
-```
-
-- 配置
-```
-@Configuration
-@EnableSwagger2
-public class Swagger2Config {
-
-    @Bean
-    public Docket createRestApi(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.bestaone.aiwan.user"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private ApiInfo apiInfo(){
-        return new ApiInfoBuilder().title("用户系统接口文档")
-                .description("提供用户系统接口文档")
-                .version("1.0").build();
-    }
-
-}
-```
-
-### spring security 过滤链原理
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 单元测试
-参考:com.com.bestaone.aiwan.account.web.controller.UserControllerTest
-
-```
-增加
-post http://127.0.0.1:8081/user
-{
-	"username":"user",
-	"password":"123456"
-}
-```
-
-```
-删除
-delete http://127.0.0.1:8081/user/1
-```
-
-
-```
-修改
-put http://127.0.0.1:8081/user/1
-{
-	"username":"user",
-	"password":"123456"
-}
-```
-
-```
-查询
-get http://127.0.0.1:8081/user/1
-```
-
-### @Valid & @JsonView & 自定义Constraint
-- @Valid 添加到controller中表示对dto进行校验
-- @JsonView 表示使用对应的View进行转换，需要在在controller中置顶view
-- 自定义Constraint,当已有的校验器无法满足使用时，可以自定义校验器
-
-### 异常处理
-参考：ControllerExceptionHandler
-
-### Filter and Interceptor
-Filter 属于svelet内容，所以获取不到spring上下文数据，如果需要spring上下文数据，需要使用Interceptor
-Filter的添加有两种方法
-1.@Component
-2.使用
-```
-@Configuration
-public class WebMvcConfig implements WebMvcConfigurer {
-
-	@Autowired
-	private TimeInterceptor timeInterceptor;
-	
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(timeInterceptor);
-	}
-	
-	@Bean
-	public FilterRegistrationBean timeFilter() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		TimeFilter timeFilter = new TimeFilter();
-		registrationBean.setFilter(timeFilter);
-		List<String> urls = new ArrayList<>();
-		urls.add("/*");
-		registrationBean.setUrlPatterns(urls);
-		return registrationBean;
-	}
-
-}
-
-```
-添加Interceptor与Filter不同，不仅需要@Component还需要 registry.addInterceptor(timeInterceptor);
-
-### 文件处理
-参考：com.com.bestaone.aiwan.account.web.controller.UserControllerTest:whenUploadSuccess
-
-### 异步服务
-- Callable<?> 提高容器的被压能力
-测试：post http://127.0.0.1:8081/async/order
-
-- DeferredResult<?> 适用于后段服务的异步运行
-
-### WireMock
-官网地址：http://wiremock.org
-使用方法：
-- 运行服务 java -jar xxx.jar 
-- 使用sdk，连接服务，写入规则
+#### CRM验证
+- 访问crm主页 http://localhost:8081
+- 被重定向到了auth服务进行认证，输入账号登录
+- 被重定向回crm系统，进入crm首页，登录成功
+
+#### auth验证
+- 访问auth主页 http://localhost:8080
+- 输入账号登录
+- 进入首页
+
+#### swagger2验证
+- 访问misc项目swagger2 ui地址 http://127.0.0.1:9080/swagger-ui.html
+- 直接测试接口，显示未认证
+- 点击认证按钮，会被重定向到auth进行认证，输入账号登录
+- 被重定向到misc的swagger2页面
+- 再次测试接口，获取正确数据
+
+> 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中等级的是localhost
