@@ -26,6 +26,7 @@ public class IndexController {
 
 	private static final String PROFILE_URL = "http://localhost:9080/api/user/profile";
 	private static final String GET_ORDER_URL = "http://localhost:9081/api/order";
+	private static final String GET_LOG_URL = "http://localhost:9080/api/sys_log";
 
 	private static final String SESSION_KEY_ACCESS_TOKEN = "MY_ACCESS_TOKEN";
 
@@ -77,6 +78,7 @@ public class IndexController {
 
 		getProfile(model, aiwanApi, accessToken);
 		getMyOrder(model, aiwanApi, accessToken);
+		getMyLog(model, aiwanApi, accessToken);
 
 		return "profile";
 	}
@@ -87,6 +89,7 @@ public class IndexController {
 		OAuth2AccessToken accessToken = (OAuth2AccessToken) request.getSession().getAttribute(SESSION_KEY_ACCESS_TOKEN);
 		getProfile(model, aiwanApi, accessToken);
 		getMyOrder(model, aiwanApi, accessToken);
+		getMyLog(model, aiwanApi, accessToken);
 		return "profile";
 	}
 
@@ -132,6 +135,28 @@ public class IndexController {
 		model.addAttribute("orderId", id);
 		model.addAttribute("orderTitle", title);
 		model.addAttribute("orderTotalAmount", totalAmount);
+	}
+
+	private void getMyLog(Model model, final OAuth20Service aiwanApi, OAuth2AccessToken accessToken) throws Exception {
+		OAuthRequest apiRequest = new OAuthRequest(Verb.GET, GET_LOG_URL + "/1");
+		aiwanApi.signRequest(accessToken, apiRequest);
+
+		Response resourceResponse = aiwanApi.execute(apiRequest);
+
+		logger.info("code:{}", resourceResponse.getCode());
+		logger.info("message:{}", resourceResponse.getMessage());
+		logger.info("body:{}", resourceResponse.getBody());
+
+		JSONObject obj = new JSONObject(resourceResponse.getBody());
+		logger.info("json:{}", obj.toString());
+		JSONObject data = obj.getJSONObject("data");
+		Long id = data.getLong("id");
+		String content = data.getString("content");
+		Long createTime = data.getLong("createTime");
+
+		model.addAttribute("logId", id);
+		model.addAttribute("logContent", content);
+		model.addAttribute("logCreateTime", createTime);
 	}
 
 }
