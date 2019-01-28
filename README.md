@@ -22,12 +22,12 @@
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
-- aiwan-microsvr-order ： order微服务，包含订单业务接口 [README.MD](http://10.6.1.2:8080/jenkins)
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-microsvr-order/README.md)
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
-- aiwan-web-auth ： 授权服务 [README.MD](http://10.6.1.2:8080/jenkins)
-- aiwan-web-crm ： crm演示项目 [README.MD](http://10.6.1.2:8080/jenkins)
+- aiwan-web-auth ： 授权服务 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-auth/README.md)
+- aiwan-web-crm ： crm演示项目 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-crm/README.md)
 
 
 ## 快速启动
@@ -90,4 +90,4 @@ mvn spring-boot:run
 - 被重定向到misc的swagger2页面
 - 再次测试接口，获取正确数据
 
-> 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中等级的是localhost
+> 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
