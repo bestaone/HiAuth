@@ -52,7 +52,7 @@ mvn clean install
 
 ### 启动
 - 这个项目包含4个可运行项目，分别是auth（端口：8080）、crm（端口：8081）、misc（端口：9080）、order（端口：9081）
-- 启动这4个项目
+- 启动这4个项目，启动不分先后顺序
 ```
 cd aiwan-web-auth
 mvn spring-boot:run
