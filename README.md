@@ -6,7 +6,7 @@
 - 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
 - 认证服务器支持了图形验证码、短信验证码功能
 - 包含了两个微服务的演示模块misc、order，需要通过oauth2认证后才能访问
-- 包含一个web demo web-crm，演示如何通过oauth2授权后访问各个微服务
+- 包含一个web demo web-crm，演示如何通过oauth2认证后访问各个微服务
 - 演示web服务通过oauth2认证后，调用微服务接口获取数据的完整流程
 - 演示了如何通过starter扩展功能(oauth2、swagger2、monitor)
 - 演示了如何统一控制接口规范
@@ -88,8 +88,8 @@ mvn spring-boot:run
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
 
-### 未完事项
-- auth事项 user/profile 接口
+## 未完事项
+- auth 认证服务 user/profile 接口
 - 整合docker
 - 整合Kubernetes
 - 整合Istio
