@@ -14,6 +14,7 @@
 - 演示了如何规范使用mybaits、分页
 - 演示了单元测试、mock测试、测试数据回滚，包括对controller、service的测试
 - 演示了swagger2通过oauth2认证后查看功能
+- 不打算集成spring cloud，个人比较喜欢service mesh，后面会集成Kubernetes、Istio
 
 ## 目录介绍
 - aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
