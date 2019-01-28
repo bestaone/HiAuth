@@ -93,6 +93,9 @@ public class IndexController {
 		return "profile";
 	}
 
+	/**
+	 * 应该从auth中取，但是目前auth的接口没有调整好
+	 */
 	private void getProfile(Model model, final OAuth20Service aiwanApi, OAuth2AccessToken accessToken) throws Exception {
 		OAuthRequest apiRequest = new OAuthRequest(Verb.GET, PROFILE_URL);
 		aiwanApi.signRequest(accessToken, apiRequest);
