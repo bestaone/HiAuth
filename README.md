@@ -80,7 +80,7 @@ mvn spring-boot:run
 - 进入首页
 
 #### swagger2验证
-- 访问misc项目swagger2 ui地址 http://127.0.0.1:9080/swagger-ui.html
+- 访问misc项目swagger2 ui地址 http://localhost:9080/swagger-ui.html
 - 直接测试接口，显示未认证
 - 点击认证按钮，会被重定向到auth进行认证，输入账号登录
 - 被重定向到misc的swagger2页面
