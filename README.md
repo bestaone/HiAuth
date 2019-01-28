@@ -38,7 +38,7 @@
 - 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
 - 默认数据库配置为，如果不正确请修改 resources/application.properties 文件
 ```
-spring.datasource.url = jdbc:mysql://127.0.0.1:3306/user
+spring.datasource.url = jdbc:mysql://127.0.0.1:3306/[user|misc|order]
 spring.datasource.username = root
 spring.datasource.password = 123456
 ```
