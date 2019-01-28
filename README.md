@@ -22,12 +22,12 @@
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
-- aiwan-microsvr-order ： order微服务，包含订单业务接口 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-microsvr-order/README.md)
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-microsvr-order/README.md)
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
-- aiwan-web-auth ： 授权服务 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-auth/README.md)
-- aiwan-web-crm ： crm演示项目 [README.MD](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-crm/README.md)
+- aiwan-web-auth ： 授权服务 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-auth/README.md)
+- aiwan-web-crm ： crm演示项目 [文档](https://github.com/bestaone/MicroServices1/blob/master/aiwan-web-crm/README.md)
 
 
 ## 快速启动
@@ -38,7 +38,7 @@
 - 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
 - 创建数据库misc，运行脚本 aiwan-microsvr-misc/doc/misc.sql
 - 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
-- 默认数据库配置为，如果不正确请修改 resources\application.properties 文件
+- 默认数据库配置为，如果不正确请修改 resources/application.properties 文件
 ```
 spring.datasource.url = jdbc:mysql://127.0.0.1:3306/user
 spring.datasource.username = root
