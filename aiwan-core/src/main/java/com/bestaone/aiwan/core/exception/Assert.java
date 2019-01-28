@@ -1,5 +1,7 @@
 package com.bestaone.aiwan.core.exception;
 
+import com.bestaone.aiwan.common.exception.CommonException;
+
 public class Assert {
 
     public static void notNull(Object obj, Integer errorCode, String errorMsg) throws CommonException {

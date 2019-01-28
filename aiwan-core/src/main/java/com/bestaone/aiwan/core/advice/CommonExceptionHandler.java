@@ -1,7 +1,7 @@
 package com.bestaone.aiwan.core.advice;
 
-import com.bestaone.aiwan.core.api.ApiResponse;
-import com.bestaone.aiwan.core.exception.CommonException;
+import com.bestaone.aiwan.common.api.ApiResponse;
+import com.bestaone.aiwan.common.exception.CommonException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

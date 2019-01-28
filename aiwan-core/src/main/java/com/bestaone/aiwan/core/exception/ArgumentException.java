@@ -1,6 +1,8 @@
 package com.bestaone.aiwan.core.exception;
 
-public class ArgumentException extends CommonException{
+import com.bestaone.aiwan.common.exception.CommonException;
+
+public class ArgumentException extends CommonException {
 
     public ArgumentException(Integer code, String message) {
         super(code, message);

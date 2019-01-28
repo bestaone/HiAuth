@@ -46,7 +46,12 @@
 	</build>
 	
 	<modules>
+		<module>../aiwan-starter-oauth2</module>
+		<module>../aiwan-starter-swagger2</module>
+		<module>../aiwan-starter-monitor</module>
+		<module>../aiwan-common</module>
 		<module>../aiwan-core</module>
+		<module>../aiwan-microsvr-api</module>
 		<module>../aiwan-microsvr-misc</module>
 		<module>../aiwan-microsvr-order</module>
 		<module>../aiwan-web-auth</module>

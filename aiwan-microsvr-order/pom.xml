@@ -18,6 +18,26 @@
 			<version>${aiwan.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.bestaone.aiwan</groupId>
+			<artifactId>aiwan-microsvr-api</artifactId>
+			<version>${aiwan.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>com.bestaone.aiwan</groupId>
+            <artifactId>aiwan-starter-oauth2</artifactId>
+            <version>${aiwan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bestaone.aiwan</groupId>
+            <artifactId>aiwan-starter-swagger2</artifactId>
+            <version>${aiwan.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>com.bestaone.aiwan</groupId>
+			<artifactId>aiwan-starter-monitor</artifactId>
+			<version>${aiwan.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>

@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.misc.web.controller;
 
-import com.bestaone.aiwan.core.api.ApiResponse;
+import com.bestaone.aiwan.common.api.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

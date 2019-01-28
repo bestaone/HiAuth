@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.order.web.controller;
 
-import com.bestaone.aiwan.order.api.dto.OrderDto;
+import com.bestaone.aiwan.api.order.dto.OrderDto;
 import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;

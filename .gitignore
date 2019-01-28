@@ -5,4 +5,5 @@ target
 .classpath
 .project
 *.log
+*.log.*
 logs

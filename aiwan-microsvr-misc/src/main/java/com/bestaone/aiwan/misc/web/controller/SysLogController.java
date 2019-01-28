@@ -1,10 +1,11 @@
 package com.bestaone.aiwan.misc.web.controller;
 
-import com.bestaone.aiwan.core.api.ApiResponse;
+import com.bestaone.aiwan.api.misc.SysLogApi;
+import com.bestaone.aiwan.api.misc.dto.SysLogDto;
+import com.bestaone.aiwan.api.misc.vo.SysLogVo;
+import com.bestaone.aiwan.common.api.ApiResponse;
+import com.bestaone.aiwan.common.exception.CommonException;
 import com.bestaone.aiwan.core.exception.Assert;
-import com.bestaone.aiwan.core.exception.CommonException;
-import com.bestaone.aiwan.misc.api.SysLogApi;
-import com.bestaone.aiwan.misc.api.dto.SysLogDto;
 import com.bestaone.aiwan.misc.domain.SysLog;
 import com.bestaone.aiwan.misc.service.SysLogService;
 import org.slf4j.Logger;
@@ -37,10 +38,14 @@ public class SysLogController implements SysLogApi {
 
 	@Override
 	@GetMapping("/{id:\\d+}")
-	public ApiResponse<SysLog> getInfo(@PathVariable Long id) throws CommonException{
+	public ApiResponse<SysLogVo> getInfo(@PathVariable Long id) throws CommonException{
 		SysLog sysLog = sysLogService.findById(id);
 		Assert.notNull(sysLog,20001,"数据不存");
-		return ApiResponse.sucess(sysLog);
+		SysLogVo sysLogVo = new SysLogVo();
+		sysLogVo.setId(sysLog.getId());
+		sysLogVo.setContent(sysLog.getContent());
+		sysLogVo.setCreateTime(sysLog.getCreateTime());
+		return ApiResponse.sucess(sysLogVo);
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.misc.web.controller;
 
-import com.bestaone.aiwan.misc.api.dto.FileInfoDto;
+import com.bestaone.aiwan.api.misc.dto.FileInfoDto;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
