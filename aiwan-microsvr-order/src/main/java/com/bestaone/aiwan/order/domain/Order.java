@@ -7,6 +7,7 @@ import java.util.Date;
 public class Order {
 
     private Long id;
+    private String no;
     private String title;
     private Float totalAmount;
     private OrderStatus status;
@@ -50,5 +51,13 @@ public class Order {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
     }
 }

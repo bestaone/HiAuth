@@ -9,13 +9,13 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    @Insert("INSERT INTO orderx (id,title,totalAmount,createTime,status) VALUES (#{id},#{title},#{totalAmount},#{createTime},#{status})")
+    @Insert("INSERT INTO orderx (id,no,title,totalAmount,createTime,status) VALUES (#{id},#{no},#{title},#{totalAmount},#{createTime},#{status})")
     void insert(Order user);
 
     @Delete("DELETE FROM orderx WHERE id = #{id}")
     void delete(Long id);
 
-    @Update("UPDATE orderx SET title=#{title},totalAmount=#{totalAmount},createTime=#{createTime},status=#{status} WHERE id =#{id}")
+    @Update("UPDATE orderx SET no=#{no},title=#{title},totalAmount=#{totalAmount},createTime=#{createTime},status=#{status} WHERE id =#{id}")
     int update(Order user);
 
     @ResultMap("BaseResultMap")

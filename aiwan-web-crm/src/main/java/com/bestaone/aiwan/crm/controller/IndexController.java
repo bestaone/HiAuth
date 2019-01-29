@@ -132,10 +132,12 @@ public class IndexController {
 		logger.info("json:{}", obj.toString());
 		JSONObject data = obj.getJSONObject("data");
 		Long id = data.getLong("id");
+		String no = data.getString("no");
 		String title = data.getString("title");
 		Float totalAmount = data.getBigDecimal("totalAmount").floatValue();
 
 		model.addAttribute("orderId", id);
+		model.addAttribute("orderNo", no);
 		model.addAttribute("orderTitle", title);
 		model.addAttribute("orderTotalAmount", totalAmount);
 	}
