@@ -116,10 +116,10 @@ mvn spring-boot:run
 ## 贴图
 
 ### mall演示认证流程
-![image](https://github.com/bestaone/Aiwan/blob/master/doc/mall.png)
+![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/mall.png)
 
 ### oauth2认证流程
-![image](https://github.com/bestaone/Aiwan/blob/master/doc/oauth2.png)
+![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/oauth2.png)
 
 
 ## 未完事项
