@@ -93,23 +93,23 @@ mvn spring-boot:run
 > 注意：如果授权环节不出现，可以清除下数据库的数据
 
 ##### password 认证流程
-- post 访问 http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+- post 访问 [http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
 - 正常访问后返回 json token
-- get 访问 http://localhost:9081/api/order/1，返回401，未授权
-- get 访问 http://localhost:9081/api/order/1，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
-- 无权限拦截的测试 http://localhost:8081/test/a （未实现）
+- get 访问 [http://localhost:9081/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- 无权限拦截的测试 [http://localhost:8081/test/a] （未实现）
 
 ##### client_credentials 认证流程
-- post 访问 http://localhost:8080/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=read
+- post 访问 [http://localhost:8080/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=read]
 - 正常访问后返回 json token
-- get 访问 http://localhost:9081/api/order/1，返回401，未授权
-- get 访问 http://localhost:9081/api/order/1，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
-- 无权限拦截的测试 http://localhost:8081/test/a （未实现）
+- get 访问 [http://localhost:9081/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- 无权限拦截的测试 [http://localhost:8081/test/a] （未实现）
 
 ##### scop权限范围验证
-- post 访问 http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=write
+- post 访问 [http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=write]
 - 返回的 json token 的权限范围是 write
-- get 访问 http://localhost:9081/api/order/1，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
+- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
 
