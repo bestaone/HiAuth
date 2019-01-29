@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.Callable;
 
 @RestController
-@RequestMapping("async")
+@RequestMapping("/api/async")
 public class AsyncController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());

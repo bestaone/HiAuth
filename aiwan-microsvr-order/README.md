@@ -1,34 +1,17 @@
-## Spring MVC
+# micro service order
 
-### 说明
-这个项目主要是提供快速构建基于spring boot技术栈的后台api系统
+## 说明
+这个项目主要是单个微服务的集成实践，在你构架微服务项目时，提供参考
 
-### 主要技术
+## 主要技术
 - spring security
 - mybatis
+- oauth
 
-### 安装
-- 使用mysql，执行脚本位于 /doc/user.sql
-> oauth2 数据库 https://github.com/spring-projects/spring-security-oauth/blob/master/spring-security-oauth2/src/test/resources/schema.sql
-- 下载源码，进入aiwan目录
-- 执行以下命令
-```
-cd aiwan
-mvn clean install
-cd ../aiwan-user
-mvn spring-boot:run
-```
+## 安装、编译及启动
+参考 [Aiwan](https://github.com/bestaone/Aiwan/blob/master/README.md)
 
-### 验证
-- 访问 swagger，地址：http://127.0.0.1:8081/swagger-ui.html
-
-### 模块划分
-- aiwan-core:核心包，包含公共的系统代码
-- aiwan-user：用户管理模块
-- aiwan-order：订单管理
-
-本项目为前后端分离的微服务架构，所有本项目添加了两个模块，来验证。
-
+## 技术介绍
 
 ### Restful
 - url描述资源，用http方法来描述行为
@@ -77,8 +60,7 @@ public class UserController{
 ### 单元测试
 
 - service做最基础的增删改查单元测试
-```java
-
+```
 //添加此注解可以使单元测试完后的数据库数据全部回滚，避免造成脏数据
 @Transactional  
 @RunWith(SpringRunner.class)
@@ -251,7 +233,7 @@ public class MyConstraintValidator implements ConstraintValidator<MyConstraint, 
 ```
 
 ### 异常处理
-- 系统接口抛出的异常都要包含 code码和message
+- 系统接口抛出的异常都要包含 code码和msg
 ```
 public class CommonException extends Exception {
 
@@ -294,7 +276,7 @@ public class CommonExceptionHandler {
 }
 ```
 
-- 添加异常工具类，负责异常处理
+- 断言工具类，负责异常处理
 ```
 public class Assert {
 
@@ -318,7 +300,7 @@ public class Assert {
 
 ```
 
-- 工具类的使用
+- 断言的使用
 ```
 @PostMapping
 public ApiResponse<String> create(@Valid @RequestBody UserDto userDto) throws CommonException {
@@ -329,65 +311,14 @@ public ApiResponse<String> create(@Valid @RequestBody UserDto userDto) throws Co
 ```
 
 ### swwarger
-- 引入依赖
-```
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger2</artifactId>
-	<version>2.9.2</version>
-</dependency>
-<dependency>
-	<groupId>io.springfox</groupId>
-	<artifactId>springfox-swagger-ui</artifactId>
-	<version>2.9.2</version>
-</dependency>
-```
+参考 aiwan-starter-swagger2 项目
 
-- 配置
-```
-@Configuration
-@EnableSwagger2
-public class Swagger2Config {
-
-    @Bean
-    public Docket createRestApi(){
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.bestaone.aiwan.user"))
-                .paths(PathSelectors.any())
-                .build();
-    }
-
-    private ApiInfo apiInfo(){
-        return new ApiInfoBuilder().title("用户系统接口文档")
-                .description("提供用户系统接口文档")
-                .version("1.0").build();
-    }
-
-}
-```
 
 ### spring security 过滤链原理
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+未完成
 
 ### 单元测试
-参考:com.com.bestaone.aiwan.account.web.controller.UserControllerTest
+参考:com.bestaone.aiwan.order.web.controller.OrderControllerTest
 
 ```
 增加
@@ -424,7 +355,7 @@ get http://127.0.0.1:8081/user/1
 - 自定义Constraint,当已有的校验器无法满足使用时，可以自定义校验器
 
 ### 异常处理
-参考：ControllerExceptionHandler
+参考：com.bestaone.aiwan.core.advice.CommonExceptionHandler
 
 ### Filter and Interceptor
 Filter 属于svelet内容，所以获取不到spring上下文数据，如果需要spring上下文数据，需要使用Interceptor
@@ -459,12 +390,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 ```
 添加Interceptor与Filter不同，不仅需要@Component还需要 registry.addInterceptor(timeInterceptor);
 
-### 文件处理
-参考：com.com.bestaone.aiwan.account.web.controller.UserControllerTest:whenUploadSuccess
-
 ### 异步服务
-- Callable<?> 提高容器的被压能力
-测试：post http://127.0.0.1:8081/async/order
+- Callable<?> 提高容器的背压能力
+测试：post http://localhost:9081/api/async/order
 
 - DeferredResult<?> 适用于后段服务的异步运行
 
