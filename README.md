@@ -21,12 +21,12 @@
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-goods ： goods微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
-- aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
+- aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
-- aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
-- aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
+- aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
+- aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
 
 
 ## 快速启动
@@ -112,6 +112,15 @@ mvn spring-boot:run
 - get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
+
+## 贴图
+
+### mall演示认证流程
+![image](https://github.com/bestaone/Aiwan/doc/mall.png)
+
+### oauth2认证流程
+![image](https://github.com/bestaone/Aiwan/doc/oauth2.png)
+
 
 ## 未完事项
 - 将认证服务和资源服务合并在一起的时候，验证authorization_code功能时，登录时报错“不支持 POST”,初步定为是 auth server 的SecurityConfig的HttpSecurity http未设置好
