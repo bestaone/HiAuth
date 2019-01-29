@@ -20,13 +20,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!--<dependency>-->
-				<!--<groupId>org.springframework.cloud</groupId>-->
-				<!--<artifactId>spring-cloud-dependencies</artifactId>-->
-				<!--<version>Finchley.SR1</version>-->
-				<!--<type>pom</type>-->
-				<!--<scope>import</scope>-->
-			<!--</dependency>-->
 		</dependencies>
 	</dependencyManagement>
 	
@@ -52,10 +45,10 @@
 		<module>../aiwan-common</module>
 		<module>../aiwan-core</module>
 		<module>../aiwan-microsvr-api</module>
-		<module>../aiwan-microsvr-misc</module>
+		<module>../aiwan-microsvr-goods</module>
 		<module>../aiwan-microsvr-order</module>
 		<module>../aiwan-web-auth</module>
-		<module>../aiwan-web-crm</module>
+		<module>../aiwan-web-mall</module>
 	</modules>
 
 </project>

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>profile</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 well">
+            <h3>profile</h3>
+            <ul>
+                <li th:text="${id}">id</li>
+                <li th:text="${name}">name</li>
+                <li th:text="${email}">email</li>
+            </ul>
+
+            <h3>my order</h3>
+            <ul>
+                <li th:text="${orderId}">orderId</li>
+                <li th:text="${orderNo}">orderNo</li>
+                <li th:text="${orderTitle}">orderTitle</li>
+                <li th:text="${orderTotalAmount}">orderTotalAmount</li>
+            </ul>
+
+            <h3>goods list</h3>
+            商品标题|商品价格|库存数量
+            <table>
+                <tr  th:each="goods : ${goodsList}">
+                    <td th:text="${goods}"></td>
+                </tr>
+            </table>
+
+            <h3>link</h3>
+            <ul>
+                <li><a href="/" th:href="@{/}">top</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

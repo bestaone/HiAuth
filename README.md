@@ -5,8 +5,8 @@
 - 这个脚手架可以帮助你快速启动一个基于spring技术栈的微服务项目开发
 - 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
 - 认证服务器支持了图形验证码、短信验证码功能
-- 包含了两个微服务的演示模块misc、order，需要通过oauth2认证后才能访问
-- 包含一个web demo web-crm，演示如何通过oauth2认证后访问各个微服务
+- 包含了两个微服务的演示模块goods、order，需要通过oauth2认证后才能访问
+- 包含一个web demo web-mall，演示如何通过oauth2认证后访问各个微服务
 - 演示web服务通过oauth2认证后，调用微服务接口获取数据的完整流程
 - 演示了如何通过starter扩展功能(oauth2、swagger2、monitor)
 - 演示了如何统一控制接口规范
@@ -20,13 +20,13 @@
 - aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
-- aiwan-microsvr-misc ： misc微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
+- aiwan-microsvr-goods ： goods微服务，包含各种不易归类的业务功能接口，这里面包好了日志接口
 - aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
 - aiwan-starter-monitor ： 监控功能的starter项目
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
 - aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
-- aiwan-web-crm ： crm演示项目 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-crm/README.md)：介绍如何集成认证服务 ]
+- aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/MicroServices/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
 
 
 ## 快速启动
@@ -34,11 +34,11 @@
 ### 创建数据库
 - 数据使用的是mysql5.6
 - 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
-- 创建数据库misc，运行脚本 aiwan-microsvr-misc/doc/misc.sql
+- 创建数据库goods，运行脚本 aiwan-microsvr-goods/doc/goods.sql
 - 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
 - 默认数据库配置为，如果不正确请修改 resources/application.properties 文件
 ```
-spring.datasource.url = jdbc:mysql://127.0.0.1:3306/[user|misc|order]
+spring.datasource.url = jdbc:mysql://127.0.0.1:3306/[user|goods|order]
 spring.datasource.username = root
 spring.datasource.password = 123456
 ```
@@ -51,16 +51,16 @@ mvn clean install
 ```
 
 ### 启动
-- 这个项目包含4个可运行项目及端口，分别是auth:8080、crm:8081、misc:9080、order:9081
+- 这个项目包含4个可运行项目及端口，分别是auth:8080、mall:8081、goods:9080、order:9081
 - 启动这4个项目，启动不分先后顺序
 ```
 cd aiwan-web-auth
 mvn spring-boot:run
 
-cd aiwan-web-crm
+cd aiwan-web-mall
 mvn spring-boot:run
 
-cd aiwan-microsvr-misc
+cd aiwan-microsvr-goods
 mvn spring-boot:run
 
 cd aiwan-microsvr-order
@@ -69,10 +69,10 @@ mvn spring-boot:run
 
 ### 验证
 
-#### CRM验证
-- 访问crm主页 http://localhost:8081
+#### mall验证
+- 访问mall主页 http://localhost:8081
 - 被重定向到了auth服务进行认证，输入账号登录
-- 被重定向回crm系统，进入crm首页，登录成功
+- 被重定向回mall系统，进入mall首页，登录成功
 
 #### auth验证
 - 访问auth主页 http://localhost:8080
@@ -80,10 +80,10 @@ mvn spring-boot:run
 - 进入首页
 
 #### swagger2验证
-- 访问misc项目swagger2 ui地址 http://localhost:9080/swagger-ui.html
+- 访问goods项目swagger2 ui地址 http://localhost:9080/swagger-ui.html
 - 直接测试接口，显示未认证
 - 点击认证按钮，会被重定向到auth进行认证，输入账号登录
-- 被重定向到misc的swagger2页面
+- 被重定向到goods的swagger2页面
 - 再次测试接口，获取正确数据
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost

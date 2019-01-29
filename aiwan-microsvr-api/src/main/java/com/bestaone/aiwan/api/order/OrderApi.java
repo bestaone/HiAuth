@@ -22,7 +22,7 @@ public interface OrderApi {
     ApiResponse delete(Long id);
 
     @ApiOperation(value = "用户查询")
-    ApiResponse<PageVo<OrderVo>> query(Integer pageNum, Integer pageSize, String name);
+    ApiResponse<PageVo<OrderVo>> query(Integer pageNum, Integer pageSize, String status);
 
     @ApiOperation(value = "查询用户详情")
     ApiResponse<OrderVo> getInfo(Long id) throws CommonException;

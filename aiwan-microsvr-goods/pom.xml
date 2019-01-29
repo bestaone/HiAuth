@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>aiwan-microsvr-order</artifactId>
+	<artifactId>aiwan-microsvr-goods</artifactId>
 
 	<parent>
 		<groupId>com.bestaone.aiwan</groupId>
@@ -51,10 +51,6 @@
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
 			<version>1.2.10</version>
 		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -64,7 +60,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>order</finalName>
+		<finalName>goods</finalName>
 	</build>
 
 </project>

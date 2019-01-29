@@ -73,6 +73,7 @@ public class OrderController implements OrderApi {
 		List<OrderVo> orderVos = new ArrayList<>();
 		for(Order order : orders){
 			OrderVo vo = new OrderVo();
+			vo.setNo(order.getNo());
 			vo.setTitle(order.getTitle());
 			vo.setId(order.getId());
 			vo.setStatus(order.getStatus()!=null?order.getStatus().name():null);
@@ -88,6 +89,7 @@ public class OrderController implements OrderApi {
 		Order order = userService.findById(id);
 		Assert.notNull(order,20001,"数据不存");
 		OrderVo vo = new OrderVo();
+		vo.setNo(order.getNo());
 		vo.setTitle(order.getTitle());
 		vo.setId(order.getId());
 		vo.setCreateTime(order.getCreateTime());

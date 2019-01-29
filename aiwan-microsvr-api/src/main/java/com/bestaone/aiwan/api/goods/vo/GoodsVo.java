@@ -1,13 +1,12 @@
-package com.bestaone.aiwan.api.order.vo;
+package com.bestaone.aiwan.api.goods.vo;
 
-import com.bestaone.aiwan.api.order.validator.MyConstraint;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Past;
 import java.util.Date;
 
-public class OrderVo {
+public class GoodsVo {
 	
 	public interface OrderSimpleView {};
 	public interface OrderDetailView extends OrderSimpleView {};
@@ -17,26 +16,21 @@ public class OrderVo {
 	private Long id;
 
 	@JsonView(OrderSimpleView.class)
-	@ApiModelProperty(value = "订单号")
-	private String no;
-
-	@JsonView(OrderSimpleView.class)
 	@ApiModelProperty(value = "标题")
 	private String title;
 
 	@JsonView(OrderSimpleView.class)
 	@ApiModelProperty(value = "总金额")
-	private Float totalAmount;
+	private Float price;
+
+    @JsonView(OrderSimpleView.class)
+    @ApiModelProperty(value = "库存")
+    private Integer amount;
 
 	@JsonView(OrderDetailView.class)
 	@ApiModelProperty(value = "创建时间")
 	@Past(message = "创建时间")
 	private Date createTime;
-
-	@JsonView(OrderSimpleView.class)
-	@MyConstraint(message = "状态")
-	@ApiModelProperty(value = "用户名")
-	private String status;
 
 	public Long getId() {
 		return id;
@@ -54,12 +48,12 @@ public class OrderVo {
 		this.title = title;
 	}
 
-	public Float getTotalAmount() {
-		return totalAmount;
+	public Float getPrice() {
+		return price;
 	}
 
-	public void setTotalAmount(Float totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setPrice(Float price) {
+		this.price = price;
 	}
 
 	public Date getCreateTime() {
@@ -70,19 +64,11 @@ public class OrderVo {
 		this.createTime = createTime;
 	}
 
-	public String getStatus() {
-		return status;
-	}
+    public Integer getAmount() {
+        return amount;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getNo() {
-		return no;
-	}
-
-	public void setNo(String no) {
-		this.no = no;
-	}
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
 }
