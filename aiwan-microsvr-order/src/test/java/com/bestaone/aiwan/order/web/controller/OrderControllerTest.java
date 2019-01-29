@@ -37,9 +37,6 @@ public class OrderControllerTest {
     private ObjectMapper objectMapper;
 
     private MockMvc mockMvc;
-//
-//    @Autowired
-//    private FilterChainProxy springSecurityFilterChain;
 
     @Before
     public void setup() {

@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class OrderServiceTest {
+public class GoodsServiceTest {
 
     @Autowired
     public GoodsService service;

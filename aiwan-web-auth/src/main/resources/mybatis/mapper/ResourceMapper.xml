@@ -14,9 +14,9 @@
 
     <select id="findByUserId" resultMap="BaseResultMap" >
         SELECT DISTINCT R.*
-        FROM resource R
-        LEFT JOIN role_resource RR ON RR.resourceId=R.id
-        LEFT JOIN user_role UR ON UR.roleId=RR.roleId
+        FROM sys_resource R
+        LEFT JOIN sys_role_resource RR ON RR.resourceId=R.id
+        LEFT JOIN sys_user_role UR ON UR.roleId=RR.roleId
         WHERE UR.userId=#{userId}
     </select>
 
