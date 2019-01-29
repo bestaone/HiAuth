@@ -1,4 +1,4 @@
-# micro service order
+# order micro service
 
 ## 说明
 这个项目主要是单个微服务的集成实践，在你构架微服务项目时，提供参考
@@ -17,8 +17,7 @@
 - url描述资源，用http方法来描述行为
 - rest 成熟度模型：level0:http协议，level1:使用url描述资源，level2:http verbs（使用方法描述行为），level3:Hypermedia Controls
 - 除了数据主键，其他入参使用content json，出参使用body json
-```java
-
+```
 @RestController
 @RequestMapping("/user")
 public class UserController{
@@ -54,7 +53,6 @@ public class UserController{
 	}
 
 }
-
 ```
 
 ### 单元测试
