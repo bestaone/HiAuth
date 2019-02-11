@@ -36,7 +36,7 @@
 - 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
 - 创建数据库goods，运行脚本 aiwan-microsvr-goods/doc/goods.sql
 - 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
-- 默认数据库配置为，如果不正确请修改 resources/application.properties 文件
+- 默认数据库配置如下，如果不正确请修改配置文件 resources/application.properties
 ```
 spring.datasource.url = jdbc:mysql://127.0.0.1:3306/[user|goods|order]
 spring.datasource.username = root
@@ -51,7 +51,7 @@ mvn clean install
 ```
 
 ### 启动
-- 这个项目包含4个可运行项目及端口，分别是auth:8080、mall:8081、goods:9080、order:9081
+- 这个项目包含4个可运行项目，项目名及端口为auth:8080、mall:8081、goods:9080、order:9081
 - 启动这4个项目，启动不分先后顺序
 ```
 cd aiwan-web-auth
@@ -90,7 +90,7 @@ mvn spring-boot:run
 
 ##### authorization_code 认证流程
 参看 [mall验证]
-> 注意：如果授权环节不出现，可以清除下数据库的数据
+> 注意：如果授权环节不出现，可以清除下数据库的数据（clientdetails、oauth_access_token、oauth_approvals、oauth_client_token、oauth_code、oauth_refresh_token）
 
 ##### password 认证流程
 - post 访问 [http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
