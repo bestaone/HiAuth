@@ -13,7 +13,7 @@
     <a th:href="@{/user/detail}" th:if="${#httpServletRequest.remoteUser}">个人中心</a>
 
     <a th:href="@{/user/me}">个人信息（user可以看）</a>
-    <a th:href="@{/user/list1}">用户列表（admin可以看）</a>
+    <a th:href="@{/user/list}">用户列表（admin可以看）</a>
 
     <a th:href="@{/signout}" th:if="${#httpServletRequest.remoteUser}">退出</a>
 

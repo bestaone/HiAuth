@@ -1,6 +1,5 @@
 package com.bestaone.aiwan.auth.web.controller;
 
-import com.bestaone.aiwan.auth.domain.User;
 import com.bestaone.aiwan.auth.service.AccountService;
 import com.bestaone.aiwan.auth.service.UserService;
 import org.slf4j.Logger;
@@ -12,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -42,19 +38,11 @@ public class UserController {
 		return "/user/me";
 	}
 
-	@PreAuthorize("hasAuthority('/user/list1')")
-	@GetMapping({"/list1"})
-	public String list1(Model model, Authentication auth) {
-		model.addAttribute("auth", auth);
-		return "/user/list";
-	}
-
-	@ResponseBody
 	@PreAuthorize("hasAuthority('/user/list')")
 	@GetMapping({"/list"})
-	public List<User> list() {
-		List<User> users = userService.findAll();
-		return users;
+	public String list(Model model, Authentication auth) {
+		model.addAttribute("auth", auth);
+		return "/user/list";
 	}
 
 }
