@@ -20,7 +20,7 @@
     <div class="form-signin">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active"><a href="#account-login" data-toggle="tab">账号登录</a></li>
-            <li><a href="#sms-login" data-toggle="tab">短信登录</a></li>
+            <li><a href="#tel-login" data-toggle="tab">手机登录</a></li>
         </ul>
         <div id="loginTabContent" class="tab-content" style="padding-top: 10px">
             <div class="tab-pane fade in active" id="account-login">
@@ -37,7 +37,7 @@
                     <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
                 </form>
             </div>
-            <div class="tab-pane fade" id="sms-login">
+            <div class="tab-pane fade" id="tel-login">
                 <form th:action="@{/mobile/signin/form}" method="post">
                     <label for="telNo" class="sr-only">手机号码</label>
                     <input class="form-control" type="text" name="telNo" id="telNo" value="13712345678" placeholder="手机号码" required>
