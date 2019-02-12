@@ -58,17 +58,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         //开启短信登陆功能
-        http .apply(smsCodeAuthenticationSecurityConfig());
+        http.apply(smsCodeAuthenticationSecurityConfig());
         //开启验证码功能
-        http .apply(validateCodeSecurityConfig());
+        http.apply(validateCodeSecurityConfig());
 
         http.formLogin()
-                .loginPage("/signin").loginProcessingUrl("/signin/form").defaultSuccessUrl("/index")
+                .loginPage("/signin").loginProcessingUrl("/signin/account").defaultSuccessUrl("/index")
+                //.successHandler(new MyAuthenticationSuccessHandler())//.defaultSuccessUrl("/index")
                 .and()
                 .logout().logoutUrl("/signout").logoutSuccessUrl("/signin")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signin", "/mobile/signin/form","/code/image","/code/mobile","/static/**").permitAll()
+                .antMatchers("/signin","/signin/tel","/code/image","/code/mobile","/static/**").permitAll()
                 .antMatchers("/oauth/**").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
                 .anyRequest().authenticated();

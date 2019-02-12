@@ -24,7 +24,7 @@
         </ul>
         <div id="loginTabContent" class="tab-content" style="padding-top: 10px">
             <div class="tab-pane fade in active" id="account-login">
-                <form th:action="@{/signin/form}" method="post">
+                <form th:action="@{/signin/account}" method="post">
                     <label for="username" class="sr-only">用户名</label>
                     <input class="form-control" type="text" name="username" id="username" value="user" placeholder="账号" required>
                     <label for="password" class="sr-only">密码</label>
@@ -38,7 +38,7 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="tel-login">
-                <form th:action="@{/mobile/signin/form}" method="post">
+                <form th:action="@{/signin/tel}" method="post">
                     <label for="telNo" class="sr-only">手机号码</label>
                     <input class="form-control" type="text" name="telNo" id="telNo" value="13712345678" placeholder="手机号码" required>
                     <label for="smsCode" class="sr-only">验证码</label>

@@ -23,13 +23,14 @@ public class ValidateCodeController {
     @RequestMapping("/code/image")
     public void image(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
         ImageCode imageCode = imageCodeGenerator.generate();
-        session.setAttribute(CaptchaAuthenticationFilter.SESSION_CAPTCHA_KEY, imageCode.getCode());
+        //session.setAttribute(CaptchaAuthenticationFilter.SESSION_CAPTCHA_KEY, imageCode.getCode());
+        Cache.put(CaptchaAuthenticationFilter.SESSION_CAPTCHA_KEY, imageCode.getCode());
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
     }
 
     @RequestMapping("/code/mobile")
     public void mobile(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
-        Cache.send("13712345678", "1234");
+        Cache.put("13712345678", "1234");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.bestaone.aiwan.auth.web.config.validatecode;
 
+import com.bestaone.aiwan.auth.web.config.smscode.Cache;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
@@ -41,7 +42,8 @@ public class CaptchaAuthenticationFilter extends AbstractAuthenticationProcessin
         HttpServletResponse res=(HttpServletResponse)response;
 
         if(pathMatcher.match(processUrl, req.getServletPath()) && HttpMethod.POST.name().equalsIgnoreCase(req.getMethod())){
-            Object attr = req.getSession().getAttribute(SESSION_CAPTCHA_KEY);
+//            Object attr = req.getSession().getAttribute(SESSION_CAPTCHA_KEY);
+            Object attr =  Cache.get(SESSION_CAPTCHA_KEY);
             if(attr==null){
                 unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("验证码错误"));
                 return;
