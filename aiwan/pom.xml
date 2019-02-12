@@ -45,6 +45,7 @@
 		<module>../aiwan-common</module>
 		<module>../aiwan-core</module>
 		<module>../aiwan-microsvr-api</module>
+		<module>../aiwan-microsvr-user</module>
 		<module>../aiwan-microsvr-goods</module>
 		<module>../aiwan-microsvr-order</module>
 		<module>../aiwan-web-auth</module>

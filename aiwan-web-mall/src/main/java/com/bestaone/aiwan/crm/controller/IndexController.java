@@ -25,10 +25,10 @@ public class IndexController {
 
 	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	private static final String GET_GOODS_URL = "http://localhost:9080/api/goods";
+	private static final String GET_GOODS_URL = "http://localhost:9081/api/goods";
 
-	private static final String PROFILE_URL = "http://localhost:9081/api/user/profile";
-	private static final String GET_ORDER_URL = "http://localhost:9081/api/order";
+	private static final String PROFILE_URL = "http://localhost:9082/api/user/profile";
+	private static final String GET_ORDER_URL = "http://localhost:9082/api/order";
 //	private static final String GET_LOG_URL = "http://localhost:9080/api/sys_log";
 
 	private static final String SESSION_KEY_ACCESS_TOKEN = "MY_ACCESS_TOKEN";

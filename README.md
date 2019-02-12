@@ -23,6 +23,7 @@
 - aiwan-starter-oauth2 ： oauth2功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
+- aiwan-microsvr-user ： user微服务，包含用户业务接口
 - aiwan-microsvr-goods ： goods微服务，包含商品业务接口
 - aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
 - aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
@@ -33,7 +34,7 @@
 
 ### 创建数据库
 - 数据使用的是mysql5.6
-- 创建数据库user，运行脚本 aiwan-web-auth/doc/user.sql
+- 创建数据库user，运行脚本 aiwan-microsvr-user/doc/user.sql
 - 创建数据库goods，运行脚本 aiwan-microsvr-goods/doc/goods.sql
 - 创建数据库order，运行脚本 aiwan-microsvr-order/doc/order.sql
 - 默认数据库配置如下，如果不正确请修改配置文件 resources/application.properties
@@ -51,13 +52,16 @@ mvn clean install
 ```
 
 ### 启动
-- 这个项目包含4个可运行项目，项目名及端口为auth:8080、mall:8081、goods:9080、order:9081
+- 这个项目包含5个可运行项目，项目名及端口为auth:8080、mall:8081、user:9080、goods:9081、order:9082
 - 启动这4个项目，启动不分先后顺序
 ```
 cd aiwan-web-auth
 mvn spring-boot:run
 
 cd aiwan-web-mall
+mvn spring-boot:run
+
+cd aiwan-microsvr-user
 mvn spring-boot:run
 
 cd aiwan-microsvr-goods
