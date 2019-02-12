@@ -9,8 +9,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Api(value = "UserApi", description = "UserApi")
 public interface UserApi {
+
+    @ApiOperation(value = "用户信息")
+    ApiResponse<Map<String, String>> profile();
 
     @ApiOperation(value = "创建用户")
     ApiResponse<String> create(UserDto userDto) throws CommonException;

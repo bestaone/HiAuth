@@ -43,7 +43,7 @@ public class UserControllerTest {
     @Test
     public void whenQuerySuccess() throws Exception {
         String result = mockMvc.perform(
-                get("/user")
+                get("/api/user")
                         .param("pageNum", "1")
                         .param("pageSize", "10")
                         .param("name", "1")
@@ -56,7 +56,7 @@ public class UserControllerTest {
 
     @Test
     public void whenGetInfoSuccess() throws Exception {
-        String result = mockMvc.perform(get("/user/1")
+        String result = mockMvc.perform(get("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -66,7 +66,7 @@ public class UserControllerTest {
 
     @Test
     public void whenGetInfoFail() throws Exception {
-        String result = mockMvc.perform(get("/user/a")
+        String result = mockMvc.perform(get("/api/user/a")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResponse().getContentAsString();
@@ -76,7 +76,7 @@ public class UserControllerTest {
     @Test
     public void whenCreateSuccess() throws Exception {
         UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
-        String result = mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(post("/api/user").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -87,7 +87,7 @@ public class UserControllerTest {
     @Test
     public void whenCreateFail() throws Exception {
         UserDto dto = new UserDto();
-        String result = mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(post("/api/user").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(50000))
@@ -98,7 +98,7 @@ public class UserControllerTest {
     @Test
     public void whenUpdateSuccess() throws Exception {
         UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
-        String result = mockMvc.perform(put("/user/1").contentType(MediaType.APPLICATION_JSON_UTF8)
+        String result = mockMvc.perform(put("/api/user/1").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
@@ -108,7 +108,7 @@ public class UserControllerTest {
 
     @Test
     public void whenDeleteSuccess() throws Exception {
-        String result = mockMvc.perform(delete("/user/1")
+        String result = mockMvc.perform(delete("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))

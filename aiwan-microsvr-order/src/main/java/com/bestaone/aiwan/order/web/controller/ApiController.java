@@ -1,6 +1,5 @@
 package com.bestaone.aiwan.order.web.controller;
 
-import com.bestaone.aiwan.common.api.ApiResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -48,15 +47,6 @@ public class ApiController {
     public Principal error(@AuthenticationPrincipal Principal principal) {
         int i = 1/0;
         return principal;
-    }
-
-    @GetMapping("/user/profile")
-    public ApiResponse<Map<String, String>> profile() {
-        Map<String, String> map = new HashMap<>();
-        map.put("id","10001");
-        map.put("name","bestaone");
-        map.put("email","117919482@qq.com");
-        return ApiResponse.sucess(map);
     }
 
 }

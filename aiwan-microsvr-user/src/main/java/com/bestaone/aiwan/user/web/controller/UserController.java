@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @PreAuthorize("isAuthenticated()")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController implements UserApi {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
@@ -36,6 +38,16 @@ public class UserController implements UserApi {
 
 	@Autowired
 	UserService userService;
+
+	@Override
+	@GetMapping("/profile")
+	public ApiResponse<Map<String, String>> profile() {
+		Map<String, String> map = new HashMap<>();
+		map.put("id","10001");
+		map.put("name","bestaone");
+		map.put("email","117919482@qq.com");
+		return ApiResponse.sucess(map);
+	}
 
 	@Override
 	@PostMapping
