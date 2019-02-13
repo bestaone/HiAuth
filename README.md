@@ -79,15 +79,15 @@ mvn spring-boot:run
 - 被重定向回mall系统，进入mall首页，登录成功
 
 #### auth验证
-- 访问auth主页 http://localhost:8080
+- 访问auth主页 http://localhost:8080/auth
 - 输入账号登录
 - 进入首页
 
 #### swagger2验证
-- 访问goods项目swagger2 ui地址 http://localhost:9080/swagger-ui.html
+- 访问user项目swagger2 ui地址 http://localhost:9080/user/swagger-ui.html
 - 直接测试接口，显示未认证
 - 点击认证按钮，会被重定向到auth进行认证，输入账号登录
-- 被重定向到goods的swagger2页面
+- 被重定向到user的swagger2页面
 - 再次测试接口，获取正确数据
 
 #### oath2授权验证
@@ -97,23 +97,23 @@ mvn spring-boot:run
 > 注意：如果授权环节不出现，可以清除下数据库的数据（clientdetails、oauth_access_token、oauth_approvals、oauth_client_token、oauth_code、oauth_refresh_token）
 
 ##### password 认证流程
-- post 访问 [http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
+- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
 - 正常访问后返回 json token
-- get 访问 [http://localhost:9081/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
-- 无权限拦截的测试 [http://localhost:8081/test/a] （未实现）
+- get 访问 [http://localhost:9081/order/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### client_credentials 认证流程
-- post 访问 [http://localhost:8080/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=read]
+- post 访问 [http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=read]
 - 正常访问后返回 json token
-- get 访问 [http://localhost:9081/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
-- 无权限拦截的测试 [http://localhost:8081/test/a] （未实现）
+- get 访问 [http://localhost:9081/order/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### scop权限范围验证
-- post 访问 [http://localhost:8080/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=write]
+- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=write]
 - 返回的 json token 的权限范围是 write
-- get 访问 [http://localhost:9081/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
+- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
 
