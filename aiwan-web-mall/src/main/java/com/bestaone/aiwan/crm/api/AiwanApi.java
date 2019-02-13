@@ -9,8 +9,8 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 
 public class AiwanApi extends DefaultApi20  {
 
-    private String accessTokenEndpoint = "http://localhost:8080/oauth/token";
-    private String authorizationBaseUrl = "http://localhost:8080/oauth/authorize";
+    private String accessTokenEndpoint = "http://localhost:8080/auth/oauth/token";
+    private String authorizationBaseUrl = "http://localhost:8080/auth/oauth/authorize";
 
     protected AiwanApi() {}
 

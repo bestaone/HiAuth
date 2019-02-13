@@ -63,13 +63,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.apply(validateCodeSecurityConfig());
 
         http.formLogin()
-                .loginPage("/signin").loginProcessingUrl("/signin/account").defaultSuccessUrl("/index")
+                .loginPage("/signin").loginProcessingUrl("/signin/form/account").defaultSuccessUrl("/index")
                 //.successHandler(new MyAuthenticationSuccessHandler())//.defaultSuccessUrl("/index")
                 .and()
                 .logout().logoutUrl("/signout").logoutSuccessUrl("/signin")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/signin","/signin/tel","/code/image","/code/mobile","/static/**").permitAll()
+                .antMatchers("/signin","/signin/form/tel","/code/image","/code/mobile","/static/**").permitAll()
                 .antMatchers("/oauth/**").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
                 .anyRequest().authenticated();

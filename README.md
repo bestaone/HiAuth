@@ -74,7 +74,7 @@ mvn spring-boot:run
 ### 验证
 
 #### mall验证
-- 访问mall主页 http://localhost:8081, 点击signin登录
+- 访问mall主页 http://localhost:8081/mall, 点击signin登录
 - 被重定向到了auth服务进行认证，输入账号登录
 - 被重定向回mall系统，进入mall首页，登录成功
 

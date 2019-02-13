@@ -4,6 +4,8 @@ import com.bestaone.aiwan.auth.web.config.smscode.Cache;
 import com.bestaone.aiwan.auth.web.config.validatecode.CaptchaAuthenticationFilter;
 import com.bestaone.aiwan.auth.web.config.validatecode.ImageCode;
 import com.bestaone.aiwan.auth.web.config.validatecode.ImageCodeGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import java.io.IOException;
 @RestController
 public class ValidateCodeController {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private ImageCodeGenerator imageCodeGenerator;
 
@@ -25,6 +29,7 @@ public class ValidateCodeController {
         ImageCode imageCode = imageCodeGenerator.generate();
         //session.setAttribute(CaptchaAuthenticationFilter.SESSION_CAPTCHA_KEY, imageCode.getCode());
         Cache.put(CaptchaAuthenticationFilter.SESSION_CAPTCHA_KEY, imageCode.getCode());
+        logger.debug("生成图形验证码：{}", imageCode.getCode());
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
     }
 

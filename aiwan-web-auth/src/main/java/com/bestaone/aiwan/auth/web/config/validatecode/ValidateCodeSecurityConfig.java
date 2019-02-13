@@ -14,7 +14,7 @@ public class ValidateCodeSecurityConfig extends SecurityConfigurerAdapter<Defaul
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(new CaptchaAuthenticationFilter("/signin/account", "/signin?error2"), AbstractPreAuthenticatedProcessingFilter.class);
+		http.addFilterBefore(new CaptchaAuthenticationFilter("/signin/form/account", "/signin?error2"), AbstractPreAuthenticatedProcessingFilter.class);
 	}
 	
 }

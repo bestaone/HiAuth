@@ -25,11 +25,10 @@ public class IndexController {
 
 	private static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	private static final String GET_GOODS_URL = "http://localhost:9081/api/goods";
+	private static final String GET_GOODS_URL = "http://localhost:9081/goods/api/goods";
 
-	private static final String PROFILE_URL = "http://localhost:9080/api/user/profile";
-	private static final String GET_ORDER_URL = "http://localhost:9082/api/order";
-//	private static final String GET_LOG_URL = "http://localhost:9080/api/sys_log";
+	private static final String PROFILE_URL = "http://localhost:9080/user/api/user/profile";
+	private static final String GET_ORDER_URL = "http://localhost:9082/order/api/order";
 
 	private static final String SESSION_KEY_ACCESS_TOKEN = "MY_ACCESS_TOKEN";
 
@@ -40,7 +39,7 @@ public class IndexController {
 	private static final String STATE = "secret-rensanning";
 	private static final String CLIENT_ID = "client";
 	private static final String CLIENT_SECRET = "123456";
-	private static final String CALLBACK_URL = "http://localhost:8081/callback";
+	private static final String CALLBACK_URL = "http://localhost:8081/mall/callback";
 	private static final String SCOPE = "read";
 	private OAuth20Service aiwanApi = new ServiceBuilder(CLIENT_ID)
 			.apiSecret(CLIENT_SECRET)

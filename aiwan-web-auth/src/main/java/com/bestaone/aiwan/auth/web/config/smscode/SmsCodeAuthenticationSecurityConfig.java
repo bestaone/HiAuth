@@ -34,7 +34,7 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
     @Override
     public void configure(HttpSecurity http) throws Exception {
         //自定义SmsCodeAuthenticationFilter过滤器
-        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/signin/tel", "/signin?error2");
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/signin/form/tel", "/signin?error2");
         smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 
         //设置自定义SmsCodeAuthenticationProvider的认证器userDetailsService
