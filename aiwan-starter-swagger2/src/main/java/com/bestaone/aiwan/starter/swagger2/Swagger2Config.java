@@ -75,22 +75,22 @@ public class Swagger2Config {
                 .build();
     }
 
-    private AuthorizationScope[] scopes() {
-        return new AuthorizationScope[]{
-                new AuthorizationScope("read", "read 目前只能选一个"),
-                new AuthorizationScope("write", "write 目前只能选一个")
-        };
-    }
-
 //    private AuthorizationScope[] scopes() {
-//        String[] list = scopes.trim().split(",");
-//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[list.length];
-//        for(int i=0; i<list.length; i++){
-//            ResourceDomainType resourceDomainType = ResourceDomainType.valueOf(list[i].trim());
-//            authorizationScopes[i] = new AuthorizationScope(resourceDomainType.name(), resourceDomainType.getText());
-//        }
-//        return authorizationScopes;
+//        return new AuthorizationScope[]{
+//                new AuthorizationScope("AUTH", "AUTH 目前只能选一个"),
+//                new AuthorizationScope("USER", "USER 目前只能选一个")
+//        };
 //    }
+
+    private AuthorizationScope[] scopes() {
+        String[] list = scopes.trim().split(",");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[list.length];
+        for(int i=0; i<list.length; i++){
+            ResourceDomainType resourceDomainType = ResourceDomainType.valueOf(list[i].trim());
+            authorizationScopes[i] = new AuthorizationScope(resourceDomainType.name(), resourceDomainType.getText());
+        }
+        return authorizationScopes;
+    }
 
     @Bean
     List<GrantType> grantTypes() {

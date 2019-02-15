@@ -50,8 +50,8 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/**").access("#oauth2.hasScope('read')")
-                .antMatchers(HttpMethod.POST, "/api/**").access("#oauth2.hasScope('write')")
+                .antMatchers(HttpMethod.GET, "/api/**").access("#oauth2.hasScope('USER')")
+                .antMatchers(HttpMethod.POST, "/api/**").access("#oauth2.hasScope('USER')")
                 .antMatchers(
                         "/webjars/**",
                         "/resources/**",

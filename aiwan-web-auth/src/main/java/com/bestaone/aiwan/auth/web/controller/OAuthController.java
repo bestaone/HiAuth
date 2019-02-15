@@ -18,33 +18,33 @@ import java.util.Map;
 @SessionAttributes({ "authorizationRequest" })
 public class OAuthController {
 
-//    @RequestMapping({ "/my_approval_page" })
-//    public String getAccessConfirmation(Map<String, Object> model, HttpServletRequest request) {
-//        @SuppressWarnings("unchecked")
-//        Map<String, String> scopes = (Map<String, String>) (model.containsKey("scopes") ? model.get("scopes") : request.getAttribute("scopes"));
-//        List<Map<String,String>> scopeList = new ArrayList<>();
-//        for (String scope : scopes.keySet()) {
-//            ResourceDomainType rdt = ResourceDomainType.valueOf(scope);
-//            Map<String,String> scopMap = new HashMap<>();
-//            scopMap.put("name",rdt.name());
-//            scopMap.put("text", rdt.getText());
-//            scopeList.add(scopMap);
-//        }
-//        model.put("scopeList", scopeList);
-//        return "/oauth/oauth_approval";
-//    }
-
     @RequestMapping({ "/my_approval_page" })
     public String getAccessConfirmation(Map<String, Object> model, HttpServletRequest request) {
         @SuppressWarnings("unchecked")
         Map<String, String> scopes = (Map<String, String>) (model.containsKey("scopes") ? model.get("scopes") : request.getAttribute("scopes"));
-        List<String> scopeList = new ArrayList<>();
+        List<Map<String,String>> scopeList = new ArrayList<>();
         for (String scope : scopes.keySet()) {
-            scopeList.add(scope);
+            ResourceDomainType rdt = ResourceDomainType.valueOf(scope.replace("scope.",""));
+            Map<String,String> scopMap = new HashMap<>();
+            scopMap.put("name", scope);
+            scopMap.put("text", rdt.getText());
+            scopeList.add(scopMap);
         }
         model.put("scopeList", scopeList);
         return "/oauth/oauth_approval";
     }
+
+//    @RequestMapping({ "/my_approval_page" })
+//    public String getAccessConfirmation(Map<String, Object> model, HttpServletRequest request) {
+//        @SuppressWarnings("unchecked")
+//        Map<String, String> scopes = (Map<String, String>) (model.containsKey("scopes") ? model.get("scopes") : request.getAttribute("scopes"));
+//        List<String> scopeList = new ArrayList<>();
+//        for (String scope : scopes.keySet()) {
+//            scopeList.add(scope);
+//        }
+//        model.put("scopeList", scopeList);
+//        return "/oauth/oauth_approval";
+//    }
 
     @RequestMapping({ "/my_error_page" })
     public String handleError(Map<String, Object> model, HttpServletRequest request) {
