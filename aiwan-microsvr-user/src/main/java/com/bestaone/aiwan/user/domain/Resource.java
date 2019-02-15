@@ -1,12 +1,22 @@
 package com.bestaone.aiwan.user.domain;
 
+import com.bestaone.aiwan.common.enums.ResourceDomainType;
 import com.bestaone.aiwan.user.domain.enums.ResourceOperate;
 
 public class Resource {
 
     private Long id;
+    private ResourceDomainType domain;
     private ResourceOperate operate;
     private String code;
+
+    public ResourceDomainType getDomain() {
+        return domain;
+    }
+
+    public void setDomain(ResourceDomainType domain) {
+        this.domain = domain;
+    }
 
     public Long getId() {
         return id;

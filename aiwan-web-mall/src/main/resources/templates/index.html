@@ -2,6 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>index</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        function upd() {
+            $.ajax({
+                type: "get",
+                // url: "http://localhost/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456",
+                url: "http://localhost/user/api/user/get_user_info?access_token=1b852377-2c6e-4136-b692-e59b8e378dd0",
+                success: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -15,6 +28,7 @@
             <ul>
                 <li><a th:href="@{/profile}">profile</a></li>
             </ul>
+            <button id="btn2" onclick="upd()">Get request 获取</button>
         </div>
     </div>
 </div>

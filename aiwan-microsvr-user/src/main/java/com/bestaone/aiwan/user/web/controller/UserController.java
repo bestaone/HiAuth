@@ -2,6 +2,7 @@ package com.bestaone.aiwan.user.web.controller;
 
 import com.bestaone.aiwan.api.user.UserApi;
 import com.bestaone.aiwan.api.user.dto.UserDto;
+import com.bestaone.aiwan.api.user.vo.AuthUserInfoVo;
 import com.bestaone.aiwan.api.user.vo.UserVo;
 import com.bestaone.aiwan.common.api.ApiResponse;
 import com.bestaone.aiwan.common.api.PageVo;
@@ -17,14 +18,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.security.Principal;
+import java.util.*;
 
 @PreAuthorize("isAuthenticated()")
 @RestController
@@ -48,6 +50,31 @@ public class UserController implements UserApi {
 		map.put("email","117919482@qq.com");
 		return ApiResponse.sucess(map);
 	}
+
+    @Override
+    @GetMapping("/get_user_info")
+    public ApiResponse<AuthUserInfoVo> getUserInfo(Principal principal, Authentication auth) {
+
+		AuthUserInfoVo authUserInfoVo = new AuthUserInfoVo();
+
+		User user = userService.findByUsername(principal.getName());
+		if(user!=null){
+			authUserInfoVo.setUserId(user.getId());
+		}
+
+		authUserInfoVo.setUsername(principal.getName());
+		authUserInfoVo.setAvator("https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png");
+		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) auth.getAuthorities();
+		Set<String> access = new HashSet<>();
+		for(GrantedAuthority grantedAuthority : authorities){
+			access.add(grantedAuthority.getAuthority());
+		}
+		access.add("super_admin");
+		access.add("admin");
+		authUserInfoVo.setAccess(access);
+
+        return ApiResponse.sucess(authUserInfoVo);
+    }
 
 	@Override
 	@PostMapping

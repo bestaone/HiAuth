@@ -1,5 +1,6 @@
 package com.bestaone.aiwan.starter.swagger2;
 
+import com.bestaone.aiwan.common.enums.ResourceDomainType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,8 @@ public class Swagger2Config {
     private String authorizationUri;
     @Value("${swagger2.auth.tokenUri:}")
     private String tokenUri;
+    @Value("${swagger2.auth.scopes:}")
+    private String scopes;
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
@@ -78,6 +81,16 @@ public class Swagger2Config {
                 new AuthorizationScope("write", "write 目前只能选一个")
         };
     }
+
+//    private AuthorizationScope[] scopes() {
+//        String[] list = scopes.trim().split(",");
+//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[list.length];
+//        for(int i=0; i<list.length; i++){
+//            ResourceDomainType resourceDomainType = ResourceDomainType.valueOf(list[i].trim());
+//            authorizationScopes[i] = new AuthorizationScope(resourceDomainType.name(), resourceDomainType.getText());
+//        }
+//        return authorizationScopes;
+//    }
 
     @Bean
     List<GrantType> grantTypes() {

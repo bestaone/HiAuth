@@ -171,6 +171,7 @@ CREATE TABLE `sys_account` (
 DROP TABLE IF EXISTS `sys_resource`;
 CREATE TABLE `sys_resource` (
   `id` bigint(20) NOT NULL,
+  `domain` varchar(20) DEFAULT NULL COMMENT '资源所属域',
   `operate` varchar(10) DEFAULT NULL COMMENT '操作类型：GET,POST,PUT',
   `code` varchar(128) DEFAULT NULL COMMENT '资源标识，如果是接口则为url',
   PRIMARY KEY (`id`)
@@ -179,8 +180,8 @@ CREATE TABLE `sys_resource` (
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
-INSERT INTO `sys_resource` VALUES ('1', 'GET', '/user/me');
-INSERT INTO `sys_resource` VALUES ('2', 'GET', '/user/list');
+INSERT INTO `sys_resource` VALUES ('1', 'user', 'GET', '/user/me');
+INSERT INTO `sys_resource` VALUES ('2', 'user', 'GET', '/user/list');
 
 -- ----------------------------
 -- Table structure for sys_role

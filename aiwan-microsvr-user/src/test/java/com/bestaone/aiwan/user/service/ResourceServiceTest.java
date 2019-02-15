@@ -1,5 +1,6 @@
 package com.bestaone.aiwan.user.service;
 
+import com.bestaone.aiwan.common.enums.ResourceDomainType;
 import com.bestaone.aiwan.user.Application;
 import com.bestaone.aiwan.user.domain.Resource;
 import com.github.pagehelper.PageHelper;
@@ -28,6 +29,7 @@ public class ResourceServiceTest {
         //CREATE
         Resource o = new Resource();
         o.setCode("CRUDTest");
+        o.setDomain(ResourceDomainType.USER);
         service.save(o);
         Assert.assertNotNull(o.getId());
 
