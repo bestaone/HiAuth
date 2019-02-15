@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({"com.bestaone.aiwan.auth", "com.bestaone.aiwan.core"})
+@ComponentScan({"com.bestaone.aiwan.auth"})
 @SpringBootApplication
 public class Application {
 

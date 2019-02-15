@@ -1,4 +1,4 @@
-package com.bestaone.aiwan.order.web.config;
+package com.bestaone.aiwan.starter.oauth2;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
