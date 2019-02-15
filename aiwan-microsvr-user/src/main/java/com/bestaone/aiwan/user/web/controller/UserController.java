@@ -121,6 +121,7 @@ public class UserController implements UserApi {
 			vo.setId(user.getId());
 			vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
 			vo.setName(user.getName());
+			vo.setCreateTime(user.getCreateTime());
 			userVos.add(vo);
 		}
 		return ApiResponse.sucess(new PageVo<>(pageinfo.getPageNum(), pageinfo.getPageSize(),pageinfo.getTotal(),pageinfo.getPages(),userVos));

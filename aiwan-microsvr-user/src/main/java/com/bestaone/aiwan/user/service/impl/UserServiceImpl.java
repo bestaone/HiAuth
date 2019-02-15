@@ -52,6 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findByName(String name) {
+        if(name==null){
+            name = "";
+        }
         return mapper.findByName("%" + name + "%");
     }
 
