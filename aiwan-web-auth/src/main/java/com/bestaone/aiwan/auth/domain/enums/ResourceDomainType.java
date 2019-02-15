@@ -2,7 +2,7 @@ package com.bestaone.aiwan.auth.domain.enums;
 
 public enum ResourceDomainType {
 
-    AUTH("认证系统"),USER("用户系统"),GOODS("商品系统"),ORDER("订单系统");
+    ALL("所有"),AUTH("认证系统"),USER("用户系统"),GOODS("商品系统"),ORDER("订单系统");
 
     private String text;
 

@@ -40,7 +40,7 @@ public class IndexController {
 	private static final String CLIENT_ID = "client";
 	private static final String CLIENT_SECRET = "123456";
 	private static final String CALLBACK_URL = "http://localhost:8081/mall/callback";
-	private static final String SCOPE = "USER";
+	private static final String SCOPE = "ALL";
 	private OAuth20Service aiwanApi = new ServiceBuilder(CLIENT_ID)
 			.apiSecret(CLIENT_SECRET)
 			.scope(SCOPE)

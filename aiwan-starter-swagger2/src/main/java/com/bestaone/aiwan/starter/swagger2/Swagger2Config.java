@@ -75,13 +75,6 @@ public class Swagger2Config {
                 .build();
     }
 
-//    private AuthorizationScope[] scopes() {
-//        return new AuthorizationScope[]{
-//                new AuthorizationScope("AUTH", "AUTH 目前只能选一个"),
-//                new AuthorizationScope("USER", "USER 目前只能选一个")
-//        };
-//    }
-
     private AuthorizationScope[] scopes() {
         String[] list = scopes.trim().split(",");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[list.length];

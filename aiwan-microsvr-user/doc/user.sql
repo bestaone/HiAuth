@@ -96,7 +96,7 @@ CREATE TABLE `oauth_client_details` (
 -- ----------------------------
 -- Records of oauth_client_details
 -- ----------------------------
-INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'AUTH,USER,GOODS,ORDER', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8081/mall/callback,http://localhost:9080/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9081/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9082/order/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/order/webjars/springfox-swagger-ui/oauth2-redirect.html', 'ROLE_USER', '1800', '86400', null, 'false');
+INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'ALL,AUTH,USER,GOODS,ORDER', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8081/mall/callback,http://localhost:9080/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9081/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9082/order/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/order/webjars/springfox-swagger-ui/oauth2-redirect.html', 'ROLE_USER', '1800', '86400', null, 'false');
 
 -- ----------------------------
 -- Table structure for oauth_client_token
