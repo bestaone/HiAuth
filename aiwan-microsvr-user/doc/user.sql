@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2019-01-29 12:56:06
+Date: 2019-02-15 11:30:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -96,7 +96,7 @@ CREATE TABLE `oauth_client_details` (
 -- ----------------------------
 -- Records of oauth_client_details
 -- ----------------------------
-INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'read,write', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8081/mall/callback,http://localhost:9080/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9081/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9082/order/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/order/webjars/springfox-swagger-ui/oauth2-redirect.html', 'ROLE_USER', '1800', '86400', null, 'false');
+INSERT INTO `oauth_client_details` VALUES ('client', null, '$2a$10$1N/.LvTJuYpvxDzoJ1KdvuPDdV/kDSQE9Cxm9BzB1PreyzK6gmFRe', 'AUTH,USER,GOODS,ORDER', 'authorization_code,client_credentials,password,refresh_token', 'http://localhost:8081/mall/callback,http://localhost:9080/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9081/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost:9082/order/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/user/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/goods/webjars/springfox-swagger-ui/oauth2-redirect.html,http://localhost/order/webjars/springfox-swagger-ui/oauth2-redirect.html', 'ROLE_USER', '1800', '86400', null, 'false');
 
 -- ----------------------------
 -- Table structure for oauth_client_token
@@ -180,8 +180,8 @@ CREATE TABLE `sys_resource` (
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
-INSERT INTO `sys_resource` VALUES ('1', 'user', 'GET', '/user/me');
-INSERT INTO `sys_resource` VALUES ('2', 'user', 'GET', '/user/list');
+INSERT INTO `sys_resource` VALUES ('1', 'USER', 'GET', '/user/me');
+INSERT INTO `sys_resource` VALUES ('2', 'USER', 'GET', '/user/list');
 
 -- ----------------------------
 -- Table structure for sys_role
