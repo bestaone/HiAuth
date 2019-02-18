@@ -116,13 +116,14 @@ mvn spring-boot:run
 - get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要ORDER权限）
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
+> 请使用火狐浏览器测试，在Chrome上生成验证码有个bug，暂时没处理
 
 ## 贴图
 
-### mall演示认证流程
+### mall演示认证流程（接口路径、页面等经过了多次调整，可能不一致，动图仅供参考）
 ![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/mall.gif)
 
-### oauth2认证流程
+### oauth2认证流程（接口路径、页面等经过了多次调整，可能不一致，动图仅供参考）
 ![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/oauth2.gif)
 
 
