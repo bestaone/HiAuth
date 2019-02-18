@@ -100,30 +100,31 @@ mvn spring-boot:run
 - post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
 - 正常访问后返回 json token
 - get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-,能获取到数据
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### client_credentials 认证流程
 - post 访问 [http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER]
 - 正常访问后返回 json token
 - get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-,能获取到数据
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### scop权限范围验证
 - post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER]
 - 返回的 json token 的权限范围是 USER
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要ORDER权限）
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要ORDER权限）
 
-> 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
+> 所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
+
 > 请使用火狐浏览器测试，在Chrome上生成验证码有个bug，暂时没处理
 
 ## 贴图
 
-### mall演示认证流程（接口路径、页面等经过了多次调整，可能不一致，动图仅供参考）
+### mall演示认证流程（接口路径、页面、scope等经过了多次调整，可能不一致，动图仅供参考）
 ![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/mall.gif)
 
-### oauth2认证流程（接口路径、页面等经过了多次调整，可能不一致，动图仅供参考）
+### oauth2认证流程（接口路径、页面、scope等经过了多次调整，可能不一致，动图仅供参考）
 ![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/oauth2.gif)
 
 
