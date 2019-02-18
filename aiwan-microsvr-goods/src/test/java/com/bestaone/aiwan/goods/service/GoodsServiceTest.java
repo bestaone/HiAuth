@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.goods.service;
 
-import com.bestaone.aiwan.goods.Application;
+import com.bestaone.aiwan.goods.GoodsApplication;
 import com.bestaone.aiwan.goods.domain.Goods;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = GoodsApplication.class)
 public class GoodsServiceTest {
 
     @Autowired
