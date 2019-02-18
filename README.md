@@ -5,7 +5,7 @@
 - 这个脚手架可以帮助你快速启动一个基于spring技术栈的微服务项目开发
 - 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
 - 认证服务器支持了图形验证码、短信验证码功能
-- 包含了两个微服务的演示模块goods、order，需要通过oauth2认证后才能访问
+- 包含了三个微服务的演示模块user、goods、order，需要通过oauth2认证后才能访问
 - 包含一个web demo web-mall，演示如何通过oauth2认证后访问各个微服务
 - 演示web服务通过oauth2认证后，调用微服务接口获取数据的完整流程
 - 演示了如何通过starter扩展功能(oauth2、swagger2、monitor)
@@ -13,20 +13,20 @@
 - 演示了如何规范异常处理
 - 演示了如何规范使用mybaits、分页
 - 演示了单元测试、mock测试、测试数据回滚，包括对controller、service的测试
-- 演示了swagger2通过oauth2认证后查看功能
+- 演示了swagger2集成oauth2服务
 - 不打算集成spring cloud，个人比较喜欢service mesh，后面会集成Kubernetes、Istio
 
 ## 目录介绍
 - aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
 - aiwan-starter-monitor ： 监控功能的starter项目
-- aiwan-starter-oauth2 ： oauth2功能的starter项目
+- aiwan-starter-oauth2 ： oauth2 client功能的starter项目
 - aiwan-starter-swagger2 ： swagger2功能的starter项目
 - aiwan-microsvr-api ： 微服务业务接口定义，将所有接口打成jar，便于在client中使用
 - aiwan-microsvr-user ： user微服务，包含用户业务接口
 - aiwan-microsvr-goods ： goods微服务，包含商品业务接口
 - aiwan-microsvr-order ： order微服务，包含订单业务接口 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-microsvr-order/README.md)：介绍如何开发服务接口 ]
-- aiwan-web-auth ： 授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
+- aiwan-web-auth ： 基于Oauth2的授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
 - aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
 
 
@@ -99,21 +99,21 @@ mvn spring-boot:run
 ##### password 认证流程
 - post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
 - 正常访问后返回 json token
-- get 访问 [http://localhost:9081/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### client_credentials 认证流程
 - post 访问 [http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER]
 - 正常访问后返回 json token
-- get 访问 [http://localhost:9081/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
+- get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-,能获取到数据
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### scop权限范围验证
-- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=ORDER]
-- 返回的 json token 的权限范围是 write
-- get 访问 [http://localhost:9081/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要read权限）
+- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER]
+- 返回的 json token 的权限范围是 USER
+- get 访问 [http://localhost:9082/order/api/order/1]，在请求头中添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要ORDER权限）
 
 > 注意：所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
 
