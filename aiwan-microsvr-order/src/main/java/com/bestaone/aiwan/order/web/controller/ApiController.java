@@ -1,5 +1,7 @@
 package com.bestaone.aiwan.order.web.controller;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,10 +27,17 @@ public class ApiController {
     }
 
     @GetMapping("/get")
-    public Map<String,Object> get() {
-        Map<String,Object> map = new HashMap<>();
-        map.put("time", new Date());
-        return map;
+    public HttpEntity get() {
+
+        Map<String,Object> body = new HashMap<>();
+        body.put("time", new Date());
+        body.put("code", 10000);
+
+        HttpHeaders header = new HttpHeaders();
+        header.add("Auth","123456");
+
+        HttpEntity e = new HttpEntity(body,header);
+        return e;
     }
 
     @GetMapping("/user")

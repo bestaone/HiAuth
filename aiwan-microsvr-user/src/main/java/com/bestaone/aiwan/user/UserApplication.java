@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"com.bestaone.aiwan", "com.bestaone.aiwan.core", "com.bestaone.aiwan.starter.**"})
 @SpringBootApplication
-public class Application {
+public class UserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(UserApplication.class, args);
     }
 
 }

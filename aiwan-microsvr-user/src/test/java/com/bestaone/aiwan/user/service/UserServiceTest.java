@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.user.service;
 
-import com.bestaone.aiwan.user.Application;
+import com.bestaone.aiwan.user.UserApplication;
 import com.bestaone.aiwan.user.domain.User;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = UserApplication.class)
 public class UserServiceTest {
 
     @Autowired

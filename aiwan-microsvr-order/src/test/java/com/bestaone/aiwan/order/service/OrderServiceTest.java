@@ -1,6 +1,6 @@
 package com.bestaone.aiwan.order.service;
 
-import com.bestaone.aiwan.order.Application;
+import com.bestaone.aiwan.order.OrderApplication;
 import com.bestaone.aiwan.order.domain.Order;
 import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 import com.github.pagehelper.PageHelper;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Transactional
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = OrderApplication.class)
 public class OrderServiceTest {
 
     @Autowired

@@ -6,10 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan({"com.bestaone.aiwan.auth"})
 @SpringBootApplication
-public class Application {
+public class AuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 
 }
