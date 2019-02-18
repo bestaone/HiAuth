@@ -129,7 +129,8 @@ mvn spring-boot:run
 
 ## 未完事项
 - 将认证服务和资源服务合并在一起的时候，验证authorization_code功能时，登录时报错“不支持 POST”,初步定为是 auth server 的SecurityConfig的HttpSecurity http未设置好
-- auth 认证服务 user/profile 接口
+- 做一个用户管理中心前端，有兴趣的移步[ [用户管理中心](https://github.com/bestaone/AiwanFront/)]
+- 加入redis缓存，解决验证码在Chrome中的bug
 - 整合docker
 - 整合Kubernetes
 - 整合Istio
