@@ -53,7 +53,7 @@ mvn clean install
 
 ### 启动
 - 这个项目包含5个可运行项目，项目名及端口为auth:8080、mall:8081、user:9080、goods:9081、order:9082
-- 启动这4个项目，启动不分先后顺序
+- 启动这5个项目，启动不分先后顺序
 ```
 cd aiwan-web-auth
 mvn spring-boot:run
@@ -132,6 +132,7 @@ mvn spring-boot:run
 - 将认证服务和资源服务合并在一起的时候，验证authorization_code功能时，登录时报错“不支持 POST”,初步定为是 auth server 的SecurityConfig的HttpSecurity http未设置好
 - 做一个用户管理中心前端，有兴趣的移步[ [用户管理中心](https://github.com/bestaone/AiwanFront/)]
 - 加入redis缓存，解决验证码在Chrome中的bug
+- 支持微信登录、qq登录
 - 整合docker
 - 整合Kubernetes
 - 整合Istio
