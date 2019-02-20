@@ -1,5 +1,7 @@
 package com.bestaone.aiwan.user.service.impl;
 
+import com.bestaone.aiwan.core.mapper.BaseMapper;
+import com.bestaone.aiwan.core.service.BaseServiceImpl;
 import com.bestaone.aiwan.user.domain.Role;
 import com.bestaone.aiwan.user.mapper.RoleMapper;
 import com.bestaone.aiwan.user.service.RoleService;
@@ -9,35 +11,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends BaseServiceImpl<Role, Long> implements RoleService {
 
     @Resource
     RoleMapper mapper;
 
     @Override
-    public Role save(Role role) {
-        if(role.getId()!=null){
-            mapper.update(role);
-        } else {
-            role.setId(System.currentTimeMillis());
-            mapper.insert(role);
-        }
-        return role;
-    }
-
-    @Override
-    public Role findById(Long id) {
-        return mapper.findById(id);
-    }
-
-    @Override
-    public List<Role> findAll() {
-        return mapper.findAll();
-    }
-
-    @Override
-    public void delete(Long id) {
-        mapper.delete(id);
+    public BaseMapper<Role, Long> getMapper() {
+        return mapper;
     }
 
     @Override

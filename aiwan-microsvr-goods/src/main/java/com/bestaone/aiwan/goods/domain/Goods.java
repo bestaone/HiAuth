@@ -1,10 +1,10 @@
 package com.bestaone.aiwan.goods.domain;
 
-import io.swagger.models.auth.In;
+import com.bestaone.aiwan.core.entity.BaseEntity;
 
 import java.util.Date;
 
-public class Goods {
+public class Goods extends BaseEntity<Long> {
 
     private Long id;
     private String title;
@@ -12,10 +12,12 @@ public class Goods {
     private Integer amount;
     private Date createTime;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

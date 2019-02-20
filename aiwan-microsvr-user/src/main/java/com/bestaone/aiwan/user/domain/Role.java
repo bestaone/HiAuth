@@ -1,16 +1,20 @@
 package com.bestaone.aiwan.user.domain;
 
-public class Role {
+import com.bestaone.aiwan.core.entity.BaseEntity;
+
+public class Role extends BaseEntity<Long> {
 
     private Long id;
     private String code;
     private String name;
     private String description;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

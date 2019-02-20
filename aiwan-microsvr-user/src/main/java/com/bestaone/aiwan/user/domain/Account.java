@@ -1,10 +1,11 @@
 package com.bestaone.aiwan.user.domain;
 
+import com.bestaone.aiwan.core.entity.BaseEntity;
 import com.bestaone.aiwan.user.domain.enums.AccountType;
 
 import java.util.Date;
 
-public class Account {
+public class Account extends BaseEntity<Long> {
 
     private Long id;
     private User user;
@@ -16,10 +17,12 @@ public class Account {
     private Date createTime;
     private Date lastLoginTime;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

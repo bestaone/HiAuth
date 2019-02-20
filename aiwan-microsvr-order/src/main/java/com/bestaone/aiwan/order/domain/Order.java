@@ -1,10 +1,11 @@
 package com.bestaone.aiwan.order.domain;
 
+import com.bestaone.aiwan.core.entity.BaseEntity;
 import com.bestaone.aiwan.order.domain.enums.OrderStatus;
 
 import java.util.Date;
 
-public class Order {
+public class Order extends BaseEntity<Long> {
 
     private Long id;
     private String no;
@@ -13,10 +14,12 @@ public class Order {
     private OrderStatus status;
     private Date createTime;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

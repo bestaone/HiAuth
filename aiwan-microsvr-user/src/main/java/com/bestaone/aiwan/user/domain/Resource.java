@@ -1,9 +1,10 @@
 package com.bestaone.aiwan.user.domain;
 
 import com.bestaone.aiwan.common.enums.ResourceDomainType;
+import com.bestaone.aiwan.core.entity.BaseEntity;
 import com.bestaone.aiwan.user.domain.enums.ResourceOperate;
 
-public class Resource {
+public class Resource extends BaseEntity<Long> {
 
     private Long id;
     private ResourceDomainType domain;
@@ -18,10 +19,12 @@ public class Resource {
         this.domain = domain;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
