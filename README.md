@@ -16,6 +16,23 @@
 - 演示了swagger2集成oauth2服务
 - 不打算集成spring cloud，个人比较喜欢service mesh，后面会集成Kubernetes、Istio
 
+## 目录结构
+```
+├─aiwan                         项目根，在此目录下可以构建全部模块
+├─aiwan-common                  公共代码
+├─aiwan-core                    微服务核心包，只有微服务依赖此包
+├─aiwan-microsvr-api            服务接口包
+├─aiwan-microsvr-goods          goods微服务
+├─aiwan-microsvr-order          order微服务
+├─aiwan-microsvr-user           user微服务
+├─aiwan-starter-monitor         监控starter
+├─aiwan-starter-oauth2          oauth2客户端starter
+├─aiwan-starter-swagger2        swagger2 starter
+├─aiwan-web-auth                认证模块
+├─aiwan-web-mall                购物中心模块
+└─doc                           文档目录
+```
+
 ## 目录介绍
 - aiwan-common : 公共模块，提供比较通用的功能，比如：最基本的异常基类、接口基类、工具类等
 - aiwan-core ： 微服务模块的核心包，提供一些核心的、通用的系统控制。例如：Service、Mapper的统一控制、通用拦截等
@@ -29,6 +46,11 @@
 - aiwan-web-auth ： 基于Oauth2的授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
 - aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
 
+
+
+```
+
+```
 
 ## 快速启动
 
