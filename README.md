@@ -1,6 +1,10 @@
 
 # AIWAN | 爱玩商城
 
+## 简介
+本项目是一个开源项目，参考此项目你可以快速开启一个微服务项目的框架搭建，亦可以在这里找到一些技术的最佳实践，为你的项目开发提供参考。
+如果你觉得此项目有价值，请给我点个star，谢谢！
+
 ## 功能介绍
 - 这个脚手架可以帮助你快速启动一个基于spring技术栈的微服务项目开发
 - 包含一个基于spring-cloud-starter-oauth2的oauth2认证服务
@@ -46,11 +50,6 @@
 - aiwan-web-auth ： 基于Oauth2的授权服务 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-auth/README.md)：介绍如何开发认证服务 ]
 - aiwan-web-mall ： mall演示项目 [ [文档](https://github.com/bestaone/Aiwan/blob/master/aiwan-web-mall/README.md)：介绍如何集成认证服务 ]
 
-
-
-```
-
-```
 
 ## 快速启动
 
