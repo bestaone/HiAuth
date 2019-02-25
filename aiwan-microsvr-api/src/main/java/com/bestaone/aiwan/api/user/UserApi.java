@@ -12,16 +12,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 
 import java.security.Principal;
-import java.util.Map;
 
 @Api(value = "UserApi", description = "UserApi")
 public interface UserApi {
 
     @ApiOperation(value = "用户信息")
-    ApiResponse<Map<String, String>> profile();
-
-    @ApiOperation(value = "用户信息")
-    ApiResponse<AuthUserInfoVo> getUserInfo(Principal principal, Authentication auth);
+    ApiResponse<AuthUserInfoVo> profile(Principal principal, Authentication auth);
 
     @ApiOperation(value = "创建用户")
     ApiResponse<String> create(UserDto userDto) throws CommonException;

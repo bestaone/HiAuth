@@ -6,14 +6,14 @@ public class PageVo<T> {
 
     private Integer pageNum;
     private Integer pageSize;
-    private Long totle;
+    private Long total;
     private Integer pages;
     private List<T> list;
 
-    public PageVo(Integer pageNum, Integer pageSize, Long totle, Integer pages, List<T> list) {
+    public PageVo(Integer pageNum, Integer pageSize, Long total, Integer pages, List<T> list) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
-        this.totle = totle;
+        this.total = total;
         this.pages = pages;
         this.list = list;
     }
@@ -34,12 +34,12 @@ public class PageVo<T> {
         this.pageSize = pageSize;
     }
 
-    public Long getTotle() {
-        return totle;
+    public Long getTotal() {
+        return total;
     }
 
-    public void setTotle(Long totle) {
-        this.totle = totle;
+    public void setTotal(Long total) {
+        this.total = total;
     }
 
     public Integer getPages() {

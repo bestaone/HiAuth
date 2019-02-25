@@ -10,8 +10,30 @@ public class UserDto {
 	@ApiModelProperty(value = "用户名")
 	private String username;
 
+	@ApiModelProperty(value = "手机号码")
+	private String tel;
+
 	@ApiModelProperty(value = "密码")
 	private String password;
+
+	@ApiModelProperty(value = "性别")
+	private String gender;
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	public String getName() {
 		return name;

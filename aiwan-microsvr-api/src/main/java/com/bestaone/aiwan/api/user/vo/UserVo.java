@@ -36,9 +36,21 @@ public class UserVo {
 	private String password;
 
 	@JsonView(UserDetailView.class)
+	@ApiModelProperty(value = "手机号码")
+	private String tel;
+
+	@JsonView(UserDetailView.class)
 	@ApiModelProperty(value = "创建时间")
 	@Past(message = "创建时间")
 	private Date createTime;
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
 
 	public Long getId() {
 		return id;

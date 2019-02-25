@@ -40,19 +40,9 @@ public class UserController implements UserApi {
 	@Autowired
 	UserService userService;
 
-	@Override
-	@GetMapping("/profile")
-	public ApiResponse<Map<String, String>> profile() {
-		Map<String, String> map = new HashMap<>();
-		map.put("id","10001");
-		map.put("name","bestaone");
-		map.put("email","117919482@qq.com");
-		return ApiResponse.sucess(map);
-	}
-
     @Override
-    @GetMapping("/get_user_info")
-    public ApiResponse<AuthUserInfoVo> getUserInfo(Principal principal, Authentication auth) {
+    @GetMapping("/profile")
+    public ApiResponse<AuthUserInfoVo> profile(Principal principal, Authentication auth) {
 
 		AuthUserInfoVo authUserInfoVo = new AuthUserInfoVo();
 
@@ -84,7 +74,9 @@ public class UserController implements UserApi {
 		user.setPassword(userDto.getPassword());
 		user.setUsername(userDto.getUsername());
 		user.setName(userDto.getName());
-		user.setGender(Gender.UNKNOWN);
+		user.setGender(Gender.valueOf(userDto.getGender()));
+		user.setTel(userDto.getTel());
+		user.setCreateTime(new Date());
 		userService.save(user);
 		return ApiResponse.sucess(user.getId().toString());
 	}
@@ -96,7 +88,8 @@ public class UserController implements UserApi {
 		user.setPassword(userDto.getPassword());
 		user.setUsername(userDto.getUsername());
 		user.setName(userDto.getName());
-		user.setGender(Gender.UNKNOWN);
+		user.setGender(Gender.valueOf(userDto.getGender()));
+		user.setTel(userDto.getTel());
 		userService.save(user);
 		return ApiResponse.sucess();
 	}
@@ -120,6 +113,7 @@ public class UserController implements UserApi {
 			vo.setId(user.getId());
 			vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
 			vo.setName(user.getName());
+			vo.setTel(user.getTel());
 			vo.setCreateTime(user.getCreateTime());
 			userVos.add(vo);
 		}
@@ -135,6 +129,7 @@ public class UserController implements UserApi {
 		vo.setUsername(user.getUsername());
 		vo.setId(user.getId());
 		vo.setPassword(user.getPassword());
+		vo.setTel(user.getTel());
 		vo.setCreateTime(user.getCreateTime());
 		vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
 		vo.setName(user.getName());
