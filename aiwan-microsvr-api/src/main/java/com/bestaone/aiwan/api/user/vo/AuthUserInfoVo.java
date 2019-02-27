@@ -1,9 +1,13 @@
 package com.bestaone.aiwan.api.user.vo;
 
+import com.bestaone.aiwan.api.utils.JsonLongSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.util.Set;
 
 public class AuthUserInfoVo {
 
+    @JsonSerialize(using = JsonLongSerializer.class)
     private Long userId;
     private String username;
     private String avator;

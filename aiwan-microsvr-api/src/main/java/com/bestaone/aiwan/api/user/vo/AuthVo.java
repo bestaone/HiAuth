@@ -1,7 +1,9 @@
 package com.bestaone.aiwan.api.user.vo;
 
 import com.bestaone.aiwan.api.order.validator.MyConstraint;
+import com.bestaone.aiwan.api.utils.JsonLongSerializer;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +15,7 @@ public class AuthVo {
 	public interface UserSimpleView {};
 	public interface UserDetailView extends UserSimpleView {};
 
+	@JsonSerialize(using = JsonLongSerializer.class)
 	@JsonView(UserSimpleView.class)
 	@ApiModelProperty(value = "主键")
 	private Long id;

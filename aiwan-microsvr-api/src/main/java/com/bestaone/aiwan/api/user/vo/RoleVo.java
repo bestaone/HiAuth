@@ -1,9 +1,12 @@
 package com.bestaone.aiwan.api.user.vo;
 
+import com.bestaone.aiwan.api.utils.JsonLongSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 
 public class RoleVo {
 
+	@JsonSerialize(using = JsonLongSerializer.class)
 	@ApiModelProperty(value = "主键")
 	private Long id;
 
