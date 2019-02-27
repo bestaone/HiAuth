@@ -78,6 +78,9 @@ public class UserController implements UserApi {
 		user.setTel(userDto.getTel());
 		user.setCreateTime(new Date());
 		userService.save(user);
+		if(userDto.getRoleIds()!=null){
+			userService.addUserRole(user.getId(), userDto.getRoleIds());
+		}
 		return ApiResponse.sucess(user.getId().toString());
 	}
 
@@ -91,6 +94,9 @@ public class UserController implements UserApi {
 		user.setGender(Gender.valueOf(userDto.getGender()));
 		user.setTel(userDto.getTel());
 		userService.save(user);
+		if(userDto.getRoleIds()!=null){
+			userService.updateUserRole(user.getId(), userDto.getRoleIds());
+		}
 		return ApiResponse.sucess();
 	}
 

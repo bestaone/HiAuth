@@ -2,6 +2,8 @@ package com.bestaone.aiwan.api.user.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Set;
+
 public class UserDto {
 
 	@ApiModelProperty(value = "姓名")
@@ -18,6 +20,9 @@ public class UserDto {
 
 	@ApiModelProperty(value = "性别")
 	private String gender;
+
+	@ApiModelProperty(value = "角色")
+	private Set<Long> roleIds;
 
 	public String getTel() {
 		return tel;
@@ -62,4 +67,11 @@ public class UserDto {
 		return this;
 	}
 
+	public Set<Long> getRoleIds() {
+		return roleIds;
+	}
+
+	public void setRoleIds(Set<Long> roleIds) {
+		this.roleIds = roleIds;
+	}
 }

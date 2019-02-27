@@ -20,4 +20,12 @@
         WHERE UR.userId=#{userId}
     </select>
 
+    <insert id="insertUserRoles" parameterType="UserRole">
+        INSERT INTO sys_user_role (id, userId, roleId)
+        VALUES
+        <foreach collection="userRoles" item="userRole" index="index" separator=",">
+            (#{userRole.id}, #{userRole.userId},#{userRole.roleId})
+        </foreach>
+    </insert>
+
 </mapper>

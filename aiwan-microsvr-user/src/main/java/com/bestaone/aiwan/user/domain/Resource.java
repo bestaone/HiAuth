@@ -7,6 +7,7 @@ import com.bestaone.aiwan.user.domain.enums.ResourceOperate;
 public class Resource extends BaseEntity<Long> {
 
     private Long id;
+    private String name;
     private ResourceDomainType domain;
     private ResourceOperate operate;
     private String code;
@@ -43,5 +44,13 @@ public class Resource extends BaseEntity<Long> {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

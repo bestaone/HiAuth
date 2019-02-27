@@ -2,6 +2,7 @@ package com.bestaone.aiwan.user.mapper;
 
 import com.bestaone.aiwan.core.mapper.BaseMapper;
 import com.bestaone.aiwan.user.domain.Role;
+import com.bestaone.aiwan.user.domain.UserRole;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -32,5 +33,10 @@ public interface RoleMapper extends BaseMapper<Role,Long> {
     List<Role> findAll();
 
     List<Role> findByUserId(Long userId);
+
+    void insertUserRoles(@Param("userRoles") List<UserRole> userRoles);
+
+    @Delete("DELETE FROM sys_user_role WHERE userId = #{userId}")
+    void removeUserRole(Long userId);
 
 }

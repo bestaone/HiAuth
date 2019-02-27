@@ -4,12 +4,14 @@
 
     <resultMap id="BaseResultMap" type="Resource" >
         <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="domain" property="domain" jdbcType="VARCHAR" />
         <result column="operate" property="operate" jdbcType="VARCHAR" />
         <result column="code" property="code" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-      id,operate,code
+      id,name,domain,operate,code
     </sql>
 
     <select id="findByUserId" resultMap="BaseResultMap" >

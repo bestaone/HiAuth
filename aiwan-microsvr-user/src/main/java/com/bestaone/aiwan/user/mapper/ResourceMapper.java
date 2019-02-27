@@ -10,7 +10,7 @@ import java.util.List;
 public interface ResourceMapper extends BaseMapper<Resource,Long> {
 
     @Override
-    @Insert("INSERT INTO sys_resource(id,domain,operate,code) VALUES(#{id},#{domain},#{operate},#{code})")
+    @Insert("INSERT INTO sys_resource(id,name,domain,operate,code) VALUES(#{id},#{name},#{domain},#{operate},#{code})")
     void insert(Resource resource);
 
     @Override
@@ -18,7 +18,7 @@ public interface ResourceMapper extends BaseMapper<Resource,Long> {
     void delete(Long id);
 
     @Override
-    @Update("UPDATE sys_resource SET domain=#{domain},operate=#{operate},code=#{code} WHERE id =#{id}")
+    @Update("UPDATE sys_resource SET name=#{name},domain=#{domain},operate=#{operate},code=#{code} WHERE id =#{id}")
     void update(Resource resource);
 
     @Override

@@ -174,14 +174,15 @@ CREATE TABLE `sys_resource` (
   `domain` varchar(20) DEFAULT NULL COMMENT '资源所属域',
   `operate` varchar(10) DEFAULT NULL COMMENT '操作类型：GET,POST,PUT',
   `code` varchar(128) DEFAULT NULL COMMENT '资源标识，如果是接口则为url',
+  `name` varchar(50) DEFAULT NULL COMMENT '名称',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
-INSERT INTO `sys_resource` VALUES ('1', 'USER', 'GET', '/user/me');
-INSERT INTO `sys_resource` VALUES ('2', 'USER', 'GET', '/user/list');
+INSERT INTO `sys_resource` VALUES ('1', 'USER', 'GET', '/user/me', '查询我的信息');
+INSERT INTO `sys_resource` VALUES ('2', 'USER', 'GET', '/user/list', '查询用户列表');
 
 -- ----------------------------
 -- Table structure for sys_role

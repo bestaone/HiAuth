@@ -12,7 +12,7 @@ import java.util.List;
 public abstract class BaseServiceImpl<T extends BaseEntity, PK extends Serializable> implements BaseService<T, PK> {
 
     @Autowired
-    IdGenerator idGenerator;
+    protected IdGenerator idGenerator;
 
     public abstract BaseMapper<T, PK> getMapper();
 
