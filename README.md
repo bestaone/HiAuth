@@ -117,23 +117,103 @@ mvn spring-boot:run
 > 注意：如果授权环节不出现，可以清除下数据库的数据（clientdetails、oauth_access_token、oauth_approvals、oauth_client_token、oauth_code、oauth_refresh_token）
 
 ##### password 认证流程
-- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456]
-- 正常访问后返回 json token
-- get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-,能获取到数据
+- 使用POST访问获取access_token接口(password模式)
+```
+http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+```
+- 正常访问后返回 json 格式的 token
+```
+{
+    "access_token": "7d2dba1c-506f-4d27-ad61-99aed4f5ba01",
+    "token_type": "bearer",
+    "refresh_token": "ff321a00-292e-4754-9832-52366a725cff",
+    "expires_in": 1799,
+    "scope": "ALL AUTH USER GOODS ORDER"
+}
+```
+- 使用GET访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
+```
+{
+    "error": "unauthorized",
+    "error_description": "Full authentication is required to access this resource"
+}
+```
+- 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
+```
+{
+    "code": 10000,
+    "data": {
+        "id": 1,
+        "no": "20190101123010001",
+        "title": "Iphone X (深空灰色，256G) 1台",
+        "totalAmount": 10000,
+        "createTime": 1548496807000,
+        "status": "PAID"
+    }
+}
+```
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### client_credentials 认证流程
-- post 访问 [http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER]
+- 使用POST访问获取access_token接口(client_credentials模式)
+```
+http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER
+```
 - 正常访问后返回 json token
-- get 访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-,能获取到数据
+```
+{
+    "access_token": "aafe4fa8-0403-4bc4-8da3-cb21bdca247c",
+    "token_type": "bearer",
+    "expires_in": 1799,
+    "scope": "ORDER"
+}
+```
+- 使用GET访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
+```
+{
+    "error": "unauthorized",
+    "error_description": "Full authentication is required to access this resource"
+}
+```
+- 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
+```
+{
+    "code": 10000,
+    "data": {
+        "id": 1,
+        "no": "20190101123010001",
+        "title": "Iphone X (深空灰色，256G) 1台",
+        "totalAmount": 10000,
+        "createTime": 1548496807000,
+        "status": "PAID"
+    }
+}
+```
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### scop权限范围验证
-- post 访问 [http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER]
+- 使用POST访问获取access_token接口,并且设置scope=USER(password模式)
+```
+http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER
+```
 - 返回的 json token 的权限范围是 USER
-- get 访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer -access_token-，被拒绝（这个接口设置了需要ORDER权限）
+```
+{
+    "access_token": "c53314b6-acae-4bea-8f5e-81a61870edee",
+    "token_type": "bearer",
+    "refresh_token": "f24af724-ea3e-40d2-af64-577137530eda",
+    "expires_in": 1799,
+    "scope": "USER"
+}
+```
+- 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token}，被拒绝（这个接口设置了需要ORDER权限）
+```
+{
+    "error": "insufficient_scope",
+    "error_description": "Insufficient scope for this resource",
+    "scope": "ALL ORDER"
+}
+```
 
 > 所有的localhost不能使用127.0.0.1代替，因为auth会检查域名的合法性，数据库中登记的是localhost
 
