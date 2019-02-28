@@ -9,4 +9,6 @@ public interface ResourceService extends BaseService<Resource, Long>{
 
     List<Resource> findByUserId(Long userId);
 
+    List<Resource> findByRoleId(Long roleId);
+
 }

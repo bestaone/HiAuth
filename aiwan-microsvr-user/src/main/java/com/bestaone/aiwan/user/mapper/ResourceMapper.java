@@ -33,4 +33,10 @@ public interface ResourceMapper extends BaseMapper<Resource,Long> {
 
     List<Resource> findByUserId(Long userId);
 
+    @ResultMap("BaseResultMap")
+    @Select("SELECT R.* FROM sys_resource R " +
+            "LEFT JOIN sys_role_resource RR ON RR.resourceId=R.id " +
+            "WHERE RR.roleId=#{roleId}")
+    List<Resource> findByRoleId(Long roleId);
+
 }

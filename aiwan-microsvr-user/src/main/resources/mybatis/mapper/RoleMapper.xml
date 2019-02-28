@@ -28,4 +28,19 @@
         </foreach>
     </insert>
 
+    <insert id="insertRoleResources" parameterType="RoleResource">
+        INSERT INTO sys_role_resource (id, roleId, resourceId)
+        VALUES
+        <foreach collection="roleResources" item="roleResource" index="index" separator=",">
+            (#{roleResource.id}, #{roleResource.roleId},#{roleResource.resourceId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRoleResources">
+        DELETE FROM sys_role_resource WHERE roleId = #{roleId} AND resourceId IN
+        <foreach collection="resourcesIds" item="resourcesId" open="(" close=")" separator="," index="index">
+            #{resourcesId}
+        </foreach>
+    </delete>
+
 </mapper>

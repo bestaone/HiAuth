@@ -61,7 +61,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
 
     @Override
     public void updateUserRole(Long userId, Set<Long> roleIds) {
-        roleMapper.removeUserRole(userId);
+        roleMapper.deleteUserRole(userId);
         this.addUserRole(userId, roleIds);
     }
 

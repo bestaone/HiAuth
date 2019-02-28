@@ -26,4 +26,9 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource, Long> impleme
         return mapper.findByUserId(userId);
     }
 
+    @Override
+    public List<Resource> findByRoleId(Long roleId) {
+        return mapper.findByRoleId(roleId);
+    }
+
 }

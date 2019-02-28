@@ -9,4 +9,8 @@ public interface RoleService extends BaseService<Role, Long> {
 
     List<Role> findByUserId(Long userId);
 
+    void addRoleResources(Long roleId, List<Long> resourcesIds);
+
+    void removeRoleResources(Long roleId, List<Long> resourcesIds);
+
 }

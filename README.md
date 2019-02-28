@@ -230,6 +230,15 @@ mvn spring-boot:run
 ### oauth2认证流程（接口路径、页面、scope等经过了多次调整，可能不一致，动图仅供参考）
 ![image](https://raw.githubusercontent.com/bestaone/Aiwan/master/doc/oauth2.gif)
 
+#
+#
+#
+#
+#
+#
+ 
+## 前端
+上面介绍了，项目的后端功能，以及简单的、嵌入在jar内部的模板页面。
 
 ## 未完事项
 - 将认证服务和资源服务合并在一起的时候，验证authorization_code功能时，登录时报错“不支持 POST”,初步定为是 auth server 的SecurityConfig的HttpSecurity http未设置好
