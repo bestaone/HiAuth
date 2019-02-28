@@ -118,9 +118,8 @@ mvn spring-boot:run
 
 ##### password 认证流程
 - 使用POST访问获取access_token接口(password模式)
-```
-http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
-```
+> http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+
 - 正常访问后返回 json 格式的 token
 ```
 {
@@ -131,6 +130,7 @@ http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=
     "scope": "ALL AUTH USER GOODS ORDER"
 }
 ```
+
 - 使用GET访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
 ```
 {
@@ -138,6 +138,7 @@ http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=
     "error_description": "Full authentication is required to access this resource"
 }
 ```
+
 - 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
 ```
 {
@@ -152,13 +153,13 @@ http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=
     }
 }
 ```
+
 - 无权限拦截的测试 [http://localhost:8081/mall/test/a] （未实现）
 
 ##### client_credentials 认证流程
 - 使用POST访问获取access_token接口(client_credentials模式)
-```
-http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER
-```
+> http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER
+
 - 正常访问后返回 json token
 ```
 {
@@ -168,6 +169,7 @@ http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=c
     "scope": "ORDER"
 }
 ```
+
 - 使用GET访问 [http://localhost:9082/order/api/order/1]，返回401，未授权
 ```
 {
@@ -175,6 +177,7 @@ http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=c
     "error_description": "Full authentication is required to access this resource"
 }
 ```
+
 - 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
 ```
 {
@@ -193,9 +196,8 @@ http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=c
 
 ##### scop权限范围验证
 - 使用POST访问获取access_token接口,并且设置scope=USER(password模式)
-```
-http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER
-```
+> http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER
+
 - 返回的 json token 的权限范围是 USER
 ```
 {
@@ -206,6 +208,7 @@ http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=
     "scope": "USER"
 }
 ```
+
 - 使用GET访问 [http://localhost:9082/order/api/order/1]，在请求头添加凭证 Authorization Bearer {access_token}，被拒绝（这个接口设置了需要ORDER权限）
 ```
 {
