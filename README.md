@@ -118,7 +118,7 @@ mvn spring-boot:run
 
 ##### password 认证流程
 - 使用POST访问获取access_token接口(password模式)
-http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+> http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
 
 - 正常访问后返回 json 格式的 token
 ```
@@ -158,7 +158,7 @@ http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=
 
 ##### client_credentials 认证流程
 - 使用POST访问获取access_token接口(client_credentials模式)
-http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER
+> http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=ORDER
 
 - 正常访问后返回 json token
 ```
@@ -196,7 +196,7 @@ http://localhost:8080/auth/oauth/token?grant_type=client_credentials&client_id=c
 
 ##### scop权限范围验证
 - 使用POST访问获取access_token接口,并且设置scope=USER(password模式)
-http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER
+> http://localhost:8080/auth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=USER
 
 - 返回的 json token 的权限范围是 USER
 ```
