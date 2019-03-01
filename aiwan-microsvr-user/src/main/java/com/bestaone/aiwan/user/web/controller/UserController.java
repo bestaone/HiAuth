@@ -52,15 +52,16 @@ public class UserController implements UserApi {
 		}
 
 		authUserInfoVo.setUsername(principal.getName());
-		authUserInfoVo.setAvator("https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png");
+		authUserInfoVo.setAvatar("https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png");
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) auth.getAuthorities();
-		Set<String> access = new HashSet<>();
+		Set<String> roles = new HashSet<>();
 		for(GrantedAuthority grantedAuthority : authorities){
-			access.add(grantedAuthority.getAuthority());
+            roles.add(grantedAuthority.getAuthority());
 		}
-		access.add("super_admin");
-		access.add("admin");
-		authUserInfoVo.setAccess(access);
+        roles.add("edit");
+        roles.add("admin");
+		authUserInfoVo.setRoles(roles);
+		authUserInfoVo.setIntroduction("我是" + user.getName());
 
         return ApiResponse.sucess(authUserInfoVo);
     }
@@ -116,6 +117,7 @@ public class UserController implements UserApi {
 		for(User user : users){
 			UserVo vo = new UserVo();
 			vo.setUsername(user.getUsername());
+			vo.setPassword(user.getPassword());
 			vo.setId(user.getId());
 			vo.setGender(user.getGender()!=null?user.getGender().name():Gender.UNKNOWN.name());
 			vo.setName(user.getName());

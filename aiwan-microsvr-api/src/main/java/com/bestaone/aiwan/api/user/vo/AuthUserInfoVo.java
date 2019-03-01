@@ -10,8 +10,10 @@ public class AuthUserInfoVo {
     @JsonSerialize(using = JsonLongSerializer.class)
     private Long userId;
     private String username;
-    private String avator;
-    private Set<String> access;
+    private String name;
+    private String avatar;
+    private Set<String> roles;
+    private String introduction;
 
     public Long getUserId() {
         return userId;
@@ -29,20 +31,35 @@ public class AuthUserInfoVo {
         this.username = username;
     }
 
-    public String getAvator() {
-        return avator;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvator(String avator) {
-        this.avator = avator;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
-    public Set<String> getAccess() {
-        return access;
+    public String getName() {
+        return name;
     }
 
-    public void setAccess(Set<String> access) {
-        this.access = access;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
 }

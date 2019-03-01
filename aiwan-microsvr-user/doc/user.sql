@@ -259,3 +259,21 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 INSERT INTO `sys_user_role` VALUES ('1', '1', '1');
 INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
+
+-- ----------------------------
+-- Table structure for sys_app
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_app`;
+CREATE TABLE `sys_app` (
+  `id` int(20) NOT NULL COMMENT '主键',
+  `clientId` varchar(255) NOT NULL COMMENT '关联oauth_client_details主键client_id',
+  `name` varchar(20) NOT NULL COMMENT '应用名称',
+  `img1X` varchar(100) DEFAULT NULL COMMENT '应用图标一倍图',
+  `createTime` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_app
+-- ----------------------------
+INSERT INTO `sys_app` VALUES ('1', 'client', '爱玩', 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png', '2019-03-01 09:43:36');
