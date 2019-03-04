@@ -121,13 +121,13 @@ public class AppController implements AppApi {
 			vo.setClientId(app.getClientId());
 			vo.setClientSecret(app.getClientSecret());
 			if(app.getScope()!=null){
-				vo.setScope(Arrays.asList(app.getScope().split(",")));
+				vo.setScopes(Arrays.asList(app.getScope().split(",")));
 			}
 			if(app.getAuthorizedGrantTypes()!=null){
 				vo.setAuthorizedGrantTypes(Arrays.asList(app.getAuthorizedGrantTypes().split(",")));
 			}
 			if(app.getWebServerRedirectUri()!=null){
-				vo.setWebServerRedirectUri(Arrays.asList(app.getWebServerRedirectUri().split(",")));
+				vo.setWebServerRedirectUris(Arrays.asList(app.getWebServerRedirectUri().split(",")));
 			}
 			appVos.add(vo);
 		}
@@ -147,13 +147,13 @@ public class AppController implements AppApi {
 		vo.setClientId(app.getClientId());
 		vo.setClientSecret(app.getClientSecret());
 		if(app.getScope()!=null){
-			vo.setScope(Arrays.asList(app.getScope().split(",")));
+			vo.setScopes(Arrays.asList(app.getScope().split(",")));
 		}
 		if(app.getAuthorizedGrantTypes()!=null){
 			vo.setAuthorizedGrantTypes(Arrays.asList(app.getAuthorizedGrantTypes().split(",")));
 		}
 		if(app.getWebServerRedirectUri()!=null){
-			vo.setWebServerRedirectUri(Arrays.asList(app.getWebServerRedirectUri().split(",")));
+			vo.setWebServerRedirectUris(Arrays.asList(app.getWebServerRedirectUri().split(",")));
 		}
 		return ApiResponse.sucess(vo);
 	}

@@ -19,9 +19,9 @@ public class AppVo{
 
     private List<String> resourceIds;
     private String clientSecret;
-    private List<String> scope;
+    private List<String> scopes;
     private List<String> authorizedGrantTypes;
-    private List<String> webServerRedirectUri;
+    private List<String> webServerRedirectUris;
     private List<String> authorities;
     private Integer accessTokenValidity;
     private Integer refreshTokenValidity;
@@ -84,12 +84,12 @@ public class AppVo{
         this.clientSecret = clientSecret;
     }
 
-    public List<String> getScope() {
-        return scope;
+    public List<String> getScopes() {
+        return scopes;
     }
 
-    public void setScope(List<String> scope) {
-        this.scope = scope;
+    public void setScopes(List<String> scopes) {
+        this.scopes = scopes;
     }
 
     public List<String> getAuthorizedGrantTypes() {
@@ -100,12 +100,12 @@ public class AppVo{
         this.authorizedGrantTypes = authorizedGrantTypes;
     }
 
-    public List<String> getWebServerRedirectUri() {
-        return webServerRedirectUri;
+    public List<String> getWebServerRedirectUris() {
+        return webServerRedirectUris;
     }
 
-    public void setWebServerRedirectUri(List<String> webServerRedirectUri) {
-        this.webServerRedirectUri = webServerRedirectUri;
+    public void setWebServerRedirectUris(List<String> webServerRedirectUris) {
+        this.webServerRedirectUris = webServerRedirectUris;
     }
 
     public List<String> getAuthorities() {
