@@ -265,7 +265,7 @@ INSERT INTO `sys_user_role` VALUES ('2', '2', '2');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_app`;
 CREATE TABLE `sys_app` (
-  `id` int(20) NOT NULL COMMENT '主键',
+  `id` bigint(20) NOT NULL COMMENT '主键',
   `clientId` varchar(255) NOT NULL COMMENT '关联oauth_client_details主键client_id',
   `name` varchar(20) NOT NULL COMMENT '应用名称',
   `img1X` varchar(100) DEFAULT NULL COMMENT '应用图标一倍图',
