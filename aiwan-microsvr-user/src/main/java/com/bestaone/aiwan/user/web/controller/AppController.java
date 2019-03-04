@@ -51,7 +51,6 @@ public class AppController implements AppApi {
 		app.setName(appDto.getName());
 		app.setImg1X(appDto.getImg1X());
 		app.setCreateTime(new Date());
-		app.setResourceIds("xxx");
 		app.setClientSecret(RandomStringUtils.randomAlphanumeric(10));
 		if(appDto.getScopes()!=null){
 			app.setScope(StringUtils.join(appDto.getScopes().toString(), ","));
