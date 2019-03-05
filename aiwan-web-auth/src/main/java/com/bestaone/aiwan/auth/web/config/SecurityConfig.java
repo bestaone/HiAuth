@@ -63,17 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.apply(validateCodeSecurityConfig());
 
         http.formLogin()
-                .loginPage("/signin").loginProcessingUrl("/signin/form/account").defaultSuccessUrl("/index")
+                .loginPage("/signin").loginProcessingUrl("/signin/form/account").defaultSuccessUrl("/index").and()
                 //.successHandler(new MyAuthenticationSuccessHandler())//.defaultSuccessUrl("/index")
-                .and()
-                .logout().logoutUrl("/signout").logoutSuccessUrl("/signin")
-                .and()
-                .authorizeRequests()
+                .logout().logoutUrl("/signout").logoutSuccessUrl("/signin").and()
+            .authorizeRequests()
                 .antMatchers("/signin","/signin/form/tel","/code/image","/code/mobile","/static/**").permitAll()
                 .antMatchers("/oauth/**").permitAll()
-//                .antMatchers("/api/**").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
-                .anyRequest().authenticated();//其他任意请求需要登录
+            .anyRequest().authenticated();//其他任意请求需要登录
 
     }
 
