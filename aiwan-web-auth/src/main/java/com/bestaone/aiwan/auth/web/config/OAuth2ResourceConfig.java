@@ -29,8 +29,8 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-@Configuration
-@EnableResourceServer
+//@Configuration
+//@EnableResourceServer
 public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
@@ -52,23 +52,24 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        String[] scopeArr = "ALL|USER".split("\\|");
-        String attribute = "";
-        for (String s : scopeArr) {
-            attribute += "'" + s + "',";
-        }
-        attribute = attribute.substring(0,attribute.length()-1);
-        String access = "#oauth2.hasAnyScope(" + attribute + ")";
-
-        http.authorizeRequests()
-                .antMatchers("/api/**").access(access)
-                .antMatchers(
-                        "/webjars/**",
-                        "/resources/**",
-                        "/swagger-ui.html",
-                        "/swagger-resources/**",
-                        "/v2/api-docs")
-                .permitAll();
+//        String[] scopeArr = "ALL|USER".split("\\|");
+//        String attribute = "";
+//        for (String s : scopeArr) {
+//            attribute += "'" + s + "',";
+//        }
+//        attribute = attribute.substring(0,attribute.length()-1);
+//        String access = "#oauth2.hasAnyScope(" + attribute + ")";
+//
+//        http.authorizeRequests()
+//                .antMatchers("/**").permitAll()
+//                .antMatchers("/api/**").access(access)
+//                .antMatchers(
+//                        "/webjars/**",
+//                        "/resources/**",
+//                        "/swagger-ui.html",
+//                        "/swagger-resources/**",
+//                        "/v2/api-docs")
+//                .permitAll();
 
     }
 
