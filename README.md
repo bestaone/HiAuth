@@ -4,7 +4,7 @@
 如果你觉得此项目有价值，请给我点个star，谢谢！
 > 项目地址：https://github.com/bestaone/Aiwan
 
-如果你需要一个开箱即用、一个完善的微服务集成方案项目，请移步这个项目HiAuth
+如果你需要一个开箱即用、一个微服务集成方案，请移步这个项目HiAuth
 > 地址 ： https://github.com/bestaone/HiAuth
 
 ## 功能介绍
