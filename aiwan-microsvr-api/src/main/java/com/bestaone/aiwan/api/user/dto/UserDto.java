@@ -36,8 +36,9 @@ public class UserDto {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public UserDto setGender(String gender) {
 		this.gender = gender;
+		return this;
 	}
 
 	public String getName() {

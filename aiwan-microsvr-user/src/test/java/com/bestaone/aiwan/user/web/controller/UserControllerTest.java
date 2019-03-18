@@ -75,7 +75,7 @@ public class UserControllerTest {
 
     @Test
     public void whenCreateSuccess() throws Exception {
-        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
+        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123").setGender("MALE");
         String result = mockMvc.perform(post("/api/user").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
@@ -97,7 +97,7 @@ public class UserControllerTest {
 
     @Test
     public void whenUpdateSuccess() throws Exception {
-        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123");
+        UserDto dto = new UserDto().setName("zhangsan").setUsername("test").setPassword("123").setGender("MALE");
         String result = mockMvc.perform(put("/api/user/1").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
