@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>HiAuth</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/static/favicon.ico}">
+
+    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/static/bootstrap/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/static/bootstrap/css/bootstrapValidator.min.css}" rel="stylesheet">
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/bootstrap/js/bootstrapValidator.min.js}"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="row" style="margin-top: 100px;">
+
+        <div class="col-md-4 col-md-offset-4">
+
+            <form id='confirmationForm' name='confirmationForm' th:action="@{/oauth/authorize}" method='post'>
+                <input name='user_oauth_approval' value='true' type='hidden'/>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div>
+                            <img style="width: 50px;height: 50px;" th:src="@{/static/img/app.png}" class="img-circle">
+                            <span style="margin-left: 10px;">应用：<span th:text="${appName}" />，申请接入HiAuth</span>
+                        </div>
+                    </div>
+                    <div class="alert-warning" style="height: 30px;padding: 5px;margin-bottom: 15px;">
+                        <span class="glyphicon glyphicon-exclamation-sign" style="margin-right: 2px;"></span>同意后将获取如下权限
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <div th:each="scope,scopeStat:${scopeList}">
+                                <li class="list-group-item" style="border-width: 0px;">
+                                    <span class="fa fa-check-circle-o fa-fw" style="color: #3c763d;"></span>
+                                    <span style="margin-left: 10px;" th:text="${scope.text}" />
+                                    <input value="true" type="hidden" th:name="${scope.name}" />
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <div class="panel-footer" style="text-align: right;">
+                        <button type="submit" class="btn btn-default" name='authorize'>同意</button>
+                        <button type="submit" class="btn btn-default" name='deny'>拒绝</button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <!--<h3>应用：<span th:text="${session.authorizationRequest.clientId}" />，申请接入HiAuth</h3>-->
+    <!--<h5>申请权限 :</h5>-->
+    <!--<form id='confirmationForm' name='confirmationForm' th:action="@{/oauth/authorize}" method='post'>-->
+        <!--<input name='user_oauth_approval' value='true' type='hidden'/>-->
+        <!--<div th:each="scope,scopeStat:${scopeList}">-->
+            <!--<input value="true" type="hidden" th:name="${scope.name}" />-->
+            <!--<span th:text="${scopeStat.index + 1} + ':' + ${scope.text}" />-->
+        <!--</div>-->
+        <!--<br/>-->
+        <!--<label><input name='authorize' value='同意' type='submit'/></label>-->
+        <!--<label><input name='deny' value='拒绝' type='submit'/></label>-->
+    <!--</form>-->
+
+
+
+</body>
+</html>

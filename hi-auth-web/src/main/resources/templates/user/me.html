@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HiAuth</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/static/favicon.ico}">
+
+    <link th:href="@{/static/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/static/bootstrap/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/static/bootstrap/css/bootstrapValidator.min.css}" rel="stylesheet">
+
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/static/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/bootstrap/js/bootstrapValidator.min.js}"></script>
+
+    <link th:href="@{/static/css/index.css}" rel="stylesheet">
+    <link th:href="@{/static/css/user_me.css}" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="site-wrapper">
+
+    <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+            <div class="masthead clearfix">
+                <div class="inner">
+                    <h3 class="masthead-brand">HIAUTH</h3>
+                    <nav>
+                        <ul class="nav masthead-nav">
+                            <li><a th:href="@{/index}">首页</a></li>
+                            <li class="active"><a th:href="@{/user/me}">个人信息</a></li>
+                            <li><a th:href="@{/signout}" th:if="${#httpServletRequest.remoteUser}">退出</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="user-info">
+
+                <div class="row">
+                    <div class="col-md-3 title">用户姓名：</div>
+                    <div class="col-md-9 text"><span th:text="${user.name}"></span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 title">手机号码：</div>
+                    <div class="col-md-9 text"><span th:text="${user.tel}"></span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 title">最近登录：</div>
+                    <div class="col-md-9 text"><span th:text="${#dates.format(user.lastLoginTime, 'yyyy-MM-dd hh:mm:ss')}"></span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 title">用户角色：</div>
+                    <div class="col-md-9 text">
+                        <list th:each="role : ${roles}">
+                            <v th:text="${role.name}"></v>,
+                        </list>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 title">用户权限：</div>
+                    <div class="col-md-9 text">
+                        <list th:each="resource : ${resources}">
+                            <v th:text="${resource.name}"></v>,
+                        </list>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mastfoot">
+                <div class="inner">
+                    <p>HiAuth system for <a href="https://github.com/bestaone">hiauth.com</a>, by <a href="https://github.com/bestaone">@earven</a>.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
