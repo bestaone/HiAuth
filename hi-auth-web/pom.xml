@@ -181,6 +181,12 @@
 			</activation>
 		</profile>
 		<profile>
+			<id>k8s</id>
+			<properties>
+				<active>k8s</active>
+			</properties>
+		</profile>
+		<profile>
 			<id>prod</id>
 			<properties>
 				<active>prod</active>
