@@ -269,6 +269,9 @@ docker exec -it bc1c0034fbf7 /bin/bash
 mysql -h127.0.0.1 -uroot -p123456
 alter user 'root'@'%' identified with mysql_native_password by'root';
 alter  user 'root'@'%' identified by '123456';
+
+mvn clean install -Dmaven.test.skip=true -Pk8s
+mvn docker:build
 ```
 
 ## 授权协议
