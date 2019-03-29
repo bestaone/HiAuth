@@ -262,6 +262,14 @@ HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-
 
 ### 集成SpringCloud
 ### Kubernetes 部署
+- 数据库安装
+```
+kubectl create -f mysql.yaml
+docker exec -it bc1c0034fbf7 /bin/bash
+mysql -h127.0.0.1 -uroot -p123456
+alter user 'root'@'%' identified with mysql_native_password by'root';
+alter  user 'root'@'%' identified by '123456';
+```
 
 ## 授权协议
 本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
