@@ -27,7 +27,7 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 - HiAuth是一个前后端分离项目，前端使用了vue、element-ui技术，参考这个项目，你可以快速的开启集成开发
 - HiMall是一个基于springboot技术的微服务项目，参考此项目，你可以快速的开启一个微服务项目搭建
 - HiMall微服务的认证、授权由HiAuth统一控制和管理
-- HiMall没有集成SpringCloud，因为纯净的Springboot项目更容易集成到多个平台（SpringCloud、K8S、Istio）
+- 基于Springboot项目更容易集成到多个平台（SpringCloud、K8S、Istio）
 - 演示了如何通过starter扩展功能(swagger2、monitor)
 - 演示了如何统一控制接口规范
 - 演示了如何规范异常处理
@@ -257,6 +257,11 @@ HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-
 - 访问地址：http://localhost:8091/himall
 - 点击signin，会被重定向到HiAuth系统进行认证
 - 认证通过后会被重定向回HiMall，此时HiMall也将持有登录状态
+
+## 集成、部署
+
+### 集成SpringCloud
+### Kubernetes 部署
 
 ## 授权协议
 本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
