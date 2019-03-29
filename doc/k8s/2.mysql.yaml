@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: mysql
+  namespace: hiauth
+spec:
+  replicas: 1
+  selector:
+    name: mysql-pod
+  template:
+    metadata:
+      labels: 
+        name: mysql-pod
+    spec:
+      containers:
+      - name: mysql
+        image: mysql
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "123456"
+          
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: hiauth
+spec:
+  type: NodePort
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+    name: http
+    nodePort: 13306
+  selector:
+    name: mysql-pod

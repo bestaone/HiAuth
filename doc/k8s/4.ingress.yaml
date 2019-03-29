@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hiauth-nginx-ingress
+  namespace: hiauth
+spec:
+  rules:
+
+  - host: hiauth.k8s
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hi-auth-web
+          servicePort: 8181
+
+  - host: himall.k8s
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hi-mall-web
+          servicePort: 8182
+

@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hi-auth-web
+  namespace: hiauth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hi-auth-web
+    spec:
+      containers:
+      - image: registry.tfit.com/hiauth/hi-auth-web:1.0.0-SNAPSHOT
+        name: hi-auth-web
+        ports:
+        - containerPort: 8181
+      imagePullSecrets:
+      - name: registry-tfit-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hi-auth-web
+  namespace: hiauth
+spec:
+  ports:
+  - port: 8181
+    targetPort: 8181
+    nodePort: 18181
+  selector:
+    app: hi-auth-web
+  type: NodePort

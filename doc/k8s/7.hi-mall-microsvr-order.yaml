@@ -1,0 +1,35 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hi-mall-microsvr-order
+  namespace: hiauth
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hi-mall-microsvr-order
+    spec:
+      containers:
+      - image: registry.tfit.com/hiauth/hi-mall-microsvr-order:1.0.0-SNAPSHOT
+        name: hi-mall-microsvr-order
+        ports:
+        - containerPort: 8282
+      imagePullSecrets:
+      - name: registry-tfit-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: hi-mall-microsvr-order
+  namespace: hiauth
+spec:
+  ports:
+  - port: 8282
+    targetPort: 8282
+    #nodePort: 18282
+  selector:
+    app: hi-mall-microsvr-order
+  #type: NodePort
