@@ -74,6 +74,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<serverId>docker-aliyun</serverId>
+					<registryUrl>${docker.repostory}</registryUrl>
+					<pushImage>true</pushImage>
+					<dockerDirectory>src/main/docker</dockerDirectory>
+					<imageName>${docker.repostory}/${docker.registry.name}/${project.artifactId}:${project.version}</imageName>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+					</imageTags>
+					<resources>
+						<rescource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</rescource>
+					</resources>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

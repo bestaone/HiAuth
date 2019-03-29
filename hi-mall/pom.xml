@@ -11,6 +11,9 @@
 		<himall.version>1.0.0-SNAPSHOT</himall.version>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<docker.repostory>registry.tfit.com</docker.repostory>
+		<docker.registry.name>hiauth</docker.registry.name>
 	</properties>
 
     <modules>
