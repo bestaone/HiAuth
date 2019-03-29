@@ -7,11 +7,18 @@ import feign.Retryer;
 import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FeignConfig {
+
+    @Value("${hiMall.microsvr.goods.url:}")
+    private String goodsUrl;
+
+    @Value("${hiMall.microsvr.order.url:}")
+    private String orderUrl;
 
     @Bean
     GoodsApi goodsApi(){
@@ -21,7 +28,7 @@ public class FeignConfig {
 //                .errorDecoder()
                 .options(new Request.Options(2000, 3500))
                 .retryer(new Retryer.Default(5000, 5000, 3))
-                .target(GoodsApi.class, "http://localhost:8281/goods/api");
+                .target(GoodsApi.class, goodsUrl);
     }
 
     @Bean
@@ -31,7 +38,7 @@ public class FeignConfig {
                 .decoder(new JacksonDecoder())
                 .options(new Request.Options(2000, 3500))
                 .retryer(new Retryer.Default(5000, 5000, 3))
-                .target(OrderApi.class, "http://localhost:8282/order/api");
+                .target(OrderApi.class, orderUrl);
     }
 
 }

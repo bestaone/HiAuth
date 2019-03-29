@@ -25,4 +25,8 @@ security.oauth2:
     resource:
       userInfoUri: @hiauth.auth.userInfoUri@
 
-hiMall.oAuth2.callbackUrl: @hiMall.oAuth2.callbackUrl@
+hiMall:
+  oAuth2.callbackUrl: @hiMall.oAuth2.callbackUrl@
+  microsvr:
+    goods.url: @hiMall.microsvr.goods.url@
+    order.url: @hiMall.microsvr.order.url@
