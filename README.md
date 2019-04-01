@@ -66,7 +66,7 @@ HiAuth\doc\hiauth.sql
 ```
 # HiAuth\hi-auth-web\src\main\properties\native.properties
 
-hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth
 hiauth.database.username=root
 hiauth.database.password=123456
 
