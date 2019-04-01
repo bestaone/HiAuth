@@ -336,7 +336,7 @@ kubectl create -f HiAuth\doc\k8s\8.hi-mall-web.yaml
 
 - 修改host
 ```
-# 对应k8s主键ip
+# 对应k8s主机ip
 10.6.1.40  			hiauth.k8s
 10.6.1.40  			himall.k8s
 ```
