@@ -10,6 +10,10 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 
 > 项目地址：https://github.com/bestaone/HiAuth
 
+### LIVE DEMO
+> HiMall: http://hiauth.cn/himall
+> UMC: http://hiauth.cn/umc
+
 ### 目录结构
 ```
 ├─doc                  文档目录，架构设计、数据库设计...
@@ -44,7 +48,7 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 - JDK8+
 - MySQL5+
 - NodeJS v8.11.2+
-- redis
+- Redis
 
 ### 下载源码
 ```
@@ -52,36 +56,35 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 ```
 
 ### 创建数据库
-在你的mysql数据库中创建库hiauth，并执行这个脚本
+在你的mysql数据库中创建库hiauth，并执行下面脚本:
 ```
 HiAuth\doc\hiauth.sql
 ```
 
 ### 调整配置
-需要调整的配置有数据库、redis。默认的配置如下，如果和你的环境不一致，请修改
+需要调整的配置有数据库、redis。默认会使用native.properties配置，如果和你的环境不一致，请修改:
 ```
-#HiAuth\hi-auth-web\src\main\resources\application.yml
-spring.datasource:
-  driver-class-name: com.mysql.jdbc.Driver
-  url: jdbc:mysql://127.0.0.1:3306/hiauth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
-  username: root
-  password: 123456
-  
-spring:
-  redis:
-    host: 10.6.2.51
-    port: 26379  
+# HiAuth\hi-auth-web\src\main\properties\native.properties
+
+hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+hiauth.database.username=root
+hiauth.database.password=123456
+
+hiauth.redis.host=127.0.0.1
+hiauth.redis.port=6379
+hiauth.redis.database=11
+hiauth.redis.password=
+
 ```
 
 ### 构建、启动
 ```
-#编译后台
-#会执行单元测试，需要正确配置数据库和redis
+# 编译后台，会执行单元测试，需要正确配置数据库和redis
 >cd HiAuth\hi-auth-web
 >mvn clean install
 >mvn spring-boot:run
 
-#打包前端
+# 打包前端
 >cd HiAuth\hi-auth-front
 >npm install
 >npm run dev
@@ -89,11 +92,11 @@ spring:
 
 ### 验证
 #### 验证登录
-- 访问：http://localhost:8090/hiauth
+- 访问：http://localhost:8181/hiauth
 - 访问：http://localhost:9527
 
-#### 验证swagger2
-- 访问HiAuth的swagger2地址：http://localhost:8090/hiauth/swagger-ui.html
+#### 验证Swagger2
+- 访问HiAuth的Swagger2地址：http://localhost:8181/hiauth/swagger-ui.html
 - 直接测试接口，显示未认证
 ```
 {
@@ -112,7 +115,7 @@ spring:
 
 ##### password 认证流程
 - 使用POST访问获取access_token接口，设置grant_type=password
-> http://localhost:8090/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
 
 - 正常访问后返回 json 格式的 token
 ```
@@ -125,7 +128,7 @@ spring:
 }
 ```
 
-- 使用GET访问 [http://localhost:8090/hiauth/api/user/1]，返回401，未授权
+- 使用GET访问 [http://localhost:8181/hiauth/api/user/1]，返回401，未授权
 ```
 {
     "error": "unauthorized",
@@ -133,7 +136,7 @@ spring:
 }
 ```
 
-- 使用GET访问 [http://localhost:8090/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
+- 使用GET访问 [http://localhost:8181/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
 ```
 {
     "code": 10000,
@@ -151,7 +154,7 @@ spring:
 
 ##### client_credentials 认证流程
 - 使用POST访问获取access_token接口，设置grant_type=client_credentials
-> http://localhost:8090/hiauth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=AUTH
+> http://localhost:8181/hiauth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=AUTH
 
 - 正常访问后返回 json token
 ```
@@ -163,7 +166,7 @@ spring:
 }
 ```
 
-- 使用GET访问 [http://localhost:8090/hiauth/api/user/1]，返回401，未授权
+- 使用GET访问 [http://localhost:8181/hiauth/api/user/1]，返回401，未授权
 ```
 {
     "error": "unauthorized",
@@ -171,7 +174,7 @@ spring:
 }
 ```
 
-- 使用GET访问 [http://localhost:8090/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
+- 使用GET访问 [http://localhost:8181/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token},能获取到数据
 ```
 {
     "code": 10000,
@@ -189,7 +192,7 @@ spring:
 
 ##### scop权限范围验证
 - 使用POST访问获取access_token接口,设置grant_type=password，scope=ORDER
-> http://localhost:8090/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=ORDER
+> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=ORDER
 
 - 返回的 json token 的权限范围是 ORDER
 ```
@@ -202,7 +205,7 @@ spring:
 }
 ```
 
-- 使用GET访问 [http://localhost:8090/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token}，被拒绝（这个接口设置了需要AUTH权限）
+- 使用GET访问 [http://localhost:8181/hiauth/api/user/1]，在请求头添加凭证 Authorization Bearer {access_token}，被拒绝（这个接口设置了需要AUTH权限）
 ```
 {
     "error": "insufficient_scope",
@@ -254,24 +257,90 @@ HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-
 ```
 
 ### 验证Oauth2 password模式认证
-- 访问地址：http://localhost:8091/himall
+- 访问地址：http://localhost:8182/himall
 - 点击signin，会被重定向到HiAuth系统进行认证
 - 认证通过后会被重定向回HiMall，此时HiMall也将持有登录状态
 
 ## 集成、部署
 
 ### 集成SpringCloud
+待续...
+
 ### Kubernetes 部署
-- 数据库安装
+
+- 安装配置镜像仓库harbor
+将pom.xml中的仓库地址换成你自己的仓库
 ```
-kubectl create -f mysql.yaml
+<docker.repostory>registry.tfit.com</docker.repostory>
+```
+
+- 编译、构建、创建镜像
+```
+# hi-auth-web
+>cd HiAuth\hi-auth-web
+>mvn clean install -Pk8s
+>mvn docker:build
+
+# hi-mall
+>cd HiAuth\hi-mall
+>mvn clean install -Pk8s
+
+# hi-mall-web
+>cd hi-mall-web
+>mvn docker:build
+
+# hi-mall-microsvr-goods
+>cd hi-mall-microsvr-goods
+>mvn docker:build
+
+# hi-mall-microsvr-order
+>cd hi-mall-microsvr-order
+>mvn docker:build
+
+# mvn docker:build 会自动将镜像推送到服务器
+
+```
+
+- 安装namespace、mysql、redis、ingress
+```
+kubectl create -f HiAuth\doc\k8s\1.namespace.yml
+kubectl create -f HiAuth\doc\k8s\2.redis.yaml
+kubectl create -f HiAuth\doc\k8s\3.ingress.yaml
+```
+
+- 安装数mysql据库
+```
+# 安装
+kubectl create -f HiAuth\doc\k8s\4.mysql.yaml
+
+# 查看
+docker ps
+
+# 进入mysql容器
 docker exec -it bc1c0034fbf7 /bin/bash
+
+# 登录mysql
 mysql -h127.0.0.1 -uroot -p123456
+
+# 开启远程登录
 alter user 'root'@'%' identified with mysql_native_password by'root';
 alter  user 'root'@'%' identified by '123456';
 
-mvn clean install -Dmaven.test.skip=true -Pk8s
-mvn docker:build
+```
+
+- 安装数HiAuth
+```
+kubectl create -f HiAuth\doc\k8s\5.hi-auth-web.yaml
+kubectl create -f HiAuth\doc\k8s\6.hi-mall-microsvr-goods.yaml
+kubectl create -f HiAuth\doc\k8s\7.hi-mall-microsvr-order.yaml
+kubectl create -f HiAuth\doc\k8s\8.hi-mall-web.yaml
+```
+
+- 修改host
+```
+# 对应k8s主键ip
+10.6.1.40  			hiauth.k8s
+10.6.1.40  			himall.k8s
 ```
 
 ## 授权协议
