@@ -58,7 +58,7 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 ### 创建数据库
 在你的mysql数据库中创建库hiauth，并执行下面脚本:
 ```
-HiAuth\doc\hiauth.sql
+HiAuth\doc\db\hiauth.sql
 ```
 
 ### 调整配置
@@ -232,12 +232,10 @@ HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-
 ### 初始化数据库
 这个项目包含两个数据库。
 创建这两个库goods、order，然后,分别执行如下数据库脚本
-- HiAuth\hi-mall\doc\goods.sql
-- HiAuth\hi-mall\doc\order.sql
+- HiAuth\hi-mall\doc\db\goods.sql
+- HiAuth\hi-mall\doc\db\order.sql
 
 ### 安装、启动
-
-
 ```
 #编译、构建项目
 >cd HiAuth\hi-mall
