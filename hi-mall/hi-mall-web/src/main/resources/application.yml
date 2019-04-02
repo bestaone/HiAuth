@@ -25,8 +25,16 @@ security.oauth2:
     resource:
       userInfoUri: @hiauth.auth.userInfoUri@
 
-hiMall:
-  oAuth2.callbackUrl: @hiMall.oAuth2.callbackUrl@
-  microsvr:
-    goods.url: @hiMall.microsvr.goods.url@
-    order.url: @hiMall.microsvr.order.url@
+ribbon:
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+  ServerListRefreshInterval: 2000
+  ConnectTimeout: 3000
+  ReadTimeout: 3000
+  EnablePrimeConnections: false
+
+order-svr.ribbon.listOfServers: @hiMall.microsvr.order.servers@
+goods-svr.ribbon.listOfServers: @hiMall.microsvr.goods.servers@
+
+hiMall.oAuth2.callbackUrl: @hiMall.oAuth2.callbackUrl@
