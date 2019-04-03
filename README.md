@@ -40,8 +40,11 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 - 演示了swagger2集成oauth2服务
 
 ### 截图
-- 项目依赖关系
-- HiAuth认证、应用管理、用户管理、权限管理
+- HiMall
+![HiMall](https://raw.githubusercontent.com/bestaone/HiAuth/master/doc/img/himall.gif)
+
+- UMC
+![UMC](https://raw.githubusercontent.com/bestaone/HiAuth/master/doc/img/umc.gif)
 
 ## 快速启动
 ### 环境需求
