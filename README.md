@@ -1,7 +1,7 @@
 
 # HiAuth
 ## 介绍
-AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标准的Oauth2授权流程功能外，还提供了应用管理、用户管理、权限管理。
+HiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标准的Oauth2授权流程功能外，还提供了应用管理、用户管理、权限管理。
 
 另外，提供了一个HiMall项目，供用户参考如何集成。
 参考HiMall项目，你可以快速的启动一个微服务项目的框架搭建，亦可以在这里找到一些技术的最佳实践，为你的项目开发提供参考。
@@ -9,10 +9,6 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 如果你觉得此项目有价值，请给我点个star，谢谢！
 
 > 项目地址：https://github.com/bestaone/HiAuth
-
-### LIVE DEMO
-> HiMall: http://hiauth.cn/himall
-> UMC: http://hiauth.cn/umc
 
 ### 目录结构
 ```
@@ -29,15 +25,15 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 - password模式下，HiAuth支持了用户名密码、手机号短信两种认证方式
 - 发送短信、登录接口实现了图形验证码防刷功能
 - HiAuth是一个前后端分离项目，前端使用了vue、element-ui技术，参考这个项目，你可以快速的开启集成开发
-- HiMall是一个基于springboot技术的微服务项目，参考此项目，你可以快速的开启一个微服务项目搭建
+- HiMall是一个基于Springboot技术的微服务项目，参考此项目，你可以快速的开启一个微服务项目搭建
 - HiMall微服务的认证、授权由HiAuth统一控制和管理
 - 基于Springboot项目更容易集成到多个平台（SpringCloud、K8S、Istio）
-- 演示了如何通过starter扩展功能(swagger2、monitor)
+- 演示了如何通过starter扩展功能(Swagger2、Monitor)
 - 演示了如何统一控制接口规范
 - 演示了如何规范异常处理
-- 演示了如何规范使用mybaits、分页
+- 演示了如何规范使用Mybaits、分页
 - 演示了单元测试、mock测试、测试数据回滚，包括对controller、service的测试
-- 演示了swagger2集成oauth2服务
+- 演示了Swagger2集成oauth2服务
 
 ### 截图
 - HiMall
@@ -45,6 +41,10 @@ AiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 
 - UMC
 ![UMC](https://raw.githubusercontent.com/bestaone/HiAuth/master/doc/img/umc.gif)
+
+### LIVE DEMO
+- HiMall: http://hiauth.cn/himall
+- UMC: http://hiauth.cn/umc
 
 ## 快速启动
 ### 环境需求
@@ -223,7 +223,7 @@ hiauth.redis.password=
 这里为HiAuth的集成、使用提供了一个Demo项目HiMall。
 
 ### HiMall
-HiMall是基于Springboot技术的微服务项目，其集成了AiAuth的认证、授权。
+HiMall是基于Springboot技术的微服务项目，其集成了HiAuth的认证、授权。
 
 HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-microsvr-order、hi-mall-microsvr-goods）、一个web项目（hi-mall-web）
 
