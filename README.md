@@ -69,7 +69,7 @@ HiAuth\doc\db\hiauth.sql
 ```
 # HiAuth\hi-auth-web\src\main\properties\native.properties
 
-hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth
+hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth?serverTimezone=UTC
 hiauth.database.username=root
 hiauth.database.password=123456
 
@@ -96,7 +96,7 @@ hiauth.redis.password=
 ### 验证
 #### 验证登录
 - 访问：http://localhost:8181/hiauth
-- 访问：http://localhost:9527
+- 访问：http://localhost:9527/umc
 
 #### 验证Swagger2
 - 访问HiAuth的Swagger2地址：http://localhost:8181/hiauth/swagger-ui.html
@@ -118,7 +118,7 @@ hiauth.redis.password=
 
 ##### password 认证流程
 - 使用POST访问获取access_token接口，设置grant_type=password
-> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456
+> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=himall_client_id&client_secret=123456
 
 - 正常访问后返回 json 格式的 token
 ```
@@ -157,7 +157,7 @@ hiauth.redis.password=
 
 ##### client_credentials 认证流程
 - 使用POST访问获取access_token接口，设置grant_type=client_credentials
-> http://localhost:8181/hiauth/oauth/token?grant_type=client_credentials&client_id=client&client_secret=123456&scope=AUTH
+> http://localhost:8181/hiauth/oauth/token?grant_type=client_credentials&client_id=himall_client_id&client_secret=123456&scope=AUTH
 
 - 正常访问后返回 json token
 ```
@@ -195,7 +195,7 @@ hiauth.redis.password=
 
 ##### scop权限范围验证
 - 使用POST访问获取access_token接口,设置grant_type=password，scope=ORDER
-> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=client&client_secret=123456&scope=ORDER
+> http://localhost:8181/hiauth/oauth/token?username=user&password=123456&grant_type=password&client_id=himall_client_id&client_secret=123456&scope=ORDER
 
 - 返回的 json token 的权限范围是 ORDER
 ```
@@ -259,10 +259,10 @@ HiMall项目包含三个可运行项目，其中两个微服务项目（hi-mall-
 
 ### 验证Oauth2 password模式认证
 - 访问地址：http://localhost:8182/himall
-- 点击signin，会被重定向到HiAuth系统进行认证
+- 点击Login，会被重定向到HiAuth系统进行认证
 - 认证通过后会被重定向回HiMall，此时HiMall也将持有登录状态
 
-## 集成、部署
+## 其他
 
 ### 集成SpringCloud
 待续...
