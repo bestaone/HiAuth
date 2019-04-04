@@ -45,6 +45,7 @@ HiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 ### LIVE DEMO
 - HiMall: http://hiauth.cn/himall
 - UMC: http://hiauth.cn/umc
+- Swagger2：http://hiauth.cn/hiauth/swagger-ui.html
 
 ## 快速启动
 ### 环境需求
@@ -69,7 +70,7 @@ HiAuth\doc\db\hiauth.sql
 ```
 # HiAuth\hi-auth-web\src\main\properties\native.properties
 
-hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth?serverTimezone=UTC
+hiauth.database.url=jdbc:mysql://127.0.0.1:3306/hiauth?characterEncoding=UTF-8&serverTimezone=UTC
 hiauth.database.username=root
 hiauth.database.password=123456
 
