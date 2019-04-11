@@ -1,18 +1,18 @@
 package com.bestaone.himall.order.controller;
 
 import com.bestaone.himall.api.order.dto.OrderDto;
+import com.bestaone.himall.order.OrderApplication;
 import com.bestaone.himall.order.enums.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +22,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebAppConfiguration
+@Slf4j
 @Transactional
+@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = OrderApplication.class)
 public class OrderControllerTest {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private WebApplicationContext wac;
@@ -54,7 +53,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -73,7 +72,7 @@ public class OrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError())
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -84,7 +83,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -95,7 +94,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(50000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -106,7 +105,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
     @Test
@@ -116,7 +115,7 @@ public class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(10000))
                 .andReturn().getResponse().getContentAsString();
-        logger.debug("返回结果：{}", result);
+        log.debug("返回结果：{}", result);
     }
 
 }

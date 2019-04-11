@@ -15,46 +15,23 @@
 		<dependency>
 			<groupId>com.bestaone.himall</groupId>
 			<artifactId>hi-mall-core</artifactId>
-			<version>${himall.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.bestaone.himall</groupId>
 			<artifactId>hi-mall-entity</artifactId>
-			<version>${himall.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.bestaone.himall</groupId>
 			<artifactId>hi-mall-microsvr-api</artifactId>
-			<version>${himall.version}</version>
 		</dependency>
         <dependency>
             <groupId>com.bestaone.himall</groupId>
             <artifactId>hi-mall-starter-swagger2</artifactId>
-            <version>${himall.version}</version>
         </dependency>
 		<dependency>
 			<groupId>com.bestaone.himall</groupId>
 			<artifactId>hi-mall-starter-monitor</artifactId>
-			<version>${himall.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.2.10</version>
-		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>commons-io</groupId>-->
-			<!--<artifactId>commons-io</artifactId>-->
-		<!--</dependency>-->
 	</dependencies>
 
 	<build>
