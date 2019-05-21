@@ -347,3 +347,8 @@ kubectl create -f HiAuth\doc\k8s\8.hi-mall-web.yaml
 
 ## 授权协议
 本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
+
+## 社区与作者
+
+![community_wechat](https://raw.githubusercontent.com/bestaone/HiAuth/master/doc/img/community_wechat.jpg)
+>如果群二维码失效了，请先添加我的微信，然我我拉你入群。
