@@ -37,10 +37,14 @@ HiAuth是一个开源的基于Oauth2协议的认证、授权系统，除了标�
 
 ### 截图
 - HiMall
-![HiMall](https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/himall.gif)
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/himall.gif">
+</p>
 
 - UMC
-![UMC](https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/umc.gif)
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/umc.gif">
+</p>
 
 ### LIVE DEMO
 - HiMall: http://hiauth.cn/himall
@@ -349,6 +353,8 @@ kubectl create -f HiAuth\doc\k8s\8.hi-mall-web.yaml
 本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
 
 ## 社区与作者
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/community_wechat.jpg">
+</p>
 
-![community_wechat](https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/community_wechat.jpg)
 >如果群二维码失效了，请先添加我的微信，然我我拉你入群。
