@@ -34,7 +34,7 @@
     "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
   },
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "clipboard": "1.7.1",
     "codemirror": "5.39.2",
     "driver.js": "0.8.1",
@@ -115,7 +115,7 @@
     "vue-style-loader": "4.1.2",
     "vue-template-compiler": "2.5.17",
     "webpack": "4.16.5",
-    "webpack-bundle-analyzer": "2.13.1",
+    "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "3.1.0",
     "webpack-dev-server": "3.1.14",
     "webpack-merge": "4.1.4"
