@@ -7,13 +7,13 @@ import com.github.scribejava.core.model.OAuthConstants;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.oauth.AccessTokenRequestParams;
 import com.github.scribejava.core.oauth.OAuth20Service;
-import sun.misc.BASE64Encoder;
 
 import java.nio.charset.Charset;
+import java.util.Base64;
 
 public class AiAuthService extends OAuth20Service {
 
-    private BASE64Encoder encoder = new BASE64Encoder();
+    private Base64.Encoder encoder = Base64.getEncoder();
 
     public AiAuthService(DefaultApi20 api, String apiKey, String apiSecret, String callback, String scope, String responseType, String userAgent, HttpClientConfig httpClientConfig, HttpClient httpClient) {
         super(api, apiKey, apiSecret, callback, scope, responseType, userAgent, httpClientConfig, httpClient);
@@ -33,7 +33,7 @@ public class AiAuthService extends OAuth20Service {
         if (scope != null) {
             request.addParameter(OAuthConstants.SCOPE, scope);
         }
-        String auth = encoder.encode(String.format("%s:%s", this.getApiKey(), apiSecret).getBytes(Charset.forName("UTF-8")));
+        String auth = encoder.encodeToString(String.format("%s:%s", this.getApiKey(), apiSecret).getBytes(Charset.forName("UTF-8")));
         request.addParameter(OAuthConstants.GRANT_TYPE, OAuthConstants.AUTHORIZATION_CODE);
         request.addHeader(OAuthConstants.HEADER, OAuthConstants.BASIC + ' ' + auth);
         return request;
