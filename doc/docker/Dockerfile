@@ -10,12 +10,10 @@ VOLUME /data
 # 暴露远程deug端口
 EXPOSE 5005
 
-ADD hi-auth-web.jar hi-auth-web.jar
+# 运行HiMall
 ADD hi-mall-web.jar hi-mall-web.jar
 ADD hi-mall-microsvr-goods.jar hi-mall-microsvr-goods.jar
 ADD hi-mall-microsvr-order.jar hi-mall-microsvr-order.jar
-
-RUN sh -c 'touch /hi-auth-web.jar'
 RUN sh -c 'touch /hi-mall-web.jar'
 RUN sh -c 'touch /hi-mall-microsvr-goods.jar'
 RUN sh -c 'touch /hi-mall-microsvr-order.jar'
@@ -25,3 +23,7 @@ RUN sh -c 'touch /entrypoint.sh'
 RUN sh -c 'chmod -R 777 /entrypoint.sh'
 CMD [ "sh", "/entrypoint.sh" ]
 
+# 运行HiAuth
+ADD hi-auth-web.jar hi-auth-web.jar
+RUN sh -c 'touch /hi-auth-web.jar'
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "/hi-auth-web"]
