@@ -26,4 +26,4 @@ CMD [ "sh", "/entrypoint.sh" ]
 # 运行HiAuth
 ADD hi-auth-web.jar hi-auth-web.jar
 RUN sh -c 'touch /hi-auth-web.jar'
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "/hi-auth-web"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "/hi-auth-web.jar"]
