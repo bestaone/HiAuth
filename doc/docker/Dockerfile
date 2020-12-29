@@ -23,6 +23,5 @@ RUN sh -c 'touch /hi-mall-microsvr-order.jar'
 ADD entrypoint.sh entrypoint.sh
 RUN sh -c 'touch /entrypoint.sh'
 RUN sh -c 'chmod -R 777 /entrypoint.sh'
+CMD [ "sh", "/entrypoint.sh" ]
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005", "-jar", "/hi-auth-web.jar"]
-#ENTRYPOINT ["/entrypoint.sh"]
