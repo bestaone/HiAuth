@@ -23,4 +23,4 @@ RUN sh -c 'touch /hi-mall-microsvr-order.jar'
 ADD entrypoint.sh entrypoint.sh
 RUN chmod +x entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["sh","./entrypoint.sh"]
