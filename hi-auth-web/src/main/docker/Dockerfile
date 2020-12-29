@@ -5,6 +5,7 @@ ENV LANG en_US.UTF-8
 ENV TZ=Asia/Shanghai
 # 设置时区
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# 安装字体 支持easyexcel
 RUN yum install dejavu-sans-fonts fontconfig -y
 # 挂在目录
 VOLUME /data
