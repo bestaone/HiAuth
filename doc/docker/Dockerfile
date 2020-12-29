@@ -20,4 +20,6 @@ RUN sh -c 'touch /hi-mall-web.jar'
 RUN sh -c 'touch /hi-mall-microsvr-goods.jar'
 RUN sh -c 'touch /hi-mall-microsvr-order.jar'
 
+ADD entrypoint.sh entrypoint.sh
+RUN sh -c 'touch /entrypoint.sh'
 ENTRYPOINT ["/entrypoint.sh"]
