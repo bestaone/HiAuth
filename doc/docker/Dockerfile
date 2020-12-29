@@ -20,7 +20,10 @@ RUN sh -c 'touch /hi-mall-web.jar'
 RUN sh -c 'touch /hi-mall-microsvr-goods.jar'
 RUN sh -c 'touch /hi-mall-microsvr-order.jar'
 
-ADD entrypoint.sh entrypoint.sh
-RUN chmod +x entrypoint.sh
 
-CMD nohup sh -c "/entrypoint.sh && java -jar /hi-auth-web.jar"
+CMD nohup sh -c 'java -jar /hi-auth-web.jar && java -jar /hi-mall-web.jar && java -jar /hi-mall-microsvr-goods.jar && java -jar /hi-mall-microsvr-order.jar'
+
+# ADD entrypoint.sh entrypoint.sh
+# RUN chmod +x entrypoint.sh
+
+# CMD nohup sh -c "/entrypoint.sh && java -jar /hi-auth-web.jar"
