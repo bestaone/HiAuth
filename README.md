@@ -357,4 +357,5 @@ kubectl create -f HiAuth\doc\k8s\8.hi-mall-web.yaml
   <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/community_wechat.jpg">
 </p>
 
+
 >如果群二维码失效了，请先添加我的微信，然我我拉你入群。
