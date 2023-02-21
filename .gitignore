@@ -1,5 +1,30 @@
-*.iml
+HELP.md
+target/
+target/*
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+*.pdf
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
 .idea
+*.ipr
+*.iws
+*.iml
+**/.idea
+**/*.iml
+rebel.xml
+
+### IntelliJ IDEA Local ###
 target
 .settings
 .classpath
@@ -7,3 +32,24 @@ target
 *.log
 *.log.*
 logs
+.DS_Store
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+
+### VS Code ###
+.vscode/
+/logs/
+*.log
+
+**/node_modules
+**/.umi
+temp
+
+### java ###
+*.class

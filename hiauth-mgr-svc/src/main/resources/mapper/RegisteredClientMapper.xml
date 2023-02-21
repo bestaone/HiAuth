@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.mgr.mapper.RegisteredClientMapper">
+
+    <cache-ref namespace="cn.hiauth.mgr.mapper.RegisteredClientMapper"/>
+
+    <resultMap type="RegisteredClient" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="clientId" column="client_id"/>
+        <result property="clientIdIssuedAt" column="client_id_issued_at"/>
+        <result property="clientSecret" column="client_secret"/>
+        <result property="clientSecretExpiresAt" column="client_secret_expires_at"/>
+        <result property="clientName" column="client_name"/>
+        <result property="clientAuthenticationMethods" column="client_authentication_methods"/>
+        <result property="authorizationGrantTypes" column="authorization_grant_types"/>
+        <result property="redirectUris" column="redirect_uris"/>
+        <result property="scopes" column="scopes"/>
+        <result property="clientSettings" column="client_settings"/>
+        <result property="tokenSettings" column="token_settings"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        <trim suffixOverrides=",">
+            T.id, T.client_id, T.client_id_issued_at, T.client_secret, T.client_secret_expires_at, T.client_name,
+            T.client_authentication_methods, T.authorization_grant_types, T.redirect_uris, T.scopes, T.client_settings, T.token_settings
+        </trim>
+    </sql>
+
+</mapper>

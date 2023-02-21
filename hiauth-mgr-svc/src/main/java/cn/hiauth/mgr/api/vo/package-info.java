@@ -1,0 +1,1 @@
+package cn.hiauth.mgr.api.vo;

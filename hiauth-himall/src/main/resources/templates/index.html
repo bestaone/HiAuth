@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HiMall</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/static/favicon.ico}">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css} ">
+    <link th:href="@{/static/css/index.css}" rel="stylesheet">
+</head>
+<body>
+
+
+<div class="container">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active"><a th:href="@{/}">Home</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/profile}">Profile</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? !session.isAuth : true}"><a th:href="@{/profile}">Login</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">HIMALL</h3>
+    </div>
+
+    <div class="jumbotron">
+        <h1>HiMall Example</h1>
+        <p class="lead">This example is a quick exercise to illustrate how Integrate HiAuth by Oauth2, an integrated instance of microservices is also included here, so you can find some best practices.</p>
+        <p><a class="btn btn-lg btn-success" href="https://github.com/bestaone/HiAuth" role="button">View HiMall docs</a></p>
+    </div>
+
+    <div class="row marketing">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-6"></div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; HiMall system for hiauth.com, by 码道功臣@webestar.cn.</p>
+    </footer>
+
+</div>
+
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

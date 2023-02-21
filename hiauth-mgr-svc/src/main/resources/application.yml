@@ -1,0 +1,46 @@
+
+server.port: 9080
+spring.application.name: hiauth-mgr-svc
+spring.jackson.default-property-inclusion: NON_NULL
+spring.mvc.pathmatch.matching-strategy: ANT_PATH_MATCHER
+management.endpoints.web.exposure.include: "*"
+
+app.cache.prefix: hiauth-mgr
+
+logging.level:
+  root: @logging.level@
+  cn.hiauth: @logging.level@
+
+spring.data.redis:
+  host: @redis.host@
+  port: @redis.port@
+  database: @redis.database@
+  password: @redis.password@
+  timeout: 10000
+
+spring.datasource:
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: @database.url@
+  username: @database.username@
+  password: @database.password@
+  type: com.alibaba.druid.pool.DruidDataSource
+  validation-query: SELECT 1
+  validation-query-timeout: 10
+
+mybatis-plus:
+  # config-location: mybatis-config.xml
+  # 添加mybatis配置文件路径
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: cn.hiauth.mgr.domain,cn.hiauth.mgr.api.dto  # 配置实体类包地址
+  global-config:
+    db-config:
+      db-type: mysql    # 数据库类型
+      id-type: input    # 主键策略
+      table-prefix:     # 表名前缀
+      table-underline: true # 表名是否使用下划线间隔，默认：是
+  configuration:
+    cache-enabled: true
+    cache-expire: 10
+    map-underscore-to-camel-case: true      # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    call-setters-on-nulls: true             # 如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
