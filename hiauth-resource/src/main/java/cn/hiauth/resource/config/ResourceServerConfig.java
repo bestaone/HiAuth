@@ -13,8 +13,10 @@ public class ResourceServerConfig {
         http
                 .securityMatcher("/api/**")
                 .authorizeHttpRequests()
-                .requestMatchers("/api/messages/**").hasAuthority("SCOPE_message.read")
+                .requestMatchers("/api/**").hasAuthority("SCOPE_message.read")
                 .requestMatchers("/api/user/**").hasAuthority("SCOPE_user_info")
+                //有个bug，先放行
+                .requestMatchers("/api/user/info").permitAll()
                 .and()
                 .oauth2ResourceServer()
                 .jwt();

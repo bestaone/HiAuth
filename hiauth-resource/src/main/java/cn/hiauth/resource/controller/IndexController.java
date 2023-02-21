@@ -4,22 +4,29 @@ import cn.hiauth.resource.domain.Goods;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
 
 @Tag(name = "Index", description = "index")
-@RestController
+@EnableMethodSecurity
+@Controller
 public class IndexController {
 
+    @ResponseBody
     @GetMapping("/api/messages")
     public String[] getMessages() {
         return new String[] {"Message 1", "Message 2", "Message 3"};
     }
 
-    @RequestMapping(path = "/api/user/info", method = {RequestMethod.GET,RequestMethod.POST}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+//    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(path = "/api/user/info")
     public Map<String, Object> getUser(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", "Resource");
