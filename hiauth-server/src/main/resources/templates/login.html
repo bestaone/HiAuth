@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title id="titleName"></title>
+    <script th:src="@{webjars/jquery/3.7.1/jquery.min.js}"></script>
+    <script th:src="@{static/js/jquery.validate.min.js}"></script>
+    <style>
+        html, body {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .text-center {
+            height: 100%;
+            width: 100%;
+            background: url("static/img/login-bg.jpg") 100% 100% no-repeat;
+            background-size: 100% 100%;
+        }
+        .form-signIn {
+            float: right;
+            width: 720px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            position: relative;
+        }
+        .tab-content {
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 480px;
+            border: 1px solid #3d2144;
+            border-radius: 8px;
+            /*box-shadow: 0 0 20px 0 rgba(2, 156, 212, 0.6) inset;*/
+            padding: 48px 30px 0 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 32px;
+            text-align: center;
+            color: #3d2144;
+            margin-bottom: 40px;
+            margin-top: 0;
+        }
+        form{
+            width: 360px;
+        }
+        .input-group {
+            height: 40px;
+            border-radius: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-group input {
+            height: 100%;
+            background: transparent;
+            border: none;
+            width: calc(100% - 40px);
+            box-sizing: border-box;
+            color: #3d2144;
+        }
+        .input-group input:focus-visible {
+            outline: none;
+        }
+        .input-group input::placeholder {
+            color: #3d2144;
+            font-size: 14px;
+        }
+        .focus-group {
+            border: 1px solid #300e39 !important;
+        }
+        .fill-value-group {
+            border: 1px solid #3d2144;
+        }
+        .input-group-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin: 0 12px;
+        }
+        .verifyCode {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .verifyCode .input-group {
+            width: 252px;
+        }
+        .img-code {
+            border: 1px solid #3d2144;
+            width: 100px;
+            height: 40px;
+        }
+        .captcha-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+        .btn-login {
+            margin-top: 16px;
+            height: 40px;
+            width: 100%;
+            background: #36313c;
+            border: none;
+            font-size: 16px;
+            color: #ffffff;
+            border-radius: 2px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+        .logo {
+            height: 50px;
+            position: absolute;
+            top: 37px;
+            left: 37px;
+            display: flex;
+            align-items: center;
+        }
+        .logo-img {
+            vertical-align: top;
+            object-fit: scale-down;
+        }
+        .mainLogo {
+            width: 165px;
+        }
+        .secondLogo {
+            width: 155px;
+            margin-left: 32px;
+        }
+        .input-invalid {
+            height: 24px;
+            font-size: 10px;
+            color: #a94442;
+            margin-top: 2px;
+        }
+        input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+            -webkit-text-fill-color: #D0E1EF!important;
+            -webkit-box-shadow: 0 0 0 5.20833rem transparent inset!important;
+            background-color: transparent!important;
+            -webkit-transition: background-color 50000s ease-in-out 0s;
+            transition: background-color 50000s ease-in-out 0s
+        }
+        .showPassword{
+            display: none;
+        }
+    </style>
+</head>
+<body class="text-center">
+<div class="logo"></div>
+<div class="form-signIn">
+    <div class="tab-content">
+        <p class="title" th:text="${title}">用户登录</p>
+        <form id="accountForm"  th:action="@{auth/doLogin}" method="post">
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="hidden" id="formToken" name="formToken" th:value="${formToken}">
+            <input type="hidden" name="loginType" th:value="pwd">
+            <div class="form-item input-group">
+                <span class="input-group-icon"><img th:src="@{static/img/yhm_fill.png}" alt=""></span>
+                <input class="login-input form-control" id="username" name="account" th:value="${username}" type="text" aria-label="Account" th:placeholder="${usernamePlaceholder}">
+            </div>
+            <div class="input-invalid">
+                <label id="username-error" class="error" for="username" style="display: none"><i aria-hidden="true" class="fa fa-exclamation-triangle"></i>请输入账号</label>
+            </div>
+            <div class="form-item input-group">
+                <span class="input-group-icon"><img th:src="@{static/img/sd_fill.png}" alt=""></span>
+                <input class="login-input form-control" id="password" name="password" th:value="${password}" type="password" aria-label="Password" th:placeholder="${passwordPlaceholder}">
+                <span class="input-group-icon">
+                    <img class="hiddenPassword" th:src="@{static/img/gbck_fill.png}" alt="">
+                    <img class="showPassword" th:src="@{static/img/ck_line.png}" alt="">
+                </span>
+            </div>
+            <div class="input-invalid">
+                <label id="password-error" class="error" for="password" style="display: none"><i aria-hidden="true" class="fa fa-exclamation-triangle"></i>请输入密码</label>
+            </div>
+            <div class="form-item verifyCode">
+                <div class="input-group fill-value-group">
+                    <span class="input-group-icon"><img th:src="@{static/img/captcha_fill.png}" alt=""></span>
+                    <input class="login-input form-control" id="captcha" name="captcha" value="" type="text" aria-label="Captcha" placeholder="图形验证码" required>
+                </div>
+                <div class="img-code">
+                    <img class="captcha-img"/>
+                </div>
+            </div>
+            <div class="input-invalid">
+                <label id="captcha-error" class="error" for="captcha" style="display: none"><i aria-hidden="true" class="fa fa-exclamation-triangle"></i>请输入图形验证码</label>
+            </div>
+            <div class="input-invalid" style="text-align: center;">
+                <label th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION} ? ${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></label>
+            </div>
+            <button class="submit btn-login" type="submit">登录</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("titleName").innerHTML = '统一授权平台'
+    const inputs = document.querySelectorAll('.login-input');
+    inputs.forEach(function (input) {
+        let parentElement = input.parentNode
+        let classList = parentElement.classList
+        if (input.value) {
+            parentElement.classList.add('fill-value-group');
+        }
+        input.addEventListener('focus', function () {
+            parentElement.classList.add('focus-group');
+        });
+
+        input.addEventListener('blur', function () {
+            classList.remove('focus-group');
+            if (input.value) {
+                classList.add('fill-value-group');
+            } else {
+                // classList.remove('fill-value-group');
+            }
+        });
+    });
+
+    $(function () {
+
+        const contentPath = "";
+        const imgUrl = contentPath + "auth/code/image";
+
+        const $accountForm = $('#accountForm');
+
+        // 提示图标
+        const errorIcon = '<i aria-hidden="true" class="fa fa-exclamation-triangle"></i>';
+        $accountForm.validate({
+            debug: false,
+            errorPlacement: function (error, element) {},
+            rules: {
+                account: {
+                    required: true,
+                    rangelength: [3, 10]
+                },
+                password: {
+                    required: true,
+                    rangelength: [3, 10]
+                },
+                captcha: {
+                    required: true,
+                    rangelength: [4, 6]
+                }
+            },
+            messages: {
+                account: {
+                    required: errorIcon + "请输入账号",
+                    rangelength: errorIcon + "账号长度为{0}-{1}个字符"
+                },
+                password: {
+                    required: errorIcon + "请输入密码",
+                    rangelength: errorIcon + "密码长度为{0}-{1}个字符"
+                },
+                captcha: {
+                    required: errorIcon + "请输入图形验证码",
+                    rangelength: errorIcon + "图形验证码长度为{0}-{1}个字符"
+                }
+            },
+            // 使用div标签，包裹提示信息，而后插入DOM
+            wrapper: "div",
+            showErrors: function (errorMap, errorList) {
+                this.defaultShowErrors();
+            },
+            success: function (label) {}
+        });
+
+        //获取图形验证码
+        function getCaptcha(formToken) {
+            const $this = $(".captcha-img");
+            const url = imgUrl + "?formToken=" + formToken + "&r=" + Math.random();
+            $this.attr('src', url);
+        }
+
+        //点击更新图形验证码
+        $('.captcha-img').click(function () {
+            const formToken = $("#formToken").val();
+            getCaptcha(formToken);
+        });
+        getCaptcha($("#formToken").val());
+
+
+        //点击切换密码显示
+        $('.hiddenPassword').click(function () {
+            let password = document.getElementById('password');
+            password.setAttribute('type', 'text');
+            $('.hiddenPassword').hide()
+            $('.showPassword').show()
+        });
+
+        //点击切换密码显示
+        $('.showPassword').click(function () {
+            let password = document.getElementById('password');
+            password.setAttribute('type', 'password');
+            $('.showPassword').hide()
+            $('.hiddenPassword').show()
+        });
+    });
+
+</script>
+</body>
+</html>

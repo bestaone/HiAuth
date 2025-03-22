@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.server.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="User">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="gender" property="gender" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="phone_num" property="phoneNum" />
+        <result column="username" property="username" />
+        <result column="pwd" property="pwd" />
+        <result column="status" property="status" />
+        <result column="regtime" property="regtime" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="creator" property="creator" />
+        <result column="updater" property="updater" />
+        <result column="deleter" property="deleter" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_time" property="deleteTime" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="is_sys_admin" property="isSysAdmin" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, gender, avatar_url, phone_num, username, pwd, status, regtime, last_login_time, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_sys_admin
+    </sql>
+
+</mapper>

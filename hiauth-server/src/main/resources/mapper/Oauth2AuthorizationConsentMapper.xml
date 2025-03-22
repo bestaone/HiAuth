@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.server.mapper.Oauth2AuthorizationConsentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Oauth2AuthorizationConsent">
+        <id column="registered_client_id" property="registeredClientId" />
+        <id column="principal_name" property="principalName" />
+        <result column="authorities" property="authorities" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        registered_client_id, principal_name, authorities
+    </sql>
+
+</mapper>

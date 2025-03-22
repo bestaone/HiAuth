@@ -1,0 +1,58 @@
+server.port: 8080
+
+app.cache.prefix: hiauth
+app.readonly.account: admin,corpadmin
+
+logging.level:
+  root: INFO
+  cn.hiauth: DEBUG
+  com.alibaba.nacos: INFO
+
+spring.datasource:
+  type: ${datasource.type}
+  driver-class-name: ${datasource.driverClassName}
+  url: ${datasource.url}
+  username: ${datasource.username}
+  password: ${datasource.password}
+
+scms.security:
+  enable: true
+  cachePrefix: ${app.cache.prefix}
+  publicKey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsHC0eWi8AKjlh8IHjK2BIEPSclSs/P6RiJJN09X9A04n6K87SGEBCsplJdVntFUkQqmwICzuq537VpS+1tBpgHykbBT1tev9kra9HIc0LpkGVFIjOPS2PPnhUiZO/ruHuJ0Sn9Drq6qWpSJtcM3QkLAXvuqwQAWufHT/Gf2wpPwIDAQAB
+  privateKey: MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAKwcLR5aLwAqOWHwgeMrYEgQ9JyVKz8/pGIkk3T1f0DTiforztIYQEKymUl1We0VSRCqbAgLO6rnftWlL7W0GmAfKRsFPW16/2Str0chzQumQZUUiM49LY8+eFSJk7+u4e4nRKf0OurqpalIm1wzdCQsBe+6rBABa58dP8Z/bCk/AgMBAAECgYAOXf1eNUULJhTLZwC3IZEHmXK+x3nOujwf456NLhkrV8ocbVL2GTqNo5isMY5wl7N7uRFyzA1B3QVERf/PktmvEHAnbjBYWe1O2734gDyrtBuzsKA+qpN1rV6+ZCRiz9TdvVJM8oRq0Vr5t/ih3ZoofZWW5T8h8jNmR1WKcKEBEQJBAOiSwLQttUHLrW3lgsbK6m3bgyQbtItBt55hQmYrq0qbDidBY7kJJJ58uqk/IkukIRwajOK2PaJ32YTxTHr8rcUCQQC9ckpMDjwAQqv8+9zPQ65x+6bI13L+2DIayF/sqKXkTSDF0Wi6yMgRTYfkyTUaVIJahh7SgxoqSv3wGa9auw8zAkEAzn11YMPwWYGH8rnCedOxfmZWMhnzG2z2pUT/Gg2NoMi4MTxKWP/4Jkrhw+DNB1GrH/OmwKdDY9t7IiDHYa60bQJBAIJ3C/2Wq/GN+L2vgeBm/uLWaITWAwbIQrE5Hv5vIle4WgKBdXt0vHtWBmkju+NXIbJPvThCOym3HWxVc/Kq8gsCQQDCV0ofj8avZQBJTlfLcedsur+SXbjM6tre3o6w05aDqXIy5Q9FhTjwoJF4sTZ1zUK4p2mm8mRaNOtTkmYvaIct
+  encryptType: RSA
+  enableImageCaptcha: false
+  urlPatterns:
+    - /api/*
+
+spring.session.timeout: 600m
+spring.session.redis:
+  # 支持发布session事件，默认值不支持发布session事件
+  repository-type: indexed
+  namespace: "hiauth:session"
+  # 每次保存或更新 session 时立即将数据同步到 Redis
+  flush-mode: on_save
+  # 每次请求结束时都保存 session
+  save-mode: always
+  # 关闭Spring Session的自动配置检查,否则在使用aliyun redis（Tair）时会报错
+  # 报错内容为：NOPERM this user has no permissions to run the 'config|get' command
+  configure-action: none
+
+spring.security.oauth2:
+  authorization.consent.template-location: classpath:/META-INF/resources/consent.html
+  access-token.time-to-live: 60m
+  resource-server.jwt.issuer-uri: http://127.0.0.1:9000
+
+spring.thymeleaf:
+  # 开启视图解析
+  enabled: true
+  encoding: UTF-8
+  prefix: classpath:/templates/
+  # 后缀配置
+  suffix: .html
+  #是否使用缓存 开发环境时不设置缓存
+  cache: false
+  mode: HTML
+  # 配置类型
+  servlet:
+    content-type: text/html
