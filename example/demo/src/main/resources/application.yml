@@ -1,0 +1,33 @@
+server.port: 9000
+spring.security.oauth2.client:
+  provider:
+    #认证服务器信息
+    hiauth-server:
+      # 如果你私有化部署了 HiAuth服务，请将此地址替换为私有部署的认证服务器地址
+      issuer-uri: http://auth.hiauth.cn
+      authorizationUri: http://auth.hiauth.cn/oauth2/authorize
+      #令牌获取地址
+      tokenUri: http://auth.hiauth.cn/oauth2/token
+      userInfoUri: http://auth.hiauth.cn/userinfo
+      jwkSetUri: http://auth.hiauth.cn/oauth2/jwks
+      #userNameAttribute: name
+  registration:
+    hiauth-code:
+      #认证提供者，标识由哪个认证服务器进行认证，和上面的hiauth-server进行关联
+      provider: hiauth-server
+      #客户端名称
+      client-name: himall
+      #客户端id，从认证平台申请的客户端id
+      client-id: himall
+      #客户端秘钥
+      client-secret: secret
+      #客户端认证方式 client_secret_basic\client_secret_post
+      client-authentication-method: client_secret_basic
+      #使用授权码模式获取令牌（token）
+      authorization-grant-type: authorization_code
+      # 认证完成后回调的地址，需要在数据库表oauth2_registered_client中登记这个地址，
+      # 否则会拒绝回调
+      redirect-uri: http://127.0.0.1:9000/login/oauth2/code/hiauth-code
+      scope:
+        - profile
+        - openid
