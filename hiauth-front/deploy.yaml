@@ -1,0 +1,70 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ingress
+  namespace: $NAMESPACE
+spec:
+  selector:
+    matchLabels:
+      app: ingress
+  replicas: $APP_REPLICAS
+  template:
+    metadata:
+      labels:
+        app: ingress
+    spec:
+      imagePullSecrets:
+        - name: harborsecret
+      containers:
+        - name: ingress
+          image: $IMAGE_NAME
+          imagePullPolicy: 'Always'
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 1
+            limits:
+              memory: 2Gi
+              cpu: 2
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  [
+                    '/bin/sh',
+                    '-c',
+                    'cp -rf /etc/nginx/..data/nginx.conf /usr/local/nginx/conf/ && /usr/local/nginx/sbin/nginx -s reload',
+                  ]
+            preStop:
+              exec:
+                command:
+                  - sh
+                  - '-c'
+                  - sleep 5 && kill -SIGQUIT 1
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: ingress.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-svc
+  namespace: platform
+spec:
+  ports:
+    - name: http
+      nodePort: 30280
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: ingress
+  type: LoadBalancer
