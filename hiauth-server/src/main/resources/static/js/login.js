@@ -1,127 +1,156 @@
+$(function () {
 
-var contentPath = "";
+    const contentPath = "";
+    const imgUrl = contentPath + "/auth/code/image";
+    const smsUrl = contentPath + "/auth/code/sms";
 
-$(function(){
+    const $accountForm = $('#accountForm');
+    const $telForm = $('#telForm');
 
-    var imgUrl = contentPath + "/code/image";
-    var smsUrl = contentPath + "/code/sms";
-
-    var $accountForm = $('#accountForm');
-    var $telForm = $('#telForm');
-
-    //账号登录表单校验
-    $accountForm.bootstrapValidator({
-        message: 'This value is not valid',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
+    // 提示图标
+    const errorIcon = '<i aria-hidden="true" class="fa fa-exclamation-triangle"></i>';
+    $accountForm.validate({
+        debug: false,
+        errorPlacement: function (error, element) {
+            error.addClass("input-invalid")
+            $(element).parent().after(error);
         },
-        fields: {
-            username: {
-                message: '用户名验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '用户名不能为空'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 15,
-                        message: '用户名长度为3-15个字符'
-                    }
-                }
+        rules: {
+            account: {
+                required: true,
+                rangelength: [3, 10]
             },
             password: {
-                validators: {
-                    notEmpty: {
-                        message: '密码不能为空'
-                    }
-                }
+                required: true,
+                rangelength: [3, 10]
             },
-            yzm: {
-                validators: {
-                    notEmpty: {
-                        message: '图形验证码不能为空'
-                    }
-                }
+            captcha: {
+                required: true,
+                rangelength: [4, 6]
             }
+        },
+        messages: {
+            account: {
+                required: errorIcon + "请输入账号",
+                rangelength: errorIcon + "账号长度为{0}-{1}个字符"
+            },
+            password: {
+                required: errorIcon + "请输入密码",
+                rangelength: errorIcon + "密码长度为{0}-{1}个字符"
+            },
+            captcha: {
+                required: errorIcon + "请输入图形验证码",
+                rangelength: errorIcon + "图形验证码长度为{0}-{1}个字符"
+            }
+        },
+        // 使用div标签，包裹提示信息，而后插入DOM
+        wrapper: "div",
+        showErrors: function (errorMap, errorList) {
+            for (var obj in errorMap) {
+                $("[name='" + obj + "']").parent(".input-group").removeClass("input-group-valid").addClass("input-group-invalid")
+                $("[name='" + obj + "']").addClass('is-invalid');
+            }
+            this.defaultShowErrors();
+        },
+        success: function (label) {
+            const id = $(label).attr("for")
+            $("#" + id).parent(".input-group").removeClass("input-group-invalid").addClass("input-group-valid")
+            $("#" + id).removeClass('is-invalid').addClass("is-valid");
+            $(label).parent(".input-invalid").remove();
         }
     });
+
+    $telForm.validate({
+        debug: false,
+        errorPlacement: function (error, element) {
+            error.addClass("input-invalid")
+            $(element).parent().after(error);
+        },
+        rules: {
+            account: {
+                required: true,
+                rangelength: [11, 11]
+            },
+            smsCode: {
+                required: true,
+                rangelength: [4, 6]
+            },
+            captcha: {
+                required: true,
+                rangelength: [4, 6]
+            }
+        },
+        messages: {
+            account: {
+                required: errorIcon + "请输入手机号码",
+                rangelength: errorIcon + "手机号码长度为{0}-{1}个字符"
+            },
+            smsCode: {
+                required: errorIcon + "请输入短信验证码",
+                rangelength: errorIcon + "短信验证码长度为{0}-{1}个字符"
+            },
+            captcha: {
+                required: errorIcon + "请输入图形验证码",
+                rangelength: errorIcon + "图形验证码长度为{0}-{1}个字符"
+            }
+        },
+        // 使用div标签，包裹提示信息，而后插入DOM
+        wrapper: "div",
+        showErrors: function (errorMap, errorList) {
+            for (var obj in errorMap) {
+                $("[name='" + obj + "']").parent(".input-group").removeClass("input-group-valid").addClass("input-group-invalid")
+                $("[name='" + obj + "']").addClass('is-invalid');
+            }
+            this.defaultShowErrors();
+        },
+        success: function (label) {
+            const id = $(label).attr("for")
+            $("#" + id).parent(".input-group").removeClass("input-group-invalid").addClass("input-group-valid")
+            $("#" + id).removeClass('is-invalid').addClass("is-valid");
+            $(label).parent(".input-invalid").remove();
+        }
+    });
+
     //获取图形验证码
-    function getImgYzm(formToken) {
-        var $this = $(".yzm-img");
-        var url = imgUrl + "?formToken=" + formToken + "&r=" + Math.random();
+    function getCaptcha(formToken) {
+        const $this = $(".captcha-img");
+        const url = imgUrl + "?formToken=" + formToken + "&r=" + Math.random();
         $this.attr('src', url);
     }
-    //点击更新图形验证码
-    $('.yzm-img').click(function () {
-        var formToken = $("#formToken1").val();
-        getImgYzm(formToken);
-    });
-    getImgYzm($("#formToken1").val());
 
-    //短信验证码字段校验
-    var smsCodeValidators = {
-        validators: {
-            notEmpty: {
-                message: '短信验证码不能为空'
-            }
-        }
-    };
-    //手机号登录表单校验
-    $telForm.bootstrapValidator({
-        message: 'This value is not valid',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            telNo: {
-                message: '手机号码验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '手机号码不能为空'
-                    },
-                    regexp: {
-                        regexp: /^1\d{10}$/,
-                        message: '请输入一个正确的手机号码'
-                    }
-                }
-            },
-            yzm: {
-                validators: {
-                    notEmpty: {
-                        message: '图形验证码不能为空'
-                    }
-                }
-            }
-            ,
-            smsCode: smsCodeValidators
-        }
+    //点击更新图形验证码
+    $('.captcha-img').click(function () {
+        const formToken = $("#formToken").val();
+        getCaptcha(formToken);
     });
+    getCaptcha($("#formToken").val());
+
     //获取短信验证码
-    function getSmsYzm(formToken, telNo, imaCode) {
-        var url = smsUrl + "?telNo=" + telNo + "&formToken=" + formToken + "&imgCode=" + imaCode + "&r=" + Math.random();
-        $.get(url, function(data){
+    function getSmsCaptcha(formToken, telNo, imgCode) {
+        const url = smsUrl + "?telNo=" + telNo + "&formToken=" + formToken + "&imgCode=" + imgCode + "&r=" + Math.random();
+        $.get(url, function (data) {
             $("#smsCode").val(data.data);
         });
     }
+
     //点击获取短信验证码
     $('.sms-code-btu').click(function (e) {
-        var $this = $(e.target);
-        if(!$this.hasClass("disabled")){
-            $telForm.bootstrapValidator("removeField", "smsCode");
-            $telForm.data("bootstrapValidator").validate();
-            var isValid = $telForm.data("bootstrapValidator").isValid();
-            if(isValid){
-                var formToken = $("#formToken2").val();
-                var telNo = $("#telNo").val();
-                var imaCode = $("#yzm1").val()
-                getSmsYzm(formToken, telNo, imaCode);
+        const $this = $(e.target);
+        if (!$this.hasClass("disabled")) {
+            $telForm.validate({
+                ignore: "#smsCode",
+            });
+            const isValid = $telForm.valid();
+            // $telForm.addClass('was-validated')
+            if (isValid) {
+                const formToken = $("#formToken2").val();
+                const telNo = $("#telNo").val();
+                const imgCode = $("#captcha1").val()
+                getSmsCaptcha(formToken, telNo, imgCode);
                 setTime($this, 60);
             }
-            $telForm.bootstrapValidator("addField", "smsCode", smsCodeValidators);
+            // $telForm.bootstrapValidator("addField", "smsCode", smsCodeValidators);
+            $("#smsCode").val(smsCodeValidators)
         }
     });
 
@@ -136,9 +165,9 @@ $(function(){
             $el.text("重新发送(" + countdown + ")");
             countdown--;
         }
-        setTimeout(function() {
+        setTimeout(function () {
             setTime($el, countdown);
-        },1000);
+        }, 1000);
     }
 
 });

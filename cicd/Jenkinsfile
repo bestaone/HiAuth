@@ -1,0 +1,50 @@
+pipeline {
+
+    agent any
+
+    // 设置环境变量
+    environment {
+        BUILD_VERSION = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        CONFIG_FILE = '/var/jenkins_home/hiauth/conf/hiauth.properties'
+    }
+
+    // 设置参数, 设置后，构建时会提示填写
+//     parameters {
+//         string(name: 'DEPLOY_ENV', defaultValue: 'dev', description: 'Environment to deploy to')
+//     }
+
+    stages {
+
+        stage('Check Env') {
+            steps {
+                sh 'echo ${BUILD_VERSION}'
+                sh 'docker -v'
+                sh 'java -version'
+                sh 'mvn -v'
+                sh 'node -v'
+                sh 'pnpm -v'
+            }
+        }
+
+        stage('Install') {
+            steps {
+                sh "mvn clean install -Dmaven.test.skip=false"
+                sh "cd hiauth-front && pnpm install && pnpm build:auth"
+                sh "cd docs && pnpm install && pnpm run build"
+                sh 'docker stop hiauth || true'
+                sh 'docker rm -f hiauth || true'
+                sh "docker rmi -f bestaone/hiauth:3.0.0 || true"
+                sh "docker build -f ./cicd/Dockerfile -t bestaone/hiauth:3.0.0 ."
+                sh """
+                    docker run -d \
+                      --restart=always \
+                      -p 9080:80 \
+                      -v /opt/install/hiauth/conf:/hiauth/conf \
+                      -v /opt/install/hiauth/logs:/hiauth/logs \
+                      --name hiauth bestaone/hiauth:3.0.0
+                """
+            }
+        }
+
+    }
+}

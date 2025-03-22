@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.server.mapper.Oauth2RegisteredClientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Oauth2RegisteredClient">
+        <result column="id" property="id" />
+        <result column="cid" property="cid" />
+        <result column="app_id" property="appId" />
+        <result column="client_id" property="clientId" />
+        <result column="client_id_issued_at" property="clientIdIssuedAt" />
+        <result column="client_secret" property="clientSecret" />
+        <result column="client_secret_expires_at" property="clientSecretExpiresAt" />
+        <result column="client_name" property="clientName" />
+        <result column="client_authentication_methods" property="clientAuthenticationMethods" />
+        <result column="authorization_grant_types" property="authorizationGrantTypes" />
+        <result column="redirect_uris" property="redirectUris" />
+        <result column="post_logout_redirect_uris" property="postLogoutRedirectUris" />
+        <result column="scopes" property="scopes" />
+        <result column="client_settings" property="clientSettings" />
+        <result column="token_settings" property="tokenSettings" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cid, app_id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, post_logout_redirect_uris, scopes, client_settings, token_settings
+    </sql>
+
+</mapper>

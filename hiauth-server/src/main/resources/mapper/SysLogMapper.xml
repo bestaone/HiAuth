@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.server.mapper.SysLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="SysLog">
+        <result column="id" property="id" />
+        <result column="cid" property="cid" />
+        <result column="actor" property="actor" />
+        <result column="actor_ip" property="actorIp" />
+        <result column="actor_type" property="actorType" />
+        <result column="actor_emp_id" property="actorEmpId" />
+        <result column="actor_user_id" property="actorUserId" />
+        <result column="event_time" property="eventTime" />
+        <result column="event_type" property="eventType" />
+        <result column="event_level" property="eventLevel" />
+        <result column="event_result" property="eventResult" />
+        <result column="event_desc" property="eventDesc" />
+        <result column="username" property="username" />
+        <result column="source_sys" property="sourceSys" />
+        <result column="source_module" property="sourceModule" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, cid, actor, actor_ip, actor_type, actor_emp_id, actor_user_id, event_time, event_type, event_level, event_result, event_desc, username, source_sys, source_module, create_time
+    </sql>
+
+</mapper>

@@ -1,0 +1,26 @@
+
+# 单节点写法
+spring.data.redis:
+  host: ${redis.host}
+  port: ${redis.port}
+  database: ${redis.database}
+  username: ${redis.username}
+  password: ${redis.password}
+  timeout: 10000
+  connect-timeout: 10000
+
+# 集群写法
+#spring.redis:
+#  username: ${redis.username}
+#  password: ${redis.password}
+#  timeout: 5000
+#  cluster:
+#   nodes: 192.168.0.1:6379,192.168.0.2:6379
+#   max-redirects: 3
+#  lettuce:
+#   pool:
+#     max-active: 8
+#     max-idle: 8
+#     min-idle: 0
+#     max-wait: 1000
+#   shutdown-timeout: 100
