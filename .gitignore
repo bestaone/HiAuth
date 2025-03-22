@@ -26,9 +26,6 @@ rebel.xml
 
 ### IntelliJ IDEA Local ###
 target
-.settings
-.classpath
-.project
 *.log
 *.log.*
 logs
@@ -45,7 +42,6 @@ build/
 ### VS Code ###
 .vscode/
 /logs/
-*.log
 
 **/node_modules
 **/.umi
@@ -53,3 +49,8 @@ temp
 
 ### java ###
 *.class
+
+/docs/.vitepress/dist
+/docs/.vitepress/cache
+/docs/package-lock.json
+/docs/pnpm-lock.yaml
