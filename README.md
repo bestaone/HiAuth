@@ -52,7 +52,7 @@ $ mvn spring-boot:run
 ```
 
 ### 验证
-- 访问HiMall：http://127.0.0.1:9000，点击`Login`按钮，登录账号：`corpadmin/123456`
+- 访问HiMall：http://127.0.0.1:9000 点击`Login`按钮，登录账号：`corpadmin/123456`
 
 > 注意：`127.0.0.1`不能使用`localhost`代替，因为数据库中配置了回调地址为`http://127.0.0.1:9000`。
 
