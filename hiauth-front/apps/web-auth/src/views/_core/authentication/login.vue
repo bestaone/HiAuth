@@ -1,13 +1,14 @@
 <script lang="ts" setup>
-import type {VbenFormSchema} from '@vben/common-ui';
-import {AuthenticationLogin, SliderCaptcha, z} from '@vben/common-ui';
+import type { VbenFormSchema } from '@vben/common-ui';
 
-import {computed, markRaw, onBeforeMount, ref} from 'vue';
-import {$t} from '@vben/locales';
+import { computed, markRaw, onBeforeMount, ref } from 'vue';
 
-import {getMetadataApi} from '#/api/core/common';
-import {useAuthStore} from '#/store';
-import {useContentStore} from '#/store/content';
+import { AuthenticationLogin, SliderCaptcha, z } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+
+import { getMetadataApi } from '#/api/core/common';
+import { useAuthStore } from '#/store';
+import { useContentStore } from '#/store/content';
 
 defineOptions({ name: 'Login' });
 
@@ -17,7 +18,8 @@ const up = ref<string>('xxx');
 const pp = ref<string>('sww');
 
 onBeforeMount(async () => {
-  const { publicKey, encryptType, usernamePlaceholder, passwordPlaceholder } = await getMetadataApi();
+  const { publicKey, encryptType, usernamePlaceholder, passwordPlaceholder } =
+    await getMetadataApi();
   up.value = usernamePlaceholder;
   pp.value = passwordPlaceholder;
   contentStore.setEncrypt(publicKey, encryptType);

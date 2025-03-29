@@ -1,6 +1,6 @@
 package cn.hiauth.server.service.impl;
 
-import cn.hiauth.server.api.dto.corpApp.CorpAppLimitDto;
+import cn.hiauth.server.api.dto.appClient.AppClientLimitDto;
 import cn.hiauth.server.entity.App;
 import cn.hiauth.server.mapper.AppMapper;
 import cn.hiauth.server.service.AppService;
@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppService {
 
     @Override
-    public List<App> limitNotHaveApp(CorpAppLimitDto dto) {
+    public List<App> limitNotHaveApp(AppClientLimitDto dto) {
         return baseMapper.limitNotHaveApp(dto);
     }
 
     @Override
-    public List<App> limitHaveApp(CorpAppLimitDto dto) {
+    public List<App> limitHaveApp(AppClientLimitDto dto) {
         return baseMapper.limitHaveApp(dto);
     }
 

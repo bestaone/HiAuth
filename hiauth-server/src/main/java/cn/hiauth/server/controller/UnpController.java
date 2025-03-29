@@ -30,8 +30,6 @@ import java.util.Map;
 @RequestMapping("/unpapi")
 public class UnpController {
 
-
-
     @Autowired
     private AppProperties appProperties;
 

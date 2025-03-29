@@ -31,7 +31,7 @@ public class BeanConfig {
     @ConditionalOnProperty(prefix = "app.readonly", name = "account")
     public FilterRegistrationBean<ReadonlyFilter> readOnlyFilterRegister() {
         FilterRegistrationBean<ReadonlyFilter> registration = new FilterRegistrationBean<>();
-        registration.setOrder(FilterRegistrationBean.LOWEST_PRECEDENCE);
+        registration.setOrder(1001);
         registration.setFilter(new ReadonlyFilter(readonlyAccount.split(",")));
         registration.setName("readonlyFilter");
         registration.addUrlPatterns("/api/*");

@@ -12,11 +12,11 @@ import { useVbenModal } from '@vben/common-ui';
 import { Tree, TreeSelect } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
+import { limitHaveAppApi } from '#/api/core/appClient';
 import {
   appResourceTreeApi,
   findAppResourceIdsByRoleAndAppApi,
 } from '#/api/core/appResource';
-import { limitHaveAppApi } from '#/api/core/corpApp';
 import { authRoleApi } from '#/api/core/role';
 
 defineOptions({ name: 'AuthFormModel' });

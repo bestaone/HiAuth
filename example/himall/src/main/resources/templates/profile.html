@@ -21,7 +21,7 @@
                 <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}" class="active"><a th:href="@{/profile}">Profile</a></li>
                 <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/api/client}">Client</a></li>
                 <li role="presentation" th:if="${session.isAuth!=null ? !session.isAuth : true}"><a th:href="@{/signin}">Login</a></li>
-                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/logout}">Logout</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/user/logout}">Logout</a></li>
             </ul>
         </nav>
         <h3 class="text-muted">HIMALL</h3>

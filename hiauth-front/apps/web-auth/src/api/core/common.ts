@@ -63,5 +63,5 @@ export async function getMetadataApi() {
 }
 
 export async function uploadImgApi(file: File) {
-  return await requestClient.upload('/api/common/file/upload/img', { file });
+  return await requestClient.upload('/api/common/file/uploadImg', { file });
 }

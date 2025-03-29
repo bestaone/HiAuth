@@ -2,6 +2,7 @@ package cn.hiauth.server.api.dto.app;
 
 import cn.hiauth.server.entity.App;
 import cn.webestar.scms.commons.api.CreateBody;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,10 @@ import lombok.Data;
 
 @Data
 public class AppCreateDto extends CreateBody {
+
+    @TableField("cid")
+    @Schema(description = "创建应用的企业CID")
+    private Long cid;
 
     @Schema(description = "图标")
     @Size(max = 200, message = "长度不能超过200")
@@ -26,6 +31,7 @@ public class AppCreateDto extends CreateBody {
     @Override
     public App toDO() {
         App o = new App();
+        o.setCid(cid);
         o.setIcon(icon);
         o.setName(name);
         o.setRemark(remark);

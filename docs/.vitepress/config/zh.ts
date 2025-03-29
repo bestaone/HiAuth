@@ -95,12 +95,12 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: '部署&集成',
       collapsed: false,
       items: [
-        { text: 'SAAS版', link: 'sass' },
+        { text: 'SaaS版', link: 'saas' },
         { text: 'Docker版', link: 'docker' },
         { text: '源码版', link: 'sourcecode' },
         { text: 'hiauth-client集成', link: 'hiauth-client' },
         { text: 'K8S上部署', link: 'k8s' },
-        { text: '集成测试', link: 'sourcecode' }
+        { text: '集成测试', link: 'test' }
       ]
     },
     {
