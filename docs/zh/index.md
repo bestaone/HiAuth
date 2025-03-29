@@ -34,5 +34,5 @@ features:
     details: 基于OAuth2.0协议的认证服务，支持四种授权模式，方便与不同开发语言环境对接。
   - icon: 🚀
     title: 开箱即用
-    details: 提供SAAS版、一键部署Docker版、源码本地部署版，可以基于源码二次开发。
+    details: 提供SaaS版、一键部署Docker版、源码本地部署版，可以基于源码二次开发，免费、开源。
 ---

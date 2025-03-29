@@ -32,32 +32,26 @@ export interface AppVo {
 }
 
 export const pageAppApi = async (params: AppPageDto) => {
-  return requestClient.post<PageVo<AppVo>>(
-    '/api/adminSpace/appMgr/page',
-    params,
-  );
+  return requestClient.post<PageVo<AppVo>>('/api/common/appMgr/page', params);
 };
 
 export const getAppByIdApi = async (id: string) => {
-  return requestClient.post<AppVo>(`/api/adminSpace/appMgr/findById?id=${id}`);
+  return requestClient.post<AppVo>(`/api/common/appMgr/findById?id=${id}`);
 };
 
 // 新增用户
 export const createAppApi = async (params: AppCreateDto) => {
-  return requestClient.post<AppVo>('/api/adminSpace/appMgr/create', params);
+  return requestClient.post<AppVo>('/api/common/appMgr/create', params);
 };
 
 export const updateAppApi = async (params: AppUpdateDto) => {
-  return requestClient.post<AppVo>('/api/adminSpace/appMgr/update', params);
+  return requestClient.post<AppVo>('/api/common/appMgr/update', params);
 };
 
 export const deleteAppsApi = async (params: { ids: string[] }) => {
-  return requestClient.post('/api/adminSpace/appMgr/delete', params);
+  return requestClient.post('/api/common/appMgr/delete', params);
 };
 
 export const limitAppApi = async (params: AppLimitDto) => {
-  return requestClient.post<AppVo[]>(
-    '/api/adminSpace/appMgr/limitList',
-    params,
-  );
+  return requestClient.post<AppVo[]>('/api/common/appMgr/limitList', params);
 };

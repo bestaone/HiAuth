@@ -111,7 +111,7 @@ public class CommonController {
         return R.success(map);
     }
 
-    @PostMapping("/file/upload/img")
+    @PostMapping("/file/uploadImg")
     public R<String> handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
         Assert.isTrue(!file.isEmpty(), SysCode.biz(1), "文件错误");
         Assert.isTrue(file.getSize() < 500 * 1024, SysCode.biz(2), "文件大小不得超过0.5M");

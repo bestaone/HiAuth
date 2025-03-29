@@ -92,7 +92,16 @@ const routes: RouteRecordRaw[] = [
           title: '应用列表',
           icon: 'ant-design:bars-outlined',
         },
-        component: () => import('#/views/corpSpace/corpAppMgr/index.vue'),
+        component: () => import('#/views/common/appMgr/index.vue'),
+      },
+      {
+        name: 'appClientList',
+        path: '/corpSpace/appClientMgr/list',
+        meta: {
+          title: '客户端列表',
+          icon: 'ant-design:bars-outlined',
+        },
+        component: () => import('#/views/corpSpace/appClientMgr/index.vue'),
       },
     ],
   },

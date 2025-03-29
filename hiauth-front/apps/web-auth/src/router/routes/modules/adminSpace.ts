@@ -69,7 +69,7 @@ const routes: RouteRecordRaw[] = [
           title: '应用列表',
           icon: 'ant-design:bars-outlined',
         },
-        component: () => import('#/views/adminSpace/appMgr/index.vue'),
+        component: () => import('#/views/common/appMgr/index.vue'),
       },
     ],
   },

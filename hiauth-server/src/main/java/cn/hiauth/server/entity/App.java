@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 @Schema(name = "App", description = "应用")
 public class App extends BasicDO<Long> {
 
+    @TableField("cid")
+    @Schema(description = "创建应用的企业CID")
+    private Long cid;
+
     @TableField("name")
     @Schema(description = "名称")
     private String name;

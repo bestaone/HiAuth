@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="App">
         <result column="id" property="id" />
+        <result column="cid" property="cid" />
         <result column="name" property="name" />
         <result column="icon" property="icon" />
         <result column="create_time" property="createTime" />
@@ -14,8 +15,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id,
-        name, icon, create_time, creator, remark
+        id, cid, name, icon, create_time, creator, remark
     </sql>
 
 </mapper>

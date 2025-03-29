@@ -1,6 +1,6 @@
 package cn.hiauth.server.mapper;
 
-import cn.hiauth.server.api.dto.corpApp.CorpAppLimitDto;
+import cn.hiauth.server.api.dto.appClient.AppClientLimitDto;
 import cn.hiauth.server.entity.App;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,7 +31,7 @@ public interface AppMapper extends BaseMapper<App> {
                 )
                 OFFSET #{dto.offset} LIMIT #{dto.limit}
             """)
-    List<App> limitNotHaveApp(@Param("dto") CorpAppLimitDto dto);
+    List<App> limitNotHaveApp(@Param("dto") AppClientLimitDto dto);
 
     @Select("""
                 SELECT O.* FROM t_app O
@@ -39,6 +39,6 @@ public interface AppMapper extends BaseMapper<App> {
                 WHERE o1.cid = #{dto.cid}
                 OFFSET #{dto.offset} LIMIT #{dto.limit}
             """)
-    List<App> limitHaveApp(@Param("dto") CorpAppLimitDto dto);
+    List<App> limitHaveApp(@Param("dto") AppClientLimitDto dto);
 
 }

@@ -29,6 +29,9 @@ public class IndexController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Value("${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}")
+    private String issuerUri;
+
     @Value("${spring.security.oauth2.client.provider.hiauth-server.userInfoUri}")
     private String userInfoUri;
 
@@ -37,17 +40,14 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextHolder.clearContext();
-        Cookie newCookie = new Cookie("HIMALL_JSESSIONID","");
-        newCookie.setMaxAge(0);
-        response.addCookie(newCookie);
-        newCookie = new Cookie("JSESSIONID","");
-        newCookie.setMaxAge(0);
-        response.addCookie(newCookie);
-        request.getSession().setAttribute("isAuth", false);
-        return "index";
+        Cookie cookie = new Cookie("JSESSIONID",null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:" + issuerUri + "/logoutWithRedirect?redirect_uri=http://127.0.0.1:9000";
     }
 
     @GetMapping("/profile")

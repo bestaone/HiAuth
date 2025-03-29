@@ -37,9 +37,9 @@ public class SimpleSecurityService implements SecurityService {
     }
 
     @Override
-    public Boolean sendSmsCode(Integer type, String phoneNum, String smsCode) {
+    public String sendSmsCode(Integer type, String phoneNum, String smsCode) {
         log.debug("生成短信验证码:{}, 手机号:{}, 有效期:{}秒", smsCode, phoneNum, 300);
-        return true;
+        return smsCode;
     }
 
     private MySecurityUser convert(User user) {

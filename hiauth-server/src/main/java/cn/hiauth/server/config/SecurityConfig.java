@@ -109,7 +109,8 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher("/doc.html"),
                 AntPathRequestMatcher.antMatcher("/swagger-resources/**"),
                 AntPathRequestMatcher.antMatcher("/v3/api-docs/**"),
-                AntPathRequestMatcher.antMatcher("/swagger-ui/**")
+                AntPathRequestMatcher.antMatcher("/swagger-ui/**"),
+                AntPathRequestMatcher.antMatcher("/docs/**")
         );
     }
 

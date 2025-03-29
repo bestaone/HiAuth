@@ -159,7 +159,7 @@
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>security-spring-boot-starter</artifactId>
-            <version>1.0.16</version>
+            <version>1.0.19</version>
         </dependency>
         <!-- 数据库 -->
         <dependency>

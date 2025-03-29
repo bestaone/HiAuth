@@ -3,26 +3,23 @@ import type { VbenFormSchema } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
 import { computed, h, ref, useTemplateRef } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { AuthenticationRegister, useVbenModal, z } from '@vben/common-ui';
+import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { message } from 'ant-design-vue';
+import { message, notification } from 'ant-design-vue';
 
 import { getSmsCodeApi, registerApi } from '#/api';
 
 defineOptions({ name: 'Register' });
 
-const [Modal, modalApi] = useVbenModal({
-  onConfirm() {
-    location.replace('/');
-  },
-});
-
 const loading = ref(false);
 const CODE_LENGTH = 6;
 const registerRef =
   useTemplateRef<InstanceType<typeof AuthenticationRegister>>('registerRef');
+
+const router = useRouter();
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -164,8 +161,17 @@ async function handleSubmit(value: Recordable<any>) {
   loading.value = true;
   const { corpName, username, password, phoneNum, smsCode } = value;
   await registerApi({ corpName, username, password, phoneNum, smsCode });
-  // loading.value = false;
-  modalApi.open();
+  notification.success({
+    message: '注册成功',
+    description: '账号注册成功，请登录!',
+    duration: 5,
+    onClick: () => {
+      router.push('/auth/login');
+    },
+    onClose: () => {
+      router.push('/auth/login');
+    },
+  });
 }
 </script>
 
@@ -178,7 +184,4 @@ async function handleSubmit(value: Recordable<any>) {
   >
     <template #title> 注册账号 </template>
   </AuthenticationRegister>
-  <Modal class="w-[300px]" title="注册完成" :show-cancel-button="false">
-    <div>您的账号注册成功，启去登录！</div>
-  </Modal>
 </template>
