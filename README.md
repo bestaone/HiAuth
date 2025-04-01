@@ -18,6 +18,11 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
 - 参考`demo`实例，你可以几分钟之内快速验证如何集成HiAuth；
 - 参考`himall`实例，你可以快速的启动一个带页面的实例；
 
+### LIVE
+- HiAuth Docs：http://hiauth.cn/docs
+- HiAuth Admin：http://auth.hiauth.cn/admin
+- HiAuth 授权页：http://auth.hiauth.cn
+
 ### 目录结构
 ```
 ├─cicd                              持续集成
@@ -56,7 +61,12 @@ $ mvn spring-boot:run
 
 > 注意：`127.0.0.1`不能使用`localhost`代替，因为数据库中配置了回调地址为`http://127.0.0.1:9000`。
 
-### 效果图
+### 其他集成方式
+- 直接使用SaaS版集成，[参考文档](http://hiauth.cn/docs/guide/saas)；
+- 安装Docker版并集成，[参考文档](http://hiauth.cn/docs/guide/docker)；
+- 源码编译安装并集成，[参考文档](http://hiauth.cn/docs/guide/sourcecode)；
+
+## 效果图
 - 认证中心登录页
 <p align="center">
   <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E8%AE%A4%E8%AF%81%E7%99%BB%E5%BD%95%E9%A1%B5.jpg">
@@ -81,16 +91,6 @@ $ mvn spring-boot:run
 <p align="center">
   <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98-%E5%91%98%E5%B7%A5%E5%88%97%E8%A1%A8%E9%A1%B5.jpg">
 </p>
-
-### LIVE
-- HiAuth Docs：http://hiauth.cn/docs
-- HiAuth Admin：http://auth.hiauth.cn/admin
-- HiAuth 授权页：http://auth.hiauth.cn
-
-### 其他集成方式
-- 直接使用SaaS版集成，[参考文档](http://hiauth.cn/docs/guide/saas)；
-- 安装Docker版并集成，[参考文档](http://hiauth.cn/docs/guide/docker)；
-- 源码编译安装并集成，[参考文档](http://hiauth.cn/docs/guide/sourcecode)；
 
 **如果你觉得此项目对你有帮助，请给我点个star，谢谢！**
 
