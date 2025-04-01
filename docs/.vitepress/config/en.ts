@@ -62,46 +62,39 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       text: 'Introduction',
       collapsed: false,
       items: [
-        { text: 'What is VitePress?', link: 'what-is-vitepress' },
-        { text: 'Getting Started', link: 'getting-started' },
-        { text: 'Routing', link: 'routing' },
-        { text: 'Deploy', link: 'deploy' }
+        { text: 'What is HiAuth', link: 'what-is-hiauth' },
+        { text: 'Quick Start', link: 'quick-start' }
       ]
     },
     {
-      text: 'Writing',
+      text: 'Deployment & Integration',
       collapsed: false,
       items: [
-        { text: 'Markdown Extensions', link: 'markdown' },
-        { text: 'Asset Handling', link: 'asset-handling' },
-        { text: 'Frontmatter', link: 'frontmatter' },
-        { text: 'Using Vue in Markdown', link: 'using-vue' },
-        { text: 'Internationalization', link: 'i18n' }
+        { text: 'SaaS Edition', link: 'saas' },
+        { text: 'Docker Edition', link: 'docker' },
+        { text: 'Source Code Edition', link: 'sourcecode' },
+        { text: 'hiauth-client Integration', link: 'hiauth-client' },
+        { text: 'Deploying on K8S', link: 'k8s' },
+        { text: 'Integration Testing', link: 'test' }
       ]
     },
     {
-      text: 'Customization',
+      text: 'Secondary Development',
       collapsed: false,
       items: [
-        { text: 'Using a Custom Theme', link: 'custom-theme' },
-        {
-          text: 'Extending the Default Theme',
-          link: 'extending-default-theme'
-        },
-        { text: 'Build-Time Data Loading', link: 'data-loading' },
-        { text: 'SSR Compatibility', link: 'ssr-compat' },
-        { text: 'Connecting to a CMS', link: 'cms' }
+        { text: 'Project Structure', link: 'project' },
+        { text: 'Front-end Development', link: 'frontend' },
+        { text: 'Backend development', link: 'backend' }
       ]
     },
     {
-      text: 'Experimental',
+      text: 'Other',
       collapsed: false,
       items: [
-        { text: 'MPA Mode', link: 'mpa-mode' },
-        { text: 'Sitemap Generation', link: 'sitemap-generation' }
+        { text: 'About Topic', link: 'about-topic' },
+        { text: 'Issue', link: 'issue' }
       ]
-    },
-    { text: 'Config & API Reference', base: '/en/reference/', link: 'site-config' }
+    }
   ]
 }
 

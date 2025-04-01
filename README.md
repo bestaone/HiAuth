@@ -57,6 +57,30 @@ $ mvn spring-boot:run
 > 注意：`127.0.0.1`不能使用`localhost`代替，因为数据库中配置了回调地址为`http://127.0.0.1:9000`。
 
 ### 效果图
+- 认证中心登录页
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E8%AE%A4%E8%AF%81%E7%99%BB%E5%BD%95%E9%A1%B5.jpg">
+</p>
+
+- 管理后台登录页
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95%E9%A1%B5.jpg">
+</p>
+
+- 超级管理员-用户管理页
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E8%B6%85%E7%BA%A7%E7%AE%A1%E7%90%86%E5%91%98-%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%E9%A1%B5.jpg">
+</p>
+
+- 企业管理员-部门列表页
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98-%E9%83%A8%E9%97%A8%E5%88%97%E8%A1%A8%E9%A1%B5.jpg">
+</p>
+
+- 企业管理员-员工列表页
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%91%98-%E5%91%98%E5%B7%A5%E5%88%97%E8%A1%A8%E9%A1%B5.jpg">
+</p>
 
 ### LIVE
 - HiAuth Docs：http://hiauth.cn/docs

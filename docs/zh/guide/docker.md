@@ -119,3 +119,6 @@ $ mvn spring-boot:run
 - 浏览器访问: http://127.0.0.1:9000
 - 点击`Login`按钮，会被重定向到统一认证系统，输入账号：`corpadmin`，密码：`123456`
 - 登录成功后，会看到首页及登录用户信息!
+
+## 视频教程
+<iframe src="//player.bilibili.com/player.html?bvid=BV14hZEYmEEq&page=1" allowfullscreen></iframe>
