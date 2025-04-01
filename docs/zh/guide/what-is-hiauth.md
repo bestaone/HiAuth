@@ -4,7 +4,7 @@ HiAuth是一个基于OAuth2.0协议的认证授权系统，通过集成HiAuth系
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-想尝试一下？跳到 [快速开始](./getting-started)。
+想尝试一下？跳到 [快速开始](./quick-start)。
 
 </div>
 
@@ -61,3 +61,6 @@ HiAuth是一个基于OAuth2.0协议的认证授权系统，通过集成HiAuth系
     - **生命周期管理**：用户注册、禁用、删除及资料更新。
     - **认证增强**：多因素认证（MFA）、单点登录（SSO）。
 
+
+## 视频教程
+<iframe src="//player.bilibili.com/player.html?bvid=BV1KhZEYmEU9&page=1" allowfullscreen></iframe>

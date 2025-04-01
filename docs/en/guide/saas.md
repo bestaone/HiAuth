@@ -1,47 +1,48 @@
-# SAAS版 {#saas}
+# SaaS Edition {#saas}
 
-SAAS版的集成，需要用户在HiAuth上开通账号、添加应，并进行相关的设置后，使用你获取的 `client-id` 和 `client-secret` 进行集成。这里为了快速验证，我们使用系统中提供的demo账号来进行集成。等完成验证后，用户可以替换成自己的账号。
+To integrate the SaaS edition, users need to sign up for an account on HiAuth, add applications, and perform relevant settings. Then, they can use the obtained `client-id` and `client-secret` for integration. For a quick validation, we will use the demo account provided in the system for integration. After completing the validation, users can replace it with their own account.
 
-**以SpringBoot项目为例，我们的集成需要以下几步：**
-- 创建一个空的SpringBoot项目
-- 添加相关依赖
-- 添加配置
-- 添加一个首页
+- The HiAuth authorization address is: http://auth.hiauth.cn
+- The HiAuth management address is: http://auth.hiauth.cn/admin
 
-只需以上简单几步就可以完成集成SAAS版。
+## Example of Integrating with a SpringBoot Project
+- Create a SpringBoot project
+- Add dependencies
+- Add configurations
+- Add a home page
 
-## 运行HiAuth源码自带demo {#hiauth-demo}
-**环境要求**
+Integration with the SaaS edition can be completed with just these simple steps.
+
+## Running the HiAuth Source Code Demo {#hiauth-demo}
+### Environment Requirements
+- Git
 - JDK 17+
 - Maven 3.8+
-- git
 
-**运行脚本**
-```sh
-# 下载HiAuth源码
-$ git clone https://github.com/bestaone/HiAuth
-# 进入demo
+### Running Script
+```shell
+# Download HiAuth source code
+$ git clone https://github.com/bestaone/HiAuth.git
+# Enter the demo directory
 $ cd HiAuth/example/himall
-# 编译和安装
+# Compile and install
 $ mvn clean install
-# 运行
+# Run
 $ mvn spring-boot:run
 ```
+### Verification
+- Open a browser and visit: http://127.0.0.1:9000
+- Click the `Login` button, and you will be redirected to the unified authentication system. Enter the account: `corpadmin`, password: `123456`
+- After successful login, you will see the home page and the logged-in user information!
 
-**访问**
-- 浏览器访问 http://127.0.0.1:9000
-- 会被重定向到统一认证系统，输入账号：corpadmin，密码：123456
-- 登录成功后，会看到首页及登录用户信息!
-
-## 手把手集成 {#hand-by-hand}
-
-### 环境要求
+## Step-by-Step Integration {#hand-by-hand}
+### Environment Requirements
 - JDK 17+
 - Maven 3.8+
 
-### 创建一个空的SpringBoot项目
+### Create an Empty SpringBoot Project
 
-使用 [Spring Initializr](https://start.spring.io/) 创建一个空的SpringBoot项目。pom.xml 文件如下：
+Use [Spring Initializr](https://start.spring.io/) to create an empty SpringBoot project. The `pom.xml` file is as follows:
 
 ```xml [pom.xml]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -59,14 +60,14 @@ $ mvn spring-boot:run
 		<relativePath/>
 	</parent>
     
-	<groupId>com.example</groupId>
+	<groupId>cn.hiauth</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>demo</name>
 	<description>Demo project for Spring Boot</description>
     
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
     
 	<dependencies>
@@ -93,7 +94,7 @@ $ mvn spring-boot:run
 </project>
 ```
 
-### 添加相关依赖
+### Add Dependencies
 ```xml [pom.xml]
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -101,45 +102,45 @@ $ mvn spring-boot:run
 </dependency>
 ```
 
-### 添加配置
+### Add Configurations
 ```yml [application.yml]
 server.port: 9000
 spring.security.oauth2.client:
   provider:
-    #认证服务器信息
+    # Authentication server information
     hiauth-server:
-      # 如果你私有化部署了 HiAuth服务，请将此地址替换为私有部署的认证服务器地址
+      # If you have deployed HiAuth privately, replace this address with the private deployment authentication server address
       issuer-uri: http://auth.hiauth.cn
       authorizationUri: http://auth.hiauth.cn/oauth2/authorize
-      #令牌获取地址
+      # Token acquisition address
       tokenUri: http://auth.hiauth.cn/oauth2/token
       userInfoUri: http://auth.hiauth.cn/userinfo
       jwkSetUri: http://auth.hiauth.cn/oauth2/jwks
       #userNameAttribute: name
   registration:
     hiauth-code:
-      #认证提供者，标识由哪个认证服务器进行认证，和上面的hiauth-server进行关联
+      # Authentication provider, indicating which authentication server to use for authentication, associated with the above hiauth-server
       provider: hiauth-server
-      #客户端名称
+      # Client name
       client-name: himall
-      #客户端id，从认证平台申请的客户端id
+      # Client ID, obtained from the authentication platform
       client-id: himall
-      #客户端秘钥
+      # Client secret
       client-secret: secret
-      #客户端认证方式 client_secret_basic\client_secret_post
+      # Client authentication method client_secret_basic\client_secret_post
       client-authentication-method: client_secret_basic
-      #使用授权码模式获取令牌（token）
+      # Use authorization code mode to obtain token
       authorization-grant-type: authorization_code
-      # 认证完成后回调的地址，需要在数据库表oauth2_registered_client中登记这个地址，
-      # 否则会拒绝回调
+      # Callback address after authentication, this address needs to be registered in the oauth2_registered_client table,
+      # otherwise the callback will be rejected
       redirect-uri: http://127.0.0.1:9000/login/oauth2/code/hiauth-code
       scope:
         - profile
         - openid
 ```
-> 注意：添加完成 `application.yml` 文件后，将 `application.properties` 文件删除掉
+> Note: After adding the `application.yml` file, delete the `application.properties` file.
 
-### 添加一个Controller
+### Add a Controller
 ```java [IndexController.java]
 package cn.hiauth.demo;
 
@@ -168,32 +169,33 @@ public class IndexController {
 
     @GetMapping("/")
     public Map<?, ?> index(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient oAuth2AuthorizedClient) {
-        // 认证完后会获取到 accessToken
+        // After authentication, the accessToken will be obtained
         String accessToken = oAuth2AuthorizedClient.getAccessToken().getTokenValue();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        // 设置请求头，将 accessToken 放入请求头中
+        // Set the request header and include the accessToken in it
         headers.add("Authorization", "Bearer " + accessToken);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
-        // 请求认证服务器获取用户信息
+        // Request the authentication server to obtain user information
         return restTemplate.postForObject(this.userInfoUri, entity, Map.class);
     }
 
 }
 ```
 
-### 验证
-- 启动项目，访问: http://127.0.0.1:9000
-- 系统检测到未登录，会自动跳转到认证服务器进行登录认证，登录成功后，会跳转回应用。
-- 这个demo中。首页直接输出了登录用户信息，以json格式。
+### Verification
+
+- Start the project and visit: http://127.0.0.1:9000. The system will detect that you are not logged in and redirect you to the unified authentication system;
+- Enter the account: `corpadmin`, password: `123456`. After successful login, you will be redirected back to the application;
+- In this demo, the home page directly outputs the logged-in user information in `json` format;
 ```json
 {
   "sub": "corpadmin",
   "empId": 1,
   "avatarUrl": "/unpapi/image/2c924149ddfe4bd181959ee9bede10c0.jpeg",
   "appId": 91,
-  "name": "企业管理员",
+  "name": "Corporate Administrator",
   "phoneNum": "13400000001",
   "userId": 11,
   "authorities": [],
@@ -202,4 +204,5 @@ public class IndexController {
 }
 ```
 
-
+## Video Tutorial
+<iframe src="//player.bilibili.com/player.html?bvid=BV1KhZEYmEf1&page=1" scrolling="no" allowfullscreen></iframe>

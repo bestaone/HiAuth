@@ -67,7 +67,7 @@ $ mvn spring-boot:run
 	<description>Demo project for Spring Boot</description>
     
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
     
 	<dependencies>
@@ -204,4 +204,6 @@ public class IndexController {
 }
 ```
 
+## 视频教程
+<iframe src="//player.bilibili.com/player.html?bvid=BV1KhZEYmEf1&page=1" scrolling="no" allowfullscreen></iframe>
 
