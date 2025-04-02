@@ -4,7 +4,7 @@ import {search as zhSearch} from './zh'
 
 export const shared = defineConfig({
   title: 'HiAuth',
-  base: "/docs/",
+  // base: "/docs/",
   rewrites: {
     'zh/:rest*': ':rest*'
   },
