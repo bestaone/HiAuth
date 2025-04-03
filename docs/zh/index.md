@@ -30,7 +30,7 @@ features:
     title: 权限管理
     details: 权限认证、角色管理、权限管理、菜单管理、会话管理、接口鉴权... 多种方案灵活鉴权。
   - icon: 🌐
-    title: OAuth2协议
+    title: OAuth2.0协议
     details: 基于OAuth2.0协议的认证服务，支持四种授权模式，方便与不同开发语言环境对接。
   - icon: 🚀
     title: 开箱即用

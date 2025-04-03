@@ -84,7 +84,7 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Project Structure', link: 'project' },
         { text: 'Front-end Development', link: 'frontend' },
-        { text: 'Backend development', link: 'backend' }
+        { text: 'Backend Development', link: 'backend' }
       ]
     },
     {
