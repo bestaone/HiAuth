@@ -48,7 +48,7 @@ export const shared = defineConfig({
   },
 
   sitemap: {
-    hostname: 'http://auth.hiauth.cn/docs/',
+    hostname: 'http://docs.hiauth.cn',
     transformItems(items) {
       return items.filter((item) => !item.url.includes('migration'))
     }
@@ -64,7 +64,7 @@ export const shared = defineConfig({
     ['meta', { property: 'og:title', content: 'HiAuth | 基于OAuth2.0协议的认证授权服务' }],
     ['meta', { property: 'og:site_name', content: 'VitePress' }],
     ['meta', { property: 'og:image', content: 'https://vitepress.dev/vitepress-og.jpg' }],
-    ['meta', { property: 'og:url', content: 'http://auth.hiauth.cn/docs/' }],
+    ['meta', { property: 'og:url', content: 'http://docs.hiauth.cn' }],
     ['script', { src: 'https://cdn.usefathom.com/script.js', 'data-site': 'AZBRSFGG', 'data-spa': 'auto', defer: '' }]
   ],
 

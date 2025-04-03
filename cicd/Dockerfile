@@ -27,7 +27,7 @@ RUN mkdir -p /html && chmod a+rwx -R /html
 RUN unzip dist.zip -d /html/admin
 
 # 安装文档
-COPY ./docs/.vitepress/dist /html/docs
+# COPY ./docs/.vitepress/dist /html/docs
 
 # 配置nginx
 COPY ./cicd/nginx.conf /etc/nginx/nginx.conf

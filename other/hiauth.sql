@@ -1,21 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : hiauth-aliyun-管理员
- Source Server Type    : PostgreSQL
- Source Server Version : 170000 (170000)
- Source Host           : pgm-8vbm139dy2evb0or6o.pgsql.zhangbei.rds.aliyuncs.com:5432
- Source Catalog        : hiauth
- Source Schema         : public
-
- Target Server Type    : PostgreSQL
- Target Server Version : 170000 (170000)
- File Encoding         : 65001
-
- Date: 18/03/2025 11:57:28
-*/
-
-
 -- ----------------------------
 -- Table structure for oauth2_authorization
 -- ----------------------------
@@ -56,7 +38,6 @@ CREATE TABLE "public"."oauth2_authorization" (
                                                  "device_code_metadata" text COLLATE "pg_catalog"."default"
 )
 ;
-ALTER TABLE "public"."oauth2_authorization" OWNER TO "hiauth";
 COMMENT ON TABLE "public"."oauth2_authorization" IS 'oauth2认证';
 
 -- ----------------------------
@@ -77,7 +58,6 @@ CREATE TABLE "public"."oauth2_authorization_consent" (
                                                          "authorities" varchar(1000) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-ALTER TABLE "public"."oauth2_authorization_consent" OWNER TO "hiauth";
 COMMENT ON TABLE "public"."oauth2_authorization_consent" IS 'oauth2认证授权';
 
 -- ----------------------------
@@ -109,7 +89,6 @@ CREATE TABLE "public"."oauth2_registered_client" (
                                                      "cid" int8 NOT NULL
 )
 ;
-ALTER TABLE "public"."oauth2_registered_client" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."oauth2_registered_client"."app_id" IS '应用id（自定义扩展字段）';
 COMMENT ON COLUMN "public"."oauth2_registered_client"."cid" IS '租户id（自定义扩展字段）';
 COMMENT ON TABLE "public"."oauth2_registered_client" IS 'oauth2客户端';
@@ -130,6 +109,7 @@ COMMIT;
 DROP TABLE IF EXISTS "public"."t_app";
 CREATE TABLE "public"."t_app" (
                                   "id" int8 NOT NULL,
+                                  "cid" int8,
                                   "name" varchar(20) COLLATE "pg_catalog"."default" NOT NULL,
                                   "icon" varchar(200) COLLATE "pg_catalog"."default",
                                   "create_time" timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -137,8 +117,8 @@ CREATE TABLE "public"."t_app" (
                                   "remark" varchar(200) COLLATE "pg_catalog"."default"
 )
 ;
-ALTER TABLE "public"."t_app" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_app"."id" IS '主键';
+COMMENT ON COLUMN "public"."t_app"."cid" IS '创建应用的企业CID';
 COMMENT ON COLUMN "public"."t_app"."name" IS '名称';
 COMMENT ON COLUMN "public"."t_app"."icon" IS '图标';
 COMMENT ON COLUMN "public"."t_app"."create_time" IS '创建时间';
@@ -150,10 +130,10 @@ COMMENT ON TABLE "public"."t_app" IS '应用';
 -- Records of t_app
 -- ----------------------------
 BEGIN;
-INSERT INTO "public"."t_app" ("id", "name", "icon", "create_time", "creator", "remark") VALUES (91, 'HiMall', '/unpapi/image/a53746c7908a40c894d3bfc0c5e572de.png', '2025-01-01 00:00:00', NULL, 'HiMall');
-INSERT INTO "public"."t_app" ("id", "name", "icon", "create_time", "creator", "remark") VALUES (11, '志远业务系统', '/unpapi/image/ad9a47f057b64708a7da05a55deecb30.jpg', '2025-01-01 00:00:00', 1, '志远业务系统');
-INSERT INTO "public"."t_app" ("id", "name", "icon", "create_time", "creator", "remark") VALUES (12, '志远管理系统', '/unpapi/image/804d92f0da8443a190ca2097765cb8d7.jpeg', '2025-01-01 00:00:00', 1, '志远管理系统');
-INSERT INTO "public"."t_app" ("id", "name", "icon", "create_time", "creator", "remark") VALUES (13, '志远运营系统', '/unpapi/image/5ff71db6e6b3417e9fb5bfd5c7ae4f9d.jpg', '2025-01-01 00:00:00', 1, '志远运营系统');
+INSERT INTO "public"."t_app" ("id", "cid", "name", "icon", "create_time", "creator", "remark") VALUES (11, NULL, '志远业务系统', '/unpapi/image/7af4deea5db94394b46690c1f14f9a0d.jpg', '2025-01-01 00:00:00', 1, '志远业务系统');
+INSERT INTO "public"."t_app" ("id", "cid", "name", "icon", "create_time", "creator", "remark") VALUES (12, NULL, '志远管理系统', '/unpapi/image/ded337a3c4064cff8f7e6a2d607aac2e.jpeg', '2025-01-01 00:00:00', 1, '志远管理系统');
+INSERT INTO "public"."t_app" ("id", "cid", "name", "icon", "create_time", "creator", "remark") VALUES (13, NULL, '志远运营系统', '/unpapi/image/de58d213858240ce83681e8194e6ece3.jpeg', '2025-01-01 00:00:00', 1, '志远运营系统',);
+INSERT INTO "public"."t_app" ("id", "cid", "name", "icon", "create_time", "creator", "remark") VALUES (91, NULL, 'HiMall', '/unpapi/image/f91626c1876c4ff293056efda7fef04c.jpg', '2025-01-01 00:00:00', 1, 'HiMall');
 COMMIT;
 
 -- ----------------------------
@@ -174,7 +154,6 @@ CREATE TABLE "public"."t_app_resource" (
                                            "api" varchar(50) COLLATE "pg_catalog"."default"
 )
 ;
-ALTER TABLE "public"."t_app_resource" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_app_resource"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_app_resource"."pid" IS '父节点';
 COMMENT ON COLUMN "public"."t_app_resource"."app_id" IS '应用id';
@@ -254,7 +233,6 @@ CREATE TABLE "public"."t_area" (
                                    "name" varchar(50) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-ALTER TABLE "public"."t_area" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_area"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_area"."type" IS '类型：1-省，2-市，3-区';
 COMMENT ON COLUMN "public"."t_area"."code" IS '区域编码';
@@ -3527,7 +3505,6 @@ CREATE TABLE "public"."t_config" (
                                      "create_time" timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 ;
-ALTER TABLE "public"."t_config" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_config"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_config"."cid" IS 'cid';
 COMMENT ON COLUMN "public"."t_config"."sort" IS '排序';
@@ -3563,7 +3540,6 @@ CREATE TABLE "public"."t_corp" (
                                    "icon" varchar(200) COLLATE "pg_catalog"."default"
 )
 ;
-ALTER TABLE "public"."t_corp" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_corp"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_corp"."name" IS '名称';
 COMMENT ON COLUMN "public"."t_corp"."status" IS '状态，1：正常';
@@ -3600,7 +3576,6 @@ CREATE TABLE "public"."t_dep_emp" (
                                       "dep_id" int8 NOT NULL
 )
 ;
-ALTER TABLE "public"."t_dep_emp" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_dep_emp"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_dep_emp"."cid" IS '租户id';
 COMMENT ON COLUMN "public"."t_dep_emp"."emp_id" IS '员工';
@@ -3636,7 +3611,6 @@ CREATE TABLE "public"."t_department" (
                                          "remark" varchar(100) COLLATE "pg_catalog"."default"
 )
 ;
-ALTER TABLE "public"."t_department" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_department"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_department"."cid" IS '租户id';
 COMMENT ON COLUMN "public"."t_department"."pid" IS '父部门';
@@ -3678,7 +3652,6 @@ CREATE TABLE "public"."t_dict" (
                                    "create_time" timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 ;
-ALTER TABLE "public"."t_dict" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_dict"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_dict"."code" IS '编码';
 COMMENT ON COLUMN "public"."t_dict"."name" IS '名称';
@@ -3706,7 +3679,6 @@ CREATE TABLE "public"."t_emp_role" (
                                        "emp_id" int8 NOT NULL
 )
 ;
-ALTER TABLE "public"."t_emp_role" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_emp_role"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_emp_role"."cid" IS '租户id';
 COMMENT ON COLUMN "public"."t_emp_role"."role_id" IS '角色';
@@ -3744,7 +3716,6 @@ CREATE TABLE "public"."t_employee" (
                                        "is_corp_admin" bool NOT NULL DEFAULT false
 )
 ;
-ALTER TABLE "public"."t_employee" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_employee"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_employee"."cid" IS '租户ID';
 COMMENT ON COLUMN "public"."t_employee"."user_id" IS '用户id';
@@ -3785,7 +3756,6 @@ CREATE TABLE "public"."t_file" (
                                    "create_time" timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 ;
-ALTER TABLE "public"."t_file" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_file"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_file"."code" IS '编码';
 COMMENT ON COLUMN "public"."t_file"."name" IS '名称';
@@ -3817,7 +3787,6 @@ CREATE TABLE "public"."t_role" (
                                    "status" varchar COLLATE "pg_catalog"."default" DEFAULT 1
 )
 ;
-ALTER TABLE "public"."t_role" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_role"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_role"."cid" IS 'cid';
 COMMENT ON COLUMN "public"."t_role"."name" IS '名称';
@@ -3852,7 +3821,6 @@ CREATE TABLE "public"."t_role_app_resource" (
                                                 "app_id" int8 NOT NULL
 )
 ;
-ALTER TABLE "public"."t_role_app_resource" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_role_app_resource"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_role_app_resource"."cid" IS '租户';
 COMMENT ON COLUMN "public"."t_role_app_resource"."role_id" IS '角色';
@@ -4019,7 +3987,6 @@ CREATE TABLE "public"."t_sys_log" (
                                       "source_module" varchar(20) COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
-ALTER TABLE "public"."t_sys_log" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_sys_log"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_sys_log"."actor" IS '事件触发者';
 COMMENT ON COLUMN "public"."t_sys_log"."actor_ip" IS '触发者ip';
@@ -4069,7 +4036,6 @@ CREATE TABLE "public"."t_user" (
                                    "is_sys_admin" bool NOT NULL DEFAULT false
 )
 ;
-ALTER TABLE "public"."t_user" OWNER TO "hiauth";
 COMMENT ON COLUMN "public"."t_user"."id" IS '主键';
 COMMENT ON COLUMN "public"."t_user"."name" IS '名称';
 COMMENT ON COLUMN "public"."t_user"."gender" IS '性别，0：未知，1：男，2：女';

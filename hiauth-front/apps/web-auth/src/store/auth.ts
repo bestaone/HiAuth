@@ -86,12 +86,12 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setAccessCodes(accessCodes);
 
         const { roles } = userInfo;
-        const isSorpSpace: boolean =
+        const isCorpSpace: boolean =
           roles !== undefined &&
           roles.some((role) => {
             return ROLE_CORP_ADMIN.includes(role);
           });
-        updateContext({ app: { showGoAdminSpaceBut: isSorpSpace } });
+        updateContext({ app: { showGoAdminSpaceBut: isCorpSpace } });
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);

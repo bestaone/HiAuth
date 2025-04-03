@@ -30,7 +30,7 @@ pipeline {
             steps {
                 sh "mvn clean install -Dmaven.test.skip=false"
                 sh "cd hiauth-front && pnpm install && pnpm build:auth"
-                sh "cd docs && pnpm install && pnpm run build"
+                // sh "cd docs && pnpm install && pnpm run build"
                 sh 'docker stop hiauth || true'
                 sh 'docker rm -f hiauth || true'
                 sh "docker rmi -f bestaone/hiauth:3.0.0 || true"
