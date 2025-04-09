@@ -36,36 +36,6 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
 ├─hiauth-resource                   HiAuth资源服务端
 ├─other                             其他内容，数据库脚本等
 ```
-
-## 快速尝试
-
-### 环境需求
-- Git
-- JDK17+
-- Maven 3.8+
-
-### 下载源码
-```sh
-$ git clone https://github.com/bestaone/HiAuth.git
-```
-### 构建、启动
-```sh
-# 启动himall实例
-$ cd HiAuth/example/himall
-$ mvn clean install
-$ mvn spring-boot:run
-```
-
-### 验证
-- 访问HiMall：http://127.0.0.1:9000 点击`Login`按钮，登录账号：`corpadmin/123456`
-
-> 注意：`127.0.0.1`不能使用`localhost`代替，因为数据库中配置了回调地址为`http://127.0.0.1:9000`。
-
-### 其他集成方式
-- 直接使用SaaS版集成，[参考文档](http://docs.hiauth.cn/guide/saas)；
-- 安装Docker版并集成，[参考文档](http://docs.hiauth.cn/guide/docker)；
-- 源码编译安装并集成，[参考文档](http://docs.hiauth.cn/guide/sourcecode)；
-
 ## 效果图
 - 认证中心登录页
 <p align="center">
@@ -94,8 +64,115 @@ $ mvn spring-boot:run
 
 **如果你觉得此项目对你有帮助，请给我点个star，谢谢！**
 
-## 授权协议
-本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
+## 快速尝试
+
+### 环境要求
+- Git
+- JDK17+
+- Maven 3.8+
+
+### 下载源码
+```sh
+$ git clone https://github.com/bestaone/HiAuth.git
+```
+### 构建、启动
+```sh
+# 启动himall实例
+$ cd HiAuth/example/himall
+$ mvn clean install
+$ mvn spring-boot:run
+```
+
+### 验证
+
+- 访问HiMall：http://127.0.0.1:9000 点击`Login`按钮，登录账号：`corpadmin/123456`
+
+> 注意：`127.0.0.1`不能使用`localhost`代替，因为数据库中配置了回调地址为`http://127.0.0.1:9000`。
+
+## 认证模式
+
+**authorization_code模式：**
+- 访问授权端点获取`授权码`: http://auth.hiauth.cn/oauth2/authorize?response_type=code&client_id=himall&scope=profile&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code
+- 用户登录并授权后，重定向到`redirect_uri`并附带`授权码`(url里的参数code值)
+
+- 使用`授权码`换取访问`令牌`
+```shell
+# 最后的yourCode替换为上面步骤获取的授权码
+$ curl --location 'http://auth.hiauth.cn/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Accept: application/json' \
+--data 'grant_type=authorization_code&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code&client_id=himall&client_secret=secret&code=yourCode'
+```
+返回结果：
+```json
+{
+    "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
+    "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
+    "scope": "profile",
+    "token_type": "Bearer",
+    "expires_in": 35999
+}
+```
+
+**client_credentials模式：**
+```shell
+$ curl --location 'http://auth.hiauth.cn/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Accept: application/json' \
+--data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile'
+```
+返回结果：
+```json
+{
+  "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
+  "scope": "profile",
+  "token_type": "Bearer",
+  "expires_in": 35999
+}
+```
+
+**用户信息获取：**
+```shell
+# 将accessToken替换为上面步骤获取的访问令牌
+$ curl --location --request POST 'http://auth.hiauth.cn/userinfo' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer accessToken'
+```
+返回结果
+```shell
+{
+    "sub": "corpadmin",
+    "empId": 1,
+    "avatarUrl": "/unpapi/image/2c924149ddfe4bd181959ee9bede10c0.jpeg",
+    "appId": 91,
+    "name": "企业管理员",
+    "phoneNum": "13400000001",
+    "userId": 11,
+    "authorities": [],
+    "cid": 1,
+    "username": "corpadmin"
+}
+```
+
+**scop权限：**
+- 在授权请求中包含所需scope
+- 获取的访问令牌将包含授予的scope
+- 资源服务器验证请求的scope是否匹配
+```java
+@PreAuthorize("#oauth2.hasScope('profile')")
+@GetMapping("/protected")
+public String protectedResource() {
+    return "Accessed protected resource";
+}
+```
+
+### 其他
+- 获取认证服务器配置信息：http://auth.hiauth.cn/.well-known/openid-configuration
+
+### 更多集成方式
+- 直接使用SaaS版集成，[参考文档](http://docs.hiauth.cn/guide/saas)；
+- 安装Docker版并集成，[参考文档](http://docs.hiauth.cn/guide/docker)；
+- 源码编译安装并集成，[参考文档](http://docs.hiauth.cn/guide/sourcecode)；
 
 ## 社区与作者
 <p align="center">
@@ -103,3 +180,6 @@ $ mvn spring-boot:run
 </p>
 
 >如果群二维码失效了，请先添加我的微信，然我我拉你入群。
+
+## 授权协议
+本项目执行 [MIT](https://github.com/bestaone/HiAuth/blob/master/LICENSE) 协议
