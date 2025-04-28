@@ -4,12 +4,11 @@ spring.security.oauth2.client:
     #认证服务器信息
     hiauth-server:
       # 如果你私有化部署了 HiAuth服务，请将此地址替换为私有部署的认证服务器地址
-      issuer-uri: http://auth.hiauth.cn
-      authorizationUri: http://auth.hiauth.cn/oauth2/authorize
-      #令牌获取地址
-      tokenUri: http://auth.hiauth.cn/oauth2/token
-      userInfoUri: http://auth.hiauth.cn/userinfo
-      jwkSetUri: http://auth.hiauth.cn/oauth2/jwks
+      issuer-uri: http://127.0.0.1:8080
+      authorizationUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/authorize
+      tokenUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/token
+      userInfoUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/userinfo
+      jwkSetUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/jwks
       #userNameAttribute: name
   registration:
     hiauth-code:

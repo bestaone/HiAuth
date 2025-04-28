@@ -159,7 +159,7 @@
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>security-spring-boot-starter</artifactId>
-            <version>1.0.19</version>
+            <version>1.0.20</version>
         </dependency>
         <!-- 数据库 -->
         <dependency>
@@ -183,6 +183,16 @@
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
             <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>dysmsapi20170525</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>tea-openapi</artifactId>
+            <version>0.3.6</version>
         </dependency>
     </dependencies>
 

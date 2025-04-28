@@ -1,13 +1,16 @@
 package cn.hiauth.server.mapper;
 
+import cn.hiauth.server.entity.Corp;
 import cn.hiauth.server.entity.Employee;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,5 +31,17 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
             </script>
             """)
     IPage<Employee> pageByDepId(@Param("page") IPage page, @Param("ew") Wrapper queryWrapper, @Param("depIds") Set<Long> depIds);
+
+    @ResultMap("BaseResultMap")
+    @Select("""
+        <script>
+        SELECT O.* FROM t_employee O
+        LEFT JOIN t_corp_app O1 ON O1.corp_id = O.cid
+        WHERE O.user_id=#{userId} AND O1.app_id=#{appId}
+        ORDER BY O.last_login_time DESC
+        LIMIT 1 OFFSET 0
+        </script>
+    """)
+    Employee findOneByAppIdAndUserId(@Param("appId") Long appId, @Param("userId") Long userId);
 
 }

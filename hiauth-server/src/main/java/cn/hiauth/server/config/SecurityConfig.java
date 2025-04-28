@@ -7,6 +7,7 @@ import cn.hiauth.server.config.web.security.MultiAuthUserService;
 import cn.hiauth.server.config.web.security.MultiAuthenticationProvider;
 import cn.webestar.scms.cache.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -29,6 +30,9 @@ import java.util.Map;
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
 public class SecurityConfig {
+
+    @Value("${smsUils.superSmsCode:}")
+    private String superSmsCode;
 
     @Autowired
     private CacheUtil cacheUtil;
@@ -85,11 +89,12 @@ public class SecurityConfig {
 
     @Bean
     public MultiAuthenticationProvider authProvider() {
-        MultiAuthenticationProvider authenticationProvider = new MultiAuthenticationProvider();
-        authenticationProvider.setMultiAuthUserService(multiAuthUserService);
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setCacheUtil(cacheUtil);
-        return authenticationProvider;
+//        MultiAuthenticationProvider authenticationProvider = new MultiAuthenticationProvider(cacheUtil, multiAuthUserService, passwordEncoder(), superSmsCode);
+//        authenticationProvider.setMultiAuthUserService(multiAuthUserService);
+//        authenticationProvider.setPasswordEncoder(passwordEncoder());
+//        authenticationProvider.setCacheUtil(cacheUtil);
+//        return authenticationProvider;
+        return new MultiAuthenticationProvider(cacheUtil, multiAuthUserService, passwordEncoder(), superSmsCode);
     }
 
     /**

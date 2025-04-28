@@ -3,6 +3,8 @@ package cn.hiauth.server.config.web.security;
 import cn.hiauth.server.config.web.auth.AuthGrantedAuthority;
 import cn.hiauth.server.config.web.auth.AuthUser;
 import cn.hiauth.server.entity.*;
+import cn.hiauth.server.mapper.CorpMapper;
+import cn.hiauth.server.mapper.EmployeeMapper;
 import cn.hiauth.server.mapper.UserMapper;
 import cn.hiauth.server.service.AppResourceService;
 import cn.hiauth.server.service.EmployeeService;
@@ -23,8 +25,9 @@ public class MultiAuthUserService {
 
     @Resource
     private UserMapper userMapper;
+
     @Resource
-    private EmployeeService employeeService;
+    private EmployeeMapper employeeMapper;
 
     @Resource
     private RoleService roleService;
@@ -61,18 +64,11 @@ public class MultiAuthUserService {
         return loadAuthUser(client, user);
     }
 
-    //TODO 当clientId不为空的时候，判断emp是否存在，如果不存在，抛出
     public AuthUser loadAuthUser(Oauth2RegisteredClient client, User user) {
-
         Employee employee = null;
         Set<AuthGrantedAuthority> authorities = new HashSet<>();
-
-        if (client != null && client.getCid() != null) {
-            LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(Employee::getCid, client.getCid());
-            queryWrapper.eq(Employee::getIsDeleted, false);
-            queryWrapper.eq(Employee::getUserId, user.getId());
-            employee = employeeService.getOne(queryWrapper);
+        if (client != null && client.getAppId() != null) {
+            employee = employeeMapper.findOneByAppIdAndUserId(client.getAppId(), user.getId());
             Assert.notNull(employee, String.format("不是应用%s的用户", client.getClientName()));
             List<Role> roles = roleService.findByEmpId(employee.getId());
             Set<Long> roleIds = new HashSet<>();
@@ -87,7 +83,6 @@ public class MultiAuthUserService {
                 });
             }
         }
-
         return new AuthUser(client, user, employee, authorities);
     }
 

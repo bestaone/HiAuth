@@ -32,11 +32,12 @@ public class AuthUser implements UserDetails, CredentialsContainer {
     public AuthUser(final Oauth2RegisteredClient client, final User user, final Employee employee, final Collection<AuthGrantedAuthority> authorities) {
         if (client != null) {
             this.appId = client.getAppId();
-            this.cid = client.getCid();
         }
         if (employee != null) {
             this.empId = employee.getId();
+            this.cid = employee.getCid();
         }
+
         this.userId = user.getId();
         this.name = user.getName();
         this.username = user.getUsername();

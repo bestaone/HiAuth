@@ -152,6 +152,20 @@ public class HiAuthClientController {
         return updatePwdByOauthServer(hiAuthToken.getAccessToken(), body.getRawPwd(), body.getNewPwd());
     }
 
+    @ResponseBody
+    @PostMapping(value = "/api/common/myCorps")
+    public R<List<SecurityCorp>> myCorps() {
+        Authentication auth = SessionContextHolder.getContext().getAuth();
+        List<SecurityCorp> corps = securityService.loadUserCorps(auth.getUserId());
+        return R.success(corps);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/api/common/switchCorp")
+    public R<Boolean> switchCorp(@RequestParam("id") Long id) {
+        return R.success(securityService.switchCorp(id));
+    }
+
     private Map<?, ?> getTokenByOauthServer(String code) {
         String basicStr = authClientRegistrationProperties.getClientId() + ":" + authClientRegistrationProperties.getClientSecret();
         HttpHeaders headers = new HttpHeaders();

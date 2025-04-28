@@ -98,9 +98,17 @@ $ mvn spring-boot:run
 - 使用`授权码`换取访问`令牌`
 ```shell
 # 最后的yourCode替换为上面步骤获取的授权码
-$ curl --location 'http://auth.hiauth.cn/oauth2/token' \
+$ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---header 'Accept: application/json' \
+--data-urlencode 'grant_type=authorization_code' \
+--data-urlencode 'client_id=himall' \
+--data-urlencode 'client_secret=secret' \
+--data-urlencode 'redirect_uri=http://127.0.0.1:9000/login/oauth2/code/hiauth-code' \
+--data-urlencode 'code=yourCode'
+
+# 或者
+$ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
 --data 'grant_type=authorization_code&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code&client_id=himall&client_secret=secret&code=yourCode'
 ```
 返回结果：
@@ -116,9 +124,16 @@ $ curl --location 'http://auth.hiauth.cn/oauth2/token' \
 
 **client_credentials模式：**
 ```shell
-$ curl --location 'http://auth.hiauth.cn/oauth2/token' \
+$ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---header 'Accept: application/json' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'client_id=himall' \
+--data-urlencode 'client_secret=secret' \
+--data-urlencode 'scope=profile'
+
+# 或者
+$ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
 --data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile'
 ```
 返回结果：

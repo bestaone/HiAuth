@@ -118,6 +118,7 @@ public class AuthFilter implements Filter {
 
         String accessTokenKey = String.format(Constant.ACCESS_TOKEN_CACHE_KEY, properties.getCachePrefix(), username, accessToken);
         String json = redisTemplate.opsForValue().get(accessTokenKey);
+        Assert.notNull(json, 10401, "invalid token");
         SessionContext context = JSONUtil.toBean(json, SessionContext.class);
         Assert.notNull(context, 10401, "invalid token");
 

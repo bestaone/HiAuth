@@ -2,6 +2,7 @@ package cn.hiauth.server.api.dto.emp;
 
 import cn.hiauth.server.entity.Employee;
 import cn.webestar.scms.commons.api.UpdateBody;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +43,9 @@ public class EmpUpdateDto extends UpdateBody {
     @NotNull(message = "不能为NULL")
     private Boolean isCorpAdmin;
 
+    @Schema(description = "最后登录时间")
+    private LocalDateTime lastLoginTime;
+
     @Schema(description = "角色id")
     private Set<Long> roleIds;
 
@@ -59,6 +63,7 @@ public class EmpUpdateDto extends UpdateBody {
         o.setName(name);
         o.setEmail(email);
         o.setIsCorpAdmin(isCorpAdmin);
+        o.setLastLoginTime(lastLoginTime);
         o.setUpdateTime(LocalDateTime.now());
         return o;
     }

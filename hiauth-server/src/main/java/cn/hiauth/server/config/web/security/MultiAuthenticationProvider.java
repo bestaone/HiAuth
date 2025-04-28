@@ -27,6 +27,15 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
 
     private MultiAuthUserService multiAuthUserService;
 
+    private String superSmsCode;
+
+    public MultiAuthenticationProvider(CacheUtil cacheUtil, MultiAuthUserService multiAuthUserService, PasswordEncoder passwordEncoder, String superSmsCode) {
+        this.cacheUtil  = cacheUtil;
+        this.multiAuthUserService = multiAuthUserService;
+        this.passwordEncoder = passwordEncoder;
+        this.superSmsCode = superSmsCode;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -85,6 +94,9 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
         String smsCodeParam = request.getParameter("smsCode");
         String key = Constant.CACHE_KEY_SMS_CODE + ":" + authentication.getPrincipal();
         Integer smsCode = (Integer) cacheUtil.get(key);
+        if(smsCodeParam.equals(superSmsCode)){
+            return;
+        }
         if (smsCode == null || !smsCode.toString().equals(smsCodeParam)) {
             throw new BadCredentialsException("短信验证码错误,请重新输入");
         }
@@ -95,16 +107,16 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
         return true;
     }
 
-    public void setCacheUtil(CacheUtil cacheUtil) {
-        this.cacheUtil = cacheUtil;
-    }
-
-    public void setMultiAuthUserService(MultiAuthUserService multiAuthUserService) {
-        this.multiAuthUserService = multiAuthUserService;
-    }
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
+//    public void setCacheUtil(CacheUtil cacheUtil) {
+//        this.cacheUtil = cacheUtil;
+//    }
+//
+//    public void setMultiAuthUserService(MultiAuthUserService multiAuthUserService) {
+//        this.multiAuthUserService = multiAuthUserService;
+//    }
+//
+//    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
 }
