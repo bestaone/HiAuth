@@ -12,9 +12,9 @@
 
     <modules>
         <module>hiauth-server</module>
-<!--        <module>hiauth-client-spring-boot-starter</module>-->
         <module>example/demo</module>
         <module>example/himall</module>
+        <module>example/hiauth-client</module>
     </modules>
 
 </project>

@@ -38,6 +38,14 @@ public class Employee extends BasicDO<Long> {
     @Schema(description = "邮箱")
     private String email;
 
+    @TableField("is_corp_admin")
+    @Schema(description = "是否为租户管理员")
+    private Boolean isCorpAdmin;
+
+    @TableField("last_login_time")
+    @Schema(description = "最后登录时间")
+    private LocalDateTime lastLoginTime;
+
     @TableField("creator")
     @Schema(description = "创建人")
     private Long creator;
@@ -61,10 +69,6 @@ public class Employee extends BasicDO<Long> {
     @TableField("delete_time")
     @Schema(description = "删除时间")
     private LocalDateTime deleteTime;
-
-    @TableField("is_corp_admin")
-    @Schema(description = "是否为租户管理员")
-    private Boolean isCorpAdmin;
 
     @TableLogic(value = "false", delval = "true")
     @TableField("is_deleted")

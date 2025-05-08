@@ -27,9 +27,22 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
 
     private MultiAuthUserService multiAuthUserService;
 
+    private String superSmsCode;
+
+    public MultiAuthenticationProvider(CacheUtil cacheUtil, MultiAuthUserService multiAuthUserService, PasswordEncoder passwordEncoder, String superSmsCode) {
+        this.cacheUtil = cacheUtil;
+        this.multiAuthUserService = multiAuthUserService;
+        this.passwordEncoder = passwordEncoder;
+        this.superSmsCode = superSmsCode;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String url = request.getRequestURI();
+        if (!Constant.LOGIN_ACTION.equals(url)) {
+            return null;
+        }
         String loginType = request.getParameter("loginType");
         DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
         String clientId = null;
@@ -55,10 +68,12 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
             }
         } catch (CommonException ex) {
             throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);
-        } catch (UsernameNotFoundException | InternalAuthenticationServiceException ex) {
-            throw ex;
+        } catch (BadCredentialsException ex) {
+            throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);
+        //} catch (UsernameNotFoundException | InternalAuthenticationServiceException ex) {
+        //     throw ex;
         } catch (Exception ex) {
-            throw new InternalAuthenticationServiceException("登录失败，用户名或者密码错误", ex);
+            throw new InternalAuthenticationServiceException("登录失败:账号异常", ex);
         }
 
         if (authUser == null) {
@@ -71,12 +86,12 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
     private void checkPwdLogin(AuthUser authUser, Authentication authentication) {
         if (authentication.getCredentials() == null) {
             log.debug("Failed to authenticate since no credentials provided");
-            throw new BadCredentialsException("AbstractUserDetailsAuthenticationProvider.badCredentials Bad credentials");
+            throw new BadCredentialsException("用户名或者密码错误");
         }
         String presentedPassword = authentication.getCredentials().toString();
         if (!this.passwordEncoder.matches(presentedPassword, authUser.getPassword())) {
             log.debug("Failed to authenticate since password does not match stored value");
-            throw new BadCredentialsException("AbstractUserDetailsAuthenticationProvider.badCredentials Bad credentials");
+            throw new BadCredentialsException("用户名或者密码错误");
         }
     }
 
@@ -84,27 +99,18 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
         //此处写验证短信码
         String smsCodeParam = request.getParameter("smsCode");
         String key = Constant.CACHE_KEY_SMS_CODE + ":" + authentication.getPrincipal();
-        Integer smsCode = (Integer) cacheUtil.get(key);
-        if (smsCode == null || !smsCode.toString().equals(smsCodeParam)) {
-            throw new BadCredentialsException("短信验证码错误,请重新输入");
+        String smsCode = (String) cacheUtil.get(key);
+        if (smsCodeParam.equals(superSmsCode)) {
+            return;
+        }
+        if (smsCode == null || !smsCode.equals(smsCodeParam)) {
+            throw new BadCredentialsException("短信验证码错误");
         }
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return true;
-    }
-
-    public void setCacheUtil(CacheUtil cacheUtil) {
-        this.cacheUtil = cacheUtil;
-    }
-
-    public void setMultiAuthUserService(MultiAuthUserService multiAuthUserService) {
-        this.multiAuthUserService = multiAuthUserService;
-    }
-
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
 }

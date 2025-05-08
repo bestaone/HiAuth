@@ -1,6 +1,8 @@
 package cn.hiauth.server.config;
 
 import cn.hiauth.server.config.rest.security.ReadonlyFilter;
+import cn.hiauth.server.utils.AliyunSmsUtils;
+import cn.hiauth.server.utils.SmsUtils;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +18,23 @@ public class BeanConfig {
 
     @Value("${app.readonly.account:}")
     private String readonlyAccount;
+
+    @Value("${smsUils.accessKeyId:}")
+    private String accessKeyId;
+
+    @Value("${smsUils.accessKeySecret:}")
+    private String accessKeySecret;
+
+    @Value("${smsUils.endpoint:dysmsapi.aliyuncs.com}")
+    private String endpoint;
+
+    @Value("${smsUils.sign:}")
+    private String sign;
+
+    @Bean
+    public SmsUtils smsUtils() {
+        return new AliyunSmsUtils(accessKeyId, accessKeySecret, endpoint, sign);
+    }
 
     /**
      * 解决将Long类型转成String

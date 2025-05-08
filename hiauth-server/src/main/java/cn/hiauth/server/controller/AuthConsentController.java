@@ -77,7 +77,7 @@ public class AuthConsentController {
         private static final Map<String, String> scopeDescriptions = new HashMap<>();
 
         static {
-            scopeDescriptions.put(OidcScopes.PROFILE, "This application will be able to read your profile information.");
+            scopeDescriptions.put(OidcScopes.PROFILE, "此应用程序将能够读取您的个人资料信息。");
             scopeDescriptions.put("user", "This application will be able to read your user information.");
             scopeDescriptions.put("message.read", "This application will be able to read your message.");
             scopeDescriptions.put("message.write", "This application will be able to add new messages. It will also be able to edit and delete existing messages.");

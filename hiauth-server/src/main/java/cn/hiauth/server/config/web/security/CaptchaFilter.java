@@ -43,16 +43,23 @@ public class CaptchaFilter extends AbstractAuthenticationProcessingFilter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         if (pathMatcher.match(processUrl, req.getServletPath()) && HttpMethod.POST.name().equalsIgnoreCase(req.getMethod())) {
+            // 记住上一次登录的账号和密码，用于登录失败后，重新登录
+//            String loginType = request.getParameter("loginType");
+//            String account = request.getParameter("account");
+//            String password = request.getParameter("password");
+//            req.getSession().setAttribute("lastLoginType", loginType);
+//            req.getSession().setAttribute("lastAccount", account);
+//            req.getSession().setAttribute("lastPassword", password);
             String formToken = request.getParameter(Constant.REQUEST_KEY_FORM_TOKEN);
             String imgCodeKey = Constant.CACHE_KEY_CAPTCHA + ":" + formToken;
             String captchaCache = (String) cacheUtil.get(imgCodeKey);
             if (captchaCache == null) {
-                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("图形验证码错误，请重新输入"));
+                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("验证失败:图形验证码错误"));
                 return;
             }
             String captchaParam = req.getParameter(FORM_CAPTCHA_KEY);
             if (!captchaCache.equalsIgnoreCase(captchaParam)) {
-                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("图形验证码错误，请重新输入"));
+                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("验证失败:图形验证码错误"));
                 return;
             }
             //销毁图形验证码，以免别人使用次图像验证码刷接口

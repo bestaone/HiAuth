@@ -18,6 +18,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
@@ -80,15 +81,20 @@ public class HiAuthClientController {
 
     @GetMapping(value = "/oauth2/token/redirect")
     public String getTokenHtml(HttpServletRequest request, @RequestParam("code") String code) {
-        SessionContext context = auth(code);
         Assert.notNull(authClientProperties.getAuthSuccessRedirectUri(), SysCode.biz(1), "请先配置参数:hiauth.client.authSuccessRedirectUri");
         String customAuthSuccessRedirectUri = request.getHeader("dev-auth-success-redirect-uri");
         String authSuccessRedirectUri = customAuthSuccessRedirectUri != null ? customAuthSuccessRedirectUri : authClientProperties.getAuthSuccessRedirectUri();
-        log.debug("REDIRECT-URI:{}?accessToken={}", authSuccessRedirectUri, context.getAccessToken());
-        return "redirect:" + authSuccessRedirectUri + "?accessToken=" + context.getAccessToken();
+        try {
+            SessionContext context = auth(code);
+            log.debug("REDIRECT-URI:{}?accessToken={}", authSuccessRedirectUri, context.getAccessToken());
+            return "redirect:" + authSuccessRedirectUri + "?accessToken=" + context.getAccessToken();
+        } catch (HttpClientErrorException e) {
+            log.debug("权限不足，退出重新登陆。");
+            return logout(request);
+        }
     }
 
-    private SessionContext auth(String code) {
+    private SessionContext auth(String code) throws HttpClientErrorException {
         Assert.notEmpty(code, 300001, "code不能为空。");
 
         Map<?, ?> tokenMap = getTokenByOauthServer(code);
@@ -100,6 +106,7 @@ public class HiAuthClientController {
         Integer expireIn = (Integer) tokenMap.get("expires_in");
 
         Map<?, ?> userinfoMap = getUserInfoByOauthServer(accessToken);
+
         Long appId = Long.parseLong(userinfoMap.get("appId").toString());
         Long cid = Long.parseLong(userinfoMap.get("cid").toString());
         Long userId = Long.parseLong(userinfoMap.get("userId").toString());
@@ -152,6 +159,20 @@ public class HiAuthClientController {
         return updatePwdByOauthServer(hiAuthToken.getAccessToken(), body.getRawPwd(), body.getNewPwd());
     }
 
+    @ResponseBody
+    @PostMapping(value = "/api/common/myCorps")
+    public R<List<SecurityCorp>> myCorps() {
+        Authentication auth = SessionContextHolder.getContext().getAuth();
+        List<SecurityCorp> corps = securityService.loadUserCorps(auth.getUserId());
+        return R.success(corps);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/api/common/switchCorp")
+    public R<Boolean> switchCorp(@RequestParam("id") Long id) {
+        return R.success(securityService.switchCorp(id));
+    }
+
     private Map<?, ?> getTokenByOauthServer(String code) {
         String basicStr = authClientRegistrationProperties.getClientId() + ":" + authClientRegistrationProperties.getClientSecret();
         HttpHeaders headers = new HttpHeaders();
@@ -165,7 +186,7 @@ public class HiAuthClientController {
         return restTemplate.postForObject(authClientProviderProperties.getTokenUri(), request, Map.class);
     }
 
-    private Map<?, ?> getUserInfoByOauthServer(String accessToken) {
+    private Map<?, ?> getUserInfoByOauthServer(String accessToken) throws HttpClientErrorException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add("Authorization", "Bearer " + accessToken);

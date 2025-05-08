@@ -42,6 +42,9 @@ public class EmpUpdateDto extends UpdateBody {
     @NotNull(message = "不能为NULL")
     private Boolean isCorpAdmin;
 
+    @Schema(description = "最后登录时间")
+    private LocalDateTime lastLoginTime;
+
     @Schema(description = "角色id")
     private Set<Long> roleIds;
 
@@ -59,6 +62,7 @@ public class EmpUpdateDto extends UpdateBody {
         o.setName(name);
         o.setEmail(email);
         o.setIsCorpAdmin(isCorpAdmin);
+        o.setLastLoginTime(lastLoginTime);
         o.setUpdateTime(LocalDateTime.now());
         return o;
     }

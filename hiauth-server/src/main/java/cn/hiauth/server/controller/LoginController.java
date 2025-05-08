@@ -2,15 +2,18 @@ package cn.hiauth.server.controller;
 
 import cn.hiauth.server.config.AppProperties;
 import cn.hiauth.server.utils.Constant;
+import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.RandomUtil;
 import cn.webestar.scms.cache.CacheUtil;
 import cn.webestar.scms.commons.R;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Slf4j
@@ -29,21 +34,30 @@ public class LoginController {
 
     private final static long timeout = 180;
     private final Random random = new Random();
+
     @Autowired
     private AppProperties appProperties;
+
     @Autowired
     private CacheUtil cacheUtil;
+
     @Autowired
     private Snowflake idGenerator;
 
+    @Autowired
+    private SmsUtils smsUtils;
+
+    @Value("${smsUils.smsTemplateCode:}")
+    private String smsTemplateCode;
+
     @GetMapping(value = {"/login"}, produces = "text/html")
-    public String login(Model model) {
+    public String login(HttpServletRequest request, Model model) {
         model.addAttribute(Constant.REQUEST_KEY_FORM_TOKEN, idGenerator.nextId());
         model.addAttribute("title", appProperties.getLoginPageTitle());
-        model.addAttribute("username", appProperties.getLoginPageUsername());
-        model.addAttribute("password", appProperties.getLoginPagePassword());
+
         model.addAttribute("usernamePlaceholder", appProperties.getLoginPageUsernamePlaceholder());
         model.addAttribute("passwordPlaceholder", appProperties.getLoginPagePasswordPlaceholder());
+
         return appProperties.getLoginPagePath();
     }
 
@@ -79,7 +93,7 @@ public class LoginController {
         //校验图形验证码是否有效
         {
             String imgCodeCache = (String) cacheUtil.get(Constant.CACHE_KEY_CAPTCHA + ":" + formToken);
-            if (imgCodeCache == null || !imgCodeCache.equals(imgCode)) {
+            if (imgCodeCache == null || !imgCodeCache.equalsIgnoreCase(imgCode)) {
                 return R.fail(20101, "图形验证码错误");
             }
         }
@@ -93,7 +107,7 @@ public class LoginController {
             }
         }
 
-        Integer smsCode = random.nextInt(8999) + 1000;
+        String smsCode = RandomUtil.randomNumbers(6);
 
         //记录数据到缓存
         {
@@ -102,6 +116,10 @@ public class LoginController {
             //记录imgCode已经用于telNo的短信验证码发送
             cacheUtil.set(Constant.CACHE_KEY_SMS_CODE + ":" + formToken + ":" + imgCode, telNo, timeout);
         }
+
+        Map<String, String> paramMap = new HashMap<>(2);
+        paramMap.put("code", smsCode);
+        smsUtils.sendSms(telNo, smsTemplateCode, paramMap);
 
         log.debug("生成短信验证码：{}, 有效期:{}妙", smsCode, timeout);
         return R.success(smsCode);

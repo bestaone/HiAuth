@@ -44,6 +44,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         queryWrapper.eq(Employee::getUserId, userId);
         queryWrapper.eq(Employee::getIsCorpAdmin, true);
         queryWrapper.last("OFFSET 0 LIMIT 1");
+        queryWrapper.orderByDesc(Employee::getLastLoginTime);
         List<Employee> emps = this.list(queryWrapper);
         return emps != null && !emps.isEmpty() ? emps.get(0) : null;
     }

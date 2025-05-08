@@ -35,6 +35,8 @@ interface AppPreferences {
   contentCompact: ContentCompactType;
   // /** 应用默认头像 */
   defaultAvatar: string;
+  /** 默认首页地址 */
+  defaultHomePath: string;
   // /** 开启动态标题 */
   dynamicTitle: boolean;
   /** 是否开启检查更新 */
@@ -132,6 +134,8 @@ interface SidebarPreferences {
   autoActivateChild: boolean;
   /** 侧边栏是否折叠 */
   collapsed: boolean;
+  /** 侧边栏折叠按钮是否可见 */
+  collapsedButton: boolean;
   /** 侧边栏折叠时，是否显示title */
   collapsedShowTitle: boolean;
   /** 侧边栏是否可见 */
@@ -140,6 +144,8 @@ interface SidebarPreferences {
   expandOnHover: boolean;
   /** 侧边栏扩展区域是否折叠 */
   extraCollapse: boolean;
+  /** 侧边栏固定按钮是否可见 */
+  fixedButton: boolean;
   /** 侧边栏是否隐藏 - css */
   hidden: boolean;
   /** 侧边栏宽度 */

@@ -5,6 +5,11 @@ public class Constant {
     /**
      * 登录时存储图形验证码到缓存中的key
      */
+    public static final String LOGIN_ACTION = "/auth/doLogin";
+
+    /**
+     * 登录时存储图形验证码到缓存中的key
+     */
     public static final String CACHE_KEY_CAPTCHA = "captcha";
     /**
      * 登录时存储短信验证码到缓存中的key
