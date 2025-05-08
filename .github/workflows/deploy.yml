@@ -28,7 +28,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2 # 安装pnpm并添加到环境变量
         with:
-          version: 9.14.2 # 指定 pnpm 版本
+          version: 10.10.0 # 指定 pnpm 版本
       - name: Setup Pages
         uses: actions/configure-pages@v4  # 在工作流程自动配置GithubPages
       - name: Install dependencies
