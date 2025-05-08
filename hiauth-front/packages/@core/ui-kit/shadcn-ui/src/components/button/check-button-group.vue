@@ -6,11 +6,11 @@ import type { ValueType, VbenButtonGroupProps } from './button';
 import { computed, ref, watch } from 'vue';
 
 import { Circle, CircleCheckBig, LoaderCircle } from '@vben-core/icons';
-import { VbenRenderContent } from '@vben-core/shadcn-ui';
 import { cn, isFunction } from '@vben-core/shared/utils';
 
 import { objectOmit } from '@vueuse/core';
 
+import { VbenRenderContent } from '../render-content';
 import VbenButtonGroup from './button-group.vue';
 import Button from './button.vue';
 
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<VbenButtonGroupProps>(), {
   showIcon: true,
   size: 'middle',
 });
-
+const emit = defineEmits(['btnClick']);
 const btnDefaultProps = computed(() => {
   return {
     ...objectOmit(props, ['options', 'btnClass', 'size', 'disabled']),
@@ -41,7 +41,6 @@ watch(
         innerValue.value.length > 0 ? innerValue.value[0] : undefined;
     }
   },
-  { immediate: true },
 );
 
 watch(
@@ -60,7 +59,7 @@ watch(
       innerValue.value = val === undefined ? [] : [val as ValueType];
     }
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 async function onBtnClick(value: ValueType) {
@@ -90,6 +89,7 @@ async function onBtnClick(value: ValueType) {
     innerValue.value = [value];
     modelValue.value = value;
   }
+  emit('btnClick', value);
 }
 </script>
 <template>

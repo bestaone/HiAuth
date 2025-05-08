@@ -11,6 +11,7 @@ const defaultPreferences: Preferences = {
     contentCompact: 'wide',
     defaultAvatar:
       'https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp',
+    defaultHomePath: '/analytics',
     dynamicTitle: true,
     enableCheckUpdates: true,
     enablePreferences: true,
@@ -68,10 +69,12 @@ const defaultPreferences: Preferences = {
   sidebar: {
     autoActivateChild: false,
     collapsed: false,
+    collapsedButton: true,
     collapsedShowTitle: false,
     enable: true,
     expandOnHover: true,
     extraCollapse: false,
+    fixedButton: true,
     hidden: false,
     width: 224,
   },

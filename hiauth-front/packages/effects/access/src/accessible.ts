@@ -30,6 +30,9 @@ async function generateAccessible(
 
   const root = router.getRoutes().find((item) => item.path === '/');
 
+  // 获取已有的路由名称列表
+  const names = root?.children?.map((item) => item.name) ?? [];
+
   // 动态添加到router实例内
   accessibleRoutes.forEach((route) => {
     if (root && !route.meta?.noBasicLayout) {
@@ -38,7 +41,18 @@ async function generateAccessible(
       if (route.children && route.children.length > 0) {
         delete route.component;
       }
-      root.children?.push(route);
+      // 根据router name判断，如果路由已经存在，则不再添加
+      if (names?.includes(route.name)) {
+        // 找到已存在的路由索引并更新，不更新会造成切换用户时，一级目录未更新，homePath 在二级目录导致的404问题
+        const index = root.children?.findIndex(
+          (item) => item.name === route.name,
+        );
+        if (index !== undefined && index !== -1 && root.children) {
+          root.children[index] = route;
+        }
+      } else {
+        root.children?.push(route);
+      }
     } else {
       router.addRoute(route);
     }
@@ -52,7 +66,7 @@ async function generateAccessible(
   }
 
   // 生成菜单
-  const accessibleMenus = await generateMenus(accessibleRoutes, options.router);
+  const accessibleMenus = generateMenus(accessibleRoutes, options.router);
 
   return { accessibleMenus, accessibleRoutes };
 }
