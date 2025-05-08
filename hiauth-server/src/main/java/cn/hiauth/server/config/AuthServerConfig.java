@@ -132,8 +132,12 @@ public class AuthServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                //自定义授权页
-                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint.consentPage("/oauth2/consent"))
+                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
+                        //自定义授权页
+                        .consentPage("/oauth2/consent")
+                        //自定义异常处理
+                        .errorResponseHandler(new AuthFailureHandler())
+                )
                 //开启OpenID Connect 1.0（其中oidc为OpenID Connect的缩写）
                 .oidc(oidcConfigurer -> oidcConfigurer.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer.userInfoMapper(userInfoAuthenticationContext -> {
                     String accessToken = userInfoAuthenticationContext.getAccessToken().getTokenValue();

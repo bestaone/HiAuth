@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>HiMall</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" th:href="@{/static/favicon.ico}">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css} ">
+    <link th:href="@{/static/css/index.css}" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation"><a th:href="@{/}">Home</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}" class="active"><a th:href="@{/profile}">Profile</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/api/client}">Client</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? !session.isAuth : true}"><a th:href="@{/signin}">Login</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">HIMALL</h3>
+    </div>
+
+    <div style="margin-top: 30px;"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>用户信息</div>
+    <div class="row">
+        <div class="col-md-2 title">用户姓名：</div><div class="col-md-4 text" data-field="name" th:text="${name}"></div>
+        <div class="col-md-2 title">用户账号：</div><div class="col-md-4 text" data-field="username" th:text="${username}"></div>
+        <div class="col-md-2 title">手机号码：</div><div class="col-md-4 text" data-field="tel" th:text="${tel}"></div>
+        <div class="col-md-2 title">最近登录：</div><div class="col-md-4 text" data-field="lastLoginTime" th:text="${lastLoginTime}"></div>
+        <div class="col-md-2 title">cid：</div><div class="col-md-4 text" data-field="cid" th:text="${cid}"></div>
+        <div class="col-md-2 title">emp：</div><div class="col-md-4 text" data-field="empId" th:text="${empId}"></div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+        <div class="col-md-2 title">当前租户：</div>
+        <div class="col-md-10">
+            <select id="corpSelect" class="form-control" style="width:50%">
+                <option value="">加载中...</option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
+
+<script>
+
+var cid = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('accessToken');
+    if (accessToken) {
+        localStorage.setItem('accessToken', accessToken);
+        
+        fetch('/api/getAuth', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        }).then(data => {
+            console.log('Auth data:', data);
+            document.querySelector('[data-field="name"]').textContent = data.data.name || 'N/A';
+            document.querySelector('[data-field="username"]').textContent = data.data.username || 'N/A';
+            document.querySelector('[data-field="tel"]').textContent = data.data.phoneNum || 'N/A';
+            document.querySelector('[data-field="lastLoginTime"]').textContent = data.data.lastLoginTime || 'N/A';
+            document.querySelector('[data-field="cid"]').textContent = data.data.cid || 'N/A';
+            document.querySelector('[data-field="empId"]').textContent = data.data.empId || 'N/A';
+            cid = data.data.cid;
+            loadCorps(accessToken); // 新增租户加载
+        }).catch(error => {
+            console.error('Fetch error:', error);
+            alert('获取用户信息失败');
+        });
+    }
+});
+
+// 租户切换处理
+document.getElementById('corpSelect').addEventListener('change', function(e) {
+    const id = e.target.value;
+    fetch('/api/common/switchCorp?id='+id, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        // 刷新页面应用新租户
+        location.reload(); 
+    });
+});
+
+// 获取租户列表
+function loadCorps(accessToken) {
+    fetch('/api/common/myCorps', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const select = document.getElementById('corpSelect');
+        select.innerHTML = data.data.map(corp => 
+            `<option value="${corp.id}" ${corp.id == cid ? 'selected' : ''}>${corp.name}</option>`
+        ).join('');
+    });
+}
+</script>

@@ -6,6 +6,7 @@ import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ICaptcha;
 import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.RandomUtil;
 import cn.webestar.scms.cache.CacheUtil;
 import cn.webestar.scms.commons.R;
 import jakarta.servlet.http.HttpServletRequest;
@@ -106,7 +107,7 @@ public class LoginController {
             }
         }
 
-        Integer smsCode = random.nextInt(899999) + 1000;
+        String smsCode = RandomUtil.randomNumbers(6);
 
         //记录数据到缓存
         {
@@ -117,7 +118,7 @@ public class LoginController {
         }
 
         Map<String, String> paramMap = new HashMap<>(2);
-        paramMap.put("code", smsCode.toString());
+        paramMap.put("code", smsCode);
         smsUtils.sendSms(telNo, smsTemplateCode, paramMap);
 
         log.debug("生成短信验证码：{}, 有效期:{}妙", smsCode, timeout);

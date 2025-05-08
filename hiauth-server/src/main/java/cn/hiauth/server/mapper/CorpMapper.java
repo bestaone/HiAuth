@@ -17,13 +17,13 @@ public interface CorpMapper extends BaseMapper<Corp> {
 
     @ResultMap("BaseResultMap")
     @Select("""
-        <script>
-        SELECT O.* FROM t_corp O
-        LEFT JOIN t_employee O1 ON O1.cid = O.id
-        WHERE O1.user_id=#{userId}
-        ORDER BY O1.last_login_time DESC
-        </script>
-    """)
+                <script>
+                SELECT O.* FROM t_corp O
+                LEFT JOIN t_employee O1 ON O1.cid = O.id
+                WHERE O1.user_id=#{userId}
+                ORDER BY O1.last_login_time DESC
+                </script>
+            """)
     List<Corp> findByUserId(@Param("userId") Long userId);
 
 }

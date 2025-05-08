@@ -5,6 +5,7 @@ import cn.hiauth.server.config.rest.ResourceAuthenticationEntryPoint;
 import cn.hiauth.server.config.web.security.CaptchaFilter;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
 import cn.hiauth.server.config.web.security.MultiAuthenticationProvider;
+import cn.hiauth.server.utils.Constant;
 import cn.webestar.scms.cache.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,7 +65,7 @@ public class SecurityConfig {
                 // authorization server filter chain
                 .formLogin(Customizer.withDefaults())
                 .formLogin(form -> form.loginPage("/login")
-                        .loginProcessingUrl("/auth/doLogin")
+                        .loginProcessingUrl(Constant.LOGIN_ACTION)
                         .usernameParameter("account")
                 )
                 //.rememberMe(AbstractHttpConfigurer::disable)
@@ -74,9 +75,9 @@ public class SecurityConfig {
                 // 设置资源服务配置，请求头中懈怠了 Bearer Token的请求会被拦截处理
                 .oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
                                 .jwt(Customizer.withDefaults()) // 使用jwt
-                                .authenticationEntryPoint(new ResourceAuthenticationEntryPoint()) // 请求未携带Token处理
-                                .accessDeniedHandler(new ResourceAccessDeniedHandler())     // 权限不足处理
-                        //.authenticationFailureHandler(this::failureHandler)       // Token解析失败处理
+                                .authenticationEntryPoint(new ResourceAuthenticationEntryPoint())   // 请求未携带Token处理
+                                .accessDeniedHandler(new ResourceAccessDeniedHandler())             // 权限不足处理
+                        //.authenticationFailureHandler(this::failureHandler)                       // Token解析失败处理
                 );
 
         // 图形验证码过滤器
@@ -89,11 +90,6 @@ public class SecurityConfig {
 
     @Bean
     public MultiAuthenticationProvider authProvider() {
-//        MultiAuthenticationProvider authenticationProvider = new MultiAuthenticationProvider(cacheUtil, multiAuthUserService, passwordEncoder(), superSmsCode);
-//        authenticationProvider.setMultiAuthUserService(multiAuthUserService);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        authenticationProvider.setCacheUtil(cacheUtil);
-//        return authenticationProvider;
         return new MultiAuthenticationProvider(cacheUtil, multiAuthUserService, passwordEncoder(), superSmsCode);
     }
 

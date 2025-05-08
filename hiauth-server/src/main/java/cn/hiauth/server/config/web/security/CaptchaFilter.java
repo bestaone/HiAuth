@@ -54,12 +54,12 @@ public class CaptchaFilter extends AbstractAuthenticationProcessingFilter {
             String imgCodeKey = Constant.CACHE_KEY_CAPTCHA + ":" + formToken;
             String captchaCache = (String) cacheUtil.get(imgCodeKey);
             if (captchaCache == null) {
-                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("图形验证码错误，请重新输入"));
+                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("验证失败:图形验证码错误"));
                 return;
             }
             String captchaParam = req.getParameter(FORM_CAPTCHA_KEY);
             if (!captchaCache.equalsIgnoreCase(captchaParam)) {
-                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("图形验证码错误，请重新输入"));
+                unsuccessfulAuthentication(req, res, new InsufficientAuthenticationException("验证失败:图形验证码错误"));
                 return;
             }
             //销毁图形验证码，以免别人使用次图像验证码刷接口
