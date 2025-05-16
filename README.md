@@ -29,8 +29,15 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
 ├─docs                              开发文档
 ├─example                           实例
 │ ├─demo                            基础实例
-│ ├─himall                          带有页面的实力
-├─hiauth-client-spring-boot-starter 客户端SDK，如果深度的集成，可以参考此SDK，或者直接使用；
+│ ├─hiauth-client                   使用hiauth-client-spring-boot-starter集成hiauth的实例
+│ ├─himall                          带有页面的实例
+│ ├─spring-cloud                    spring-cloud-gateway的集成实例
+│ ├─spring-cloud-with-hiauth-client hiauth-client-spring-cloud-gateway-starter的集成实例
+├─hiauth-client-starter             hiauth-client SDK
+│ ├─hiauth-client-commons                       基础包
+│ ├─hiauth-client-spring-boot-starter           适用于SpringBoot直接集成
+│ ├─hiauth-client-session-spring-boot-starter   SpringCloud架构中，业务服务中的session管理SDK
+│ ├─hiauth-client-spring-cloud-gateway-starter  SpringCloudGateway中集成认证授权
 ├─hiauth-front                      管理端前端项目
 ├─hiauth-server                     HiAuth服务端
 ├─hiauth-resource                   HiAuth资源服务端

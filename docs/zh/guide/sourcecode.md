@@ -6,7 +6,7 @@
 - JDK 17+
 - Maven 3.8+
 - Nodejs v20.15+
-- pnpm 9.14+
+- pnpm 10.10+
 - PostgreSQL16+
 - Redis
 

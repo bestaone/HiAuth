@@ -6,7 +6,7 @@ The integration process for the source code edition is similar to the Docker edi
 - JDK 17+
 - Maven 3.8+
 - Node.js v20.15+
-- pnpm 9.14+
+- pnpm 10.10+
 - PostgreSQL 16+
 - Redis
 

@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "spring.security.oauth2.client.provider.hiauth-server.issuerUri": {
+      "description": "授权服务端地址",
+      "type": "string"
+    }
+  }
+}
