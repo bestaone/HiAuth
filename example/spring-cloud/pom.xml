@@ -6,18 +6,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.hiauth</groupId>
-    <artifactId>HiAuth</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <artifactId>spring-cloud</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>hiauth-server</module>
-<!--        <module>hiauth-client-starter</module>-->
-        <module>example/demo</module>
-        <module>example/himall</module>
-        <module>example/hiauth-client</module>
-        <module>example/spring-cloud</module>
-        <module>example/spring-cloud-with-hiauth-client</module>
+        <module>gateway</module>
+        <module>ordersvc</module>
     </modules>
 
 </project>
