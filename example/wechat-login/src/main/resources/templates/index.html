@@ -10,5 +10,9 @@
 </head>
 <body>
 HOME
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit">退出登录</button>
+</form>
 </body>
 </html>

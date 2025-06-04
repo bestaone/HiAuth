@@ -15,6 +15,11 @@ public class IndexController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @GetMapping("/toLogin")
+    public String toLogin(){
+        return "login";
+    }
+
     @GetMapping({"/", "/index"})
     public String index(HttpServletRequest request, HttpServletResponse response) {
         return "index";
