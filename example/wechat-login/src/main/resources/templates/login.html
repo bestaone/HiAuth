@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Custom Login Page</h2>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/doLogin}" method="post">
     <input name="_csrf" type="hidden" th:value="${_csrf.token}">
     <div>
         <label for="username">Username:</label>
@@ -20,5 +20,6 @@
         <button type="submit">Log In</button>
     </div>
 </form>
+<a href="/wechat/login">微信登录</a>
 </body>
 </html>
