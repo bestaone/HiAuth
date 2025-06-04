@@ -72,7 +72,7 @@ public class SecurityConfig {
                 //.exceptionHandling(e -> e.accessDeniedPage("/oauth2/error"))
                 //.cors(Customizer.withDefaults())
                 //.csrf(AbstractHttpConfigurer::disable)
-                // 设置资源服务配置，请求头中懈怠了 Bearer Token的请求会被拦截处理
+                // 设置资源服务配置，请求头中携带了 Bearer Token的请求会被拦截处理
                 .oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
                                 .jwt(Customizer.withDefaults()) // 使用jwt
                                 .authenticationEntryPoint(new ResourceAuthenticationEntryPoint())   // 请求未携带Token处理

@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>cn.hiauth</groupId>
-    <artifactId>hiauth-client</artifactId>
+    <artifactId>wechat-login</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>hiauth-client</name>
-    <description>集成HiAuth认证系统</description>
+    <name>wechat-login</name>
+    <description>wechat-login</description>
 
     <properties>
         <java.version>17</java.version>
@@ -25,12 +25,11 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -40,33 +39,10 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>webjars-locator-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>3.3.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>jquery</artifactId>
-            <version>3.6.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.hiauth</groupId>
-            <artifactId>hiauth-client-spring-boot-starter</artifactId>
-            <version>1.0.6</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <finalName>hiauth-client</finalName>
+        <finalName>wechat-login</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
