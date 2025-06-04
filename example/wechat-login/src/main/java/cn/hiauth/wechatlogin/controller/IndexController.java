@@ -15,8 +15,8 @@ public class IndexController {
     @Autowired
     private RestTemplate restTemplate;
 
-    @GetMapping("/toLogin")
-    public String toLogin(){
+    @GetMapping("/login")
+    public String login(){
         return "login";
     }
 

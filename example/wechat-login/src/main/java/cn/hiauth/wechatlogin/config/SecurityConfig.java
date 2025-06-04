@@ -27,11 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/toLogin").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/toLogin")
+                        .loginPage("/login")
                         .loginProcessingUrl("/doLogin")
                         .defaultSuccessUrl("/index", true)
                         .permitAll()
