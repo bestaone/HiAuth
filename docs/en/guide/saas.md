@@ -56,7 +56,7 @@ Use [Spring Initializr](https://start.spring.io/) to create an empty SpringBoot 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.3</version>
+		<version>3.4.5</version>
 		<relativePath/>
 	</parent>
     

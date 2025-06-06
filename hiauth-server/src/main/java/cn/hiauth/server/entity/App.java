@@ -29,6 +29,10 @@ public class App extends BasicDO<Long> {
     @Schema(description = "图标")
     private String icon;
 
+    @TableField("home")
+    @Schema(description = "图标")
+    private String home;
+
     @TableField("create_time")
     @Schema(description = "创建时间")
     private LocalDateTime createTime;

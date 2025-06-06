@@ -1,4 +1,4 @@
-package cn.hiauth.client.gateway;
+package cn.hiauth.client;
 
 public class TokenVo {
 

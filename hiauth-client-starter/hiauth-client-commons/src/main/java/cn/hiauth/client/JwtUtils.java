@@ -14,12 +14,12 @@ public class JwtUtils {
     /**
      * 10小时
      */
-    public static final Integer EXPIRE = 60 * 60 * 10;
+//    public static final Integer EXPIRE = 60 * 60 * 10;
     private static final String KEY = "jwtsecret";
 
-    public static String generateToken(String sub) {
-        return generateToken(sub, EXPIRE);
-    }
+//    public static String generateToken(String sub) {
+//        return generateToken(sub, EXPIRE);
+//    }
 
     public static String generateToken(String sub, Integer expire) {
 

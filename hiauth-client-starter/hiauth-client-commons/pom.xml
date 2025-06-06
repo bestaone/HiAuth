@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.hiauth</groupId>
     <artifactId>hiauth-client-commons</artifactId>
-    <version>0.9.3</version>
+    <version>0.9.7</version>
     <packaging>jar</packaging>
     <name>hiauth-client-commons</name>
     <description>hiauth-client-commons</description>
@@ -24,7 +24,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>3.2.4</version>
+                <version>3.4.5</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.31</version>
+            <version>5.8.38</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

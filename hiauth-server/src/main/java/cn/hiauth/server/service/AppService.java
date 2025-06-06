@@ -19,4 +19,6 @@ public interface AppService extends IService<App> {
 
     Map<Long, App> findByIds(Set<Long> appIds);
 
+//    List<App> limitAppByUserId(Long userId);
+
 }

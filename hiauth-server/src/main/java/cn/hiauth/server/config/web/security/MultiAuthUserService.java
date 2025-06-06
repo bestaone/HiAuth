@@ -49,7 +49,7 @@ public class MultiAuthUserService {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getPhoneNum, phoneNum);
         User user = userMapper.selectOne(queryWrapper);
-        Assert.notNull(user, "用户名或者密码错误");
+        Assert.notNull(user, "手机号或者验证码错误");
         Oauth2RegisteredClient client = oauth2RegisteredClientService.findByClientId(clientId);
         return loadAuthUser(client, user);
     }

@@ -11,6 +11,7 @@ import cn.hutool.core.lang.Snowflake;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.SysCode;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -28,6 +30,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Autowired
     private DepartmentMapper departmentMapper;
+
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @Autowired
     private Snowflake idGenerator;
@@ -97,6 +102,20 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         boolean b = this.removeByIds(ids);
         departmentMapper.del(cid, ids);
         return b;
+    }
+
+    @Override
+    public void swichCorp(Long userId, Long cid) {
+        // 查询指定租户下的员工
+        LambdaQueryWrapper<Employee> empQw = new LambdaQueryWrapper<>();
+        empQw.eq(Employee::getCid, cid);
+        empQw.eq(Employee::getUserId, userId);
+        Employee emp = employeeMapper.selectOne(empQw);
+        // 更新登录时间
+        LambdaUpdateWrapper<Employee> empUw = new LambdaUpdateWrapper<>();
+        empUw.set(Employee::getLastLoginTime, LocalDateTime.now());
+        empUw.eq(Employee::getId, emp.getId());
+        employeeMapper.update(empUw);
     }
 
 }

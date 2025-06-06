@@ -25,7 +25,6 @@ public class SessionContextHolder {
 
     public static void setContext(SessionContext context) {
         contexts.set(context);
-        //refresh();
     }
 
     public static Authentication getAuthentication() {
@@ -43,31 +42,35 @@ public class SessionContextHolder {
         String tokenKey = String.format(Constant.ACCESS_TOKEN_CACHE_KEY, context.getCachePrefix(), context.getAuth().getUserId(), context.getAccessToken());
         String refreshTokenKey = String.format(Constant.REFRESH_TOKEN_CACHE_KEY, context.getCachePrefix(), context.getAuth().getUserId(), context.getRefreshToken());
         String json = JSONUtil.toJsonStr(context);
-        redisTemplate.opsForValue().set(tokenKey, json, Constant.ACCESS_TOKEN_EXPIRE, TimeUnit.SECONDS);
-        redisTemplate.expire(refreshTokenKey, Constant.REFRESH_TOKEN_EXPIRE, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(tokenKey, json, context.getCacheExpire(), TimeUnit.SECONDS);
+        redisTemplate.expire(refreshTokenKey, context.getCacheExpire() * 2, TimeUnit.SECONDS);
+    }
+
+    public static SessionContext auth(String clientName, String cachePrefix, Integer cacheExpire, Authentication authentication) {
+        SessionContext context = new SessionContext(clientName, cachePrefix, cacheExpire);
+        context.setAuth(authentication);
+        return auth(context);
     }
 
     public static SessionContext auth(SessionContext context) {
+        return auth(context, context.getCachePrefix(), context.getCacheExpire());
+    }
+
+    public static SessionContext auth(SessionContext context, String cachePrefix, Integer expire) {
 
         String userId = context.getAuth().getUserId().toString();
-        String accessToken = JwtUtils.generateToken(userId);
+        String accessToken = JwtUtils.generateToken(userId, expire);
         String refreshToken = UUID.randomUUID().toString().replace("-", "");
         context.setAccessToken(accessToken);
         context.setRefreshToken(refreshToken);
-        context.setExpire(LocalDateTime.now().plusMinutes(JwtUtils.EXPIRE));
+        context.setExpire(LocalDateTime.now().plusMinutes(expire));
 
         SessionContextHolder.setContext(context);
         String json = JSONUtil.toJsonStr(context);
-        redisTemplate.opsForValue().set(String.format(Constant.ACCESS_TOKEN_CACHE_KEY, context.getCachePrefix(), userId, accessToken), json, Constant.ACCESS_TOKEN_EXPIRE, TimeUnit.SECONDS);
-        redisTemplate.opsForValue().set(String.format(Constant.REFRESH_TOKEN_CACHE_KEY, context.getCachePrefix(), userId, refreshToken), accessToken, Constant.REFRESH_TOKEN_EXPIRE, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(Constant.ACCESS_TOKEN_CACHE_KEY, cachePrefix, userId, accessToken), json, expire, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(String.format(Constant.REFRESH_TOKEN_CACHE_KEY, cachePrefix, userId, refreshToken), accessToken, expire * 2, TimeUnit.SECONDS);
 
         return context;
-    }
-
-    public static SessionContext auth(String clientName, String cachePrefix, Authentication authentication) {
-        SessionContext context = new SessionContext(clientName, cachePrefix);
-        context.setAuth(authentication);
-        return auth(context);
     }
 
     public static void logout() {

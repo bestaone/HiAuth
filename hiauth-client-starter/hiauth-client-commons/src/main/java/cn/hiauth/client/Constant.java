@@ -15,12 +15,12 @@ public class Constant {
     /**
      * token 有效期
      */
-    public final static Integer ACCESS_TOKEN_EXPIRE = 60 * 60 * 5;
-
-    /**
-     * refresh_token 有效期
-     */
-    public final static Integer REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 3;
+//    public final static Integer ACCESS_TOKEN_EXPIRE = 60 * 60 * 5;
+//
+//    /**
+//     * refresh_token 有效期
+//     */
+//    public final static Integer REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 3;
 
     /**
      * token key 的key格式

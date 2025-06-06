@@ -15,6 +15,7 @@ public class SessionContext implements Serializable {
 
     private String clientName;
     private String cachePrefix;
+    private Integer cacheExpire;
     private String accessToken;
     private String refreshToken;
     private LocalDateTime expire;
@@ -22,9 +23,10 @@ public class SessionContext implements Serializable {
     private HiAuthToken token;
     private Map<String, String> extend = new HashMap<>();
 
-    public SessionContext(String clientName, String cachePrefix){
+    public SessionContext(String clientName, String cachePrefix, Integer cacheExpire) {
         this.clientName = clientName;
         this.cachePrefix = cachePrefix;
+        this.cacheExpire = cacheExpire;
     }
 
 }

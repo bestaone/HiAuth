@@ -26,4 +26,6 @@ public interface EmployeeService extends IService<Employee> {
 
     boolean del(Long cid, Set<Long> ids);
 
+    void swichCorp(Long userId, Long cid);
+
 }

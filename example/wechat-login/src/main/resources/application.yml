@@ -1,10 +1,5 @@
 server.port: 9000
 
 logging.level:
-  root: DEBUG
+  root: INFO
   cn.hiauth: DEBUG
-
-spring.security.user:
-  name: user
-  password: 123456
-  roles: admin

@@ -139,7 +139,7 @@ public class HiAuthClientController {
             auth.setPrincipal(principal);
         }
 
-        SessionContext context = new SessionContext(null,  authClientProperties.getCachePrefix());
+        SessionContext context = new SessionContext(null, authClientProperties.getCachePrefix());
         context.setToken(token);
         context.setAuth(auth);
 

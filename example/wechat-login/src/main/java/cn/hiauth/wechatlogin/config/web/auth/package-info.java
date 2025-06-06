@@ -1,0 +1,1 @@
+package cn.hiauth.wechatlogin.config.web.auth;

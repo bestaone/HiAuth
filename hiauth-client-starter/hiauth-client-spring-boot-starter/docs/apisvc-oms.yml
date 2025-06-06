@@ -1,0 +1,37 @@
+server.port: 9003
+
+logging.level:
+  root: INFO
+  com.vking: DEBUG
+
+app.cache.prefix: uavs:oms
+app.security.enable: true
+
+spring.security.oauth2.client:
+  provider:
+    hiauth-server:
+      issuer-uri: ${AUTH_URI:http://auth-dev.vking.fun:31000}
+      authorizationUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/authorize
+      tokenUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/token
+      userInfoUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/userinfo
+      jwkSetUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/jwks
+      # userNameAttribute: name
+  registration:
+    hiauth-code:
+      # 认证提供者，标识由哪个认证服务器进行认证，和上面的auth-server进行关联
+      provider: hiauth-server
+      client-name: uavs-oms
+      client-id: uavs-oms
+      client-secret: 123456
+      # 客户端认证方式 client_secret_basic\client_secret_post
+      client-authentication-method: client_secret_basic
+      authorization-grant-type: authorization_code
+      # 回调地址，接收认证服务器回传code的接口地址，之前我们是使用http://www.baidu.com代替
+      # 注意：和认证服务器配置的回调地址要一致 '{baseUrl}/{action}/oauth2/code/{registrationId}'
+      redirect-uri: ${REDIRECT_URI:http://oms-dev.mayizhifei.com:30281/gateway/apisvc-oms/oauth2/token/redirect}
+      scope: profile,openid
+
+hiauth.client:
+  cachePrefix: ${app.cache.prefix}
+  checkPermission: false
+  authSuccessRedirectUri: ${AUTH_SUCCESS_REDIRECT_URI:http://oms-dev.mayizhifei.com:30281}

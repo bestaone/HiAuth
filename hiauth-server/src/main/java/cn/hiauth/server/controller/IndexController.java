@@ -1,8 +1,14 @@
 package cn.hiauth.server.controller;
 
+import cn.hiauth.server.api.vo.IndexCorpAppVo;
 import cn.hiauth.server.config.AppProperties;
+import cn.hiauth.server.config.web.auth.AuthUser;
+import cn.hiauth.server.entity.App;
 import cn.hiauth.server.entity.AuthorizationConsent;
 import cn.hiauth.server.entity.User;
+import cn.hiauth.server.service.AppService;
+import cn.hiauth.server.service.CorpService;
+import cn.hiauth.server.service.EmployeeService;
 import cn.hiauth.server.utils.Constant;
 import cn.hutool.core.lang.Snowflake;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +23,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -34,9 +41,29 @@ public class IndexController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private CorpService corpService;
+
+    @Autowired
+    private AppService appService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
     @GetMapping(value = {"/", "/index"})
     public String index(Model model, Authentication auth) {
+        AuthUser authUser = (AuthUser) auth.getPrincipal();
+        List<IndexCorpAppVo> indexCorpApps = corpService.findIndexCorpAppByUserId(authUser.getUserId());
+        model.addAttribute("corpApps", indexCorpApps);
         return "index";
+    }
+
+    @GetMapping(value = { "/openApp"})
+    public String openApp(@RequestParam("cid") Long cid, @RequestParam("appId") Long appId, Authentication auth) {
+        AuthUser authUser = (AuthUser) auth.getPrincipal();
+        App app = appService.getById(appId);
+        employeeService.swichCorp(authUser.getUserId(), cid);
+        return "redirect:" + app.getHome();
     }
 
     @GetMapping(value = {"/profile"})

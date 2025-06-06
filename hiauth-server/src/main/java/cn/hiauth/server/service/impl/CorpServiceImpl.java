@@ -2,6 +2,7 @@ package cn.hiauth.server.service.impl;
 
 import cn.hiauth.server.api.dto.RegisterDto;
 import cn.hiauth.server.api.vo.CorpResourceTreeNodeVo;
+import cn.hiauth.server.api.vo.IndexCorpAppVo;
 import cn.hiauth.server.entity.*;
 import cn.hiauth.server.mapper.*;
 import cn.hiauth.server.service.CorpService;
@@ -43,6 +44,9 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
     private CorpMapper corpMapper;
 
     @Autowired
+    private CorpAppMapper corpAppMapper;
+
+    @Autowired
     private UserMapper userMapper;
 
     @Autowired
@@ -59,7 +63,9 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
     }
 
     private static void buildChild(CorpResourceTreeNodeVo parent, List<AppResource> list, int depth) {
-        if (depth > 10) return;
+        if (depth > 10) {
+            return;
+        }
         if (parent != null && list != null && !list.isEmpty()) {
             list.forEach(o -> {
                 if (o.getPid() != null && o.getPid().equals(parent.getRid())) {
@@ -125,6 +131,12 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
         employee.setUserId(user.getId());
         employee.setIsCorpAdmin(true);
         employeeMapper.insert(employee);
+    }
+
+    @Override
+    public List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId) {
+        List<CorpAppInfo> cpis = corpAppMapper.limitCorpAppInfoByUserId(userId);
+        return IndexCorpAppVo.convert(cpis);
     }
 
 }

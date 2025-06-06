@@ -1,9 +1,6 @@
 package cn.hiauth.client.gateway;
 
-import cn.hiauth.client.Constant;
-import cn.hiauth.client.JwtUtils;
-import cn.hiauth.client.SessionContext;
-import cn.hiauth.client.SessionContextHolder;
+import cn.hiauth.client.*;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
 import cn.webestar.scms.commons.Assert;
@@ -45,7 +42,7 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<AuthG
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-            HiAuthClientGatewayProperties.Client client = hiAuthClientGatewayProperties.getClients().get(config.getClientName());
+            Client client = hiAuthClientGatewayProperties.getClients().get(config.getClientName());
             try {
                 // 检查是否已认证
                 checkAuth(exchange, client.getCachePrefix());
@@ -68,7 +65,7 @@ public class AuthGatewayFilterFactory extends AbstractGatewayFilterFactory<AuthG
         SessionContext context = getSessionContext(request, cachePrefix);
         Assert.notNull(context, 10401, "request fail");
         Assert.notNull(cachePrefix, 10401, "cachePrefix is null");
-        Assert.isTrue(cachePrefix.equals(context.getCachePrefix()), 10401, "invalid token");
+        //Assert.isTrue(cachePrefix.equals(context.getCachePrefix()), 10401, "invalid token");
         SessionContextHolder.setContext(context);
     }
 
