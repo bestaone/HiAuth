@@ -1,7 +1,8 @@
 package cn.hiauth.server.controller;
 
 import cn.hiauth.server.api.vo.IndexCorpAppVo;
-import cn.hiauth.server.config.AppProperties;
+import cn.hiauth.server.config.props.AppProperties;
+import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.config.web.auth.AuthUser;
 import cn.hiauth.server.entity.App;
 import cn.hiauth.server.entity.AuthorizationConsent;
@@ -50,6 +51,9 @@ public class IndexController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private WechatProperties wechatProperties;
+
     @GetMapping(value = {"/", "/index"})
     public String index(Model model, Authentication auth) {
         AuthUser authUser = (AuthUser) auth.getPrincipal();
@@ -58,7 +62,7 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping(value = { "/openApp"})
+    @GetMapping(value = {"/openApp"})
     public String openApp(@RequestParam("cid") Long cid, @RequestParam("appId") Long appId, Authentication auth) {
         AuthUser authUser = (AuthUser) auth.getPrincipal();
         App app = appService.getById(appId);
@@ -88,12 +92,21 @@ public class IndexController {
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
+        // 登录方式
+        model.addAttribute("loginTypes", appProperties.getLoginTypes());
+        // 登录页面配置
         model.addAttribute(Constant.REQUEST_KEY_FORM_TOKEN, idGenerator.nextId());
         model.addAttribute("title", appProperties.getLoginPageTitle());
         model.addAttribute("username", appProperties.getLoginPageUsername());
         model.addAttribute("password", appProperties.getLoginPagePassword());
         model.addAttribute("usernamePlaceholder", appProperties.getLoginPageUsernamePlaceholder());
         model.addAttribute("passwordPlaceholder", appProperties.getLoginPagePasswordPlaceholder());
+        // 微信登录配置
+        model.addAttribute("wechatAppid", wechatProperties.getAppid());
+        model.addAttribute("wechatRedirectUri", wechatProperties.getRedirectUri());
+        model.addAttribute("wechatStyle", wechatProperties.getStyle());
+        model.addAttribute("wechatHref", wechatProperties.getHref());
+        model.addAttribute("wechaState", idGenerator.nextId());
         return appProperties.getLoginPagePath();
     }
 

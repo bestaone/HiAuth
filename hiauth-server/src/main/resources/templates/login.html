@@ -162,13 +162,13 @@
 <div class="form-signIn">
     <div class="tab-content">
         <p class="title" th:text="${title}">用户登录</p>
-        <form id="accountForm"  th:action="@{auth/doLogin}" method="post">
+        <form id="accountForm"  th:action="@{account/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
             <input type="hidden" id="formToken" name="formToken" th:value="${formToken}">
             <input type="hidden" name="loginType" th:value="pwd">
             <div class="form-item input-group">
                 <span class="input-group-icon"><img th:src="@{static/img/yhm_fill.png}" alt=""></span>
-                <input class="login-input form-control" id="username" name="account" th:value="${username}" type="text" aria-label="Account" th:placeholder="${usernamePlaceholder}">
+                <input class="login-input form-control" id="username" name="username" th:value="${username}" type="text" aria-label="Account" th:placeholder="${usernamePlaceholder}">
             </div>
             <div class="input-invalid">
                 <label id="username-error" class="error" for="username" style="display: none"><i aria-hidden="true" class="fa fa-exclamation-triangle"></i>请输入账号</label>
@@ -240,7 +240,7 @@
             debug: false,
             errorPlacement: function (error, element) {},
             rules: {
-                account: {
+                username: {
                     required: true,
                     rangelength: [3, 10]
                 },
@@ -254,7 +254,7 @@
                 }
             },
             messages: {
-                account: {
+                username: {
                     required: errorIcon + "请输入账号",
                     rangelength: errorIcon + "账号长度为{0}-{1}个字符"
                 },

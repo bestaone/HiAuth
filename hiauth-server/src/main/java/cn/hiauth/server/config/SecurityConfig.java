@@ -1,17 +1,20 @@
 package cn.hiauth.server.config;
 
-import cn.hiauth.server.config.rest.ResourceAccessDeniedHandler;
-import cn.hiauth.server.config.rest.ResourceAuthenticationEntryPoint;
-import cn.hiauth.server.config.web.security.CaptchaFilter;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
-import cn.hiauth.server.config.web.security.MultiAuthenticationProvider;
-import cn.hiauth.server.utils.Constant;
+import cn.hiauth.server.config.web.security.account.AccountAuthenticationFilter;
+import cn.hiauth.server.config.web.security.account.AccountAuthenticationProvider;
+import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationFilter;
+import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationProvider;
+import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationFilter;
+import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationProvider;
 import cn.webestar.scms.cache.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +25,10 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.DelegatingSecurityContextRepository;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.HashMap;
@@ -50,47 +57,95 @@ public class SecurityConfig {
     }
 
     /**
-     * Spring Security 过滤链配置（此处是纯Spring Security相关配置）
+     * 定义securityContextRepository，加入两种securityContextRepository
      */
     @Bean
-    @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
-        http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-                        .anyRequest().authenticated()
-                )
-                // Form login handles the redirect to the login page from the
-                // authorization server filter chain
-                .formLogin(Customizer.withDefaults())
-                .formLogin(form -> form.loginPage("/login")
-                        .loginProcessingUrl(Constant.LOGIN_ACTION)
-                        .usernameParameter("account")
-                )
-                //.rememberMe(AbstractHttpConfigurer::disable)
-                //.exceptionHandling(e -> e.accessDeniedPage("/oauth2/error"))
-                //.cors(Customizer.withDefaults())
-                //.csrf(AbstractHttpConfigurer::disable)
-                // 设置资源服务配置，请求头中懈怠了 Bearer Token的请求会被拦截处理
-                .oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
-                                .jwt(Customizer.withDefaults()) // 使用jwt
-                                .authenticationEntryPoint(new ResourceAuthenticationEntryPoint())   // 请求未携带Token处理
-                                .accessDeniedHandler(new ResourceAccessDeniedHandler())             // 权限不足处理
-                        //.authenticationFailureHandler(this::failureHandler)                       // Token解析失败处理
-                );
-
-        // 图形验证码过滤器
-        CaptchaFilter filter = new CaptchaFilter("/auth/doLogin", "/login?error");
-        filter.setCacheUtil(cacheUtil);
-        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+    public SecurityContextRepository securityContextRepository() {
+        HttpSessionSecurityContextRepository httpSecurityRepository = new HttpSessionSecurityContextRepository();
+        return new DelegatingSecurityContextRepository(httpSecurityRepository, new RequestAttributeSecurityContextRepository());
     }
 
     @Bean
-    public MultiAuthenticationProvider authProvider() {
-        return new MultiAuthenticationProvider(cacheUtil, multiAuthUserService, passwordEncoder(), superSmsCode);
+    @Order(2)
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults())
+                // 用户名密码登录配置
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/account/doLogin")
+                        .permitAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/phone/doLogin")
+                        .permitAll()
+                )
+                // 用户名证码认证过滤器
+                .addFilterBefore(accountAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                // 添加手机验证码认证过滤器
+                .addFilterBefore(smsCodeAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                // 微信二维码登录认证过滤器
+                .addFilterBefore(qrCodeAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                // 设置全局authenticationManager
+                .authenticationManager(authenticationManager())
+                // 设置全局securityContextRepository
+                .securityContext(c -> c.securityContextRepository(securityContextRepository()));
+        return http.build();
+    }
+
+    /**
+     * 账号登录过滤器
+     */
+    @Bean
+    public AccountAuthenticationFilter accountAuthenticationFilter() {
+        AccountAuthenticationFilter smsCodeAuthenticationFilter = new AccountAuthenticationFilter("/account/doLogin", "/login?error");
+        smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        smsCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        return smsCodeAuthenticationFilter;
+    }
+
+    /**
+     * 手机验证码登录过滤器
+     */
+    @Bean
+    public SmsCodeAuthenticationFilter smsCodeAuthenticationFilter() {
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/phone/doLogin", "/login?error");
+        smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        smsCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        return smsCodeAuthenticationFilter;
+    }
+
+    /**
+     * 微信二维码登录过滤器
+     */
+    @Bean
+    public QrCodeAuthenticationFilter qrCodeAuthenticationFilter() {
+        QrCodeAuthenticationFilter qrCodeAuthenticationFilter = new QrCodeAuthenticationFilter("/wechat/qrcode/doLogin", "/login?error");
+        qrCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        qrCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        return qrCodeAuthenticationFilter;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+        // 账号登录provider
+        AccountAuthenticationProvider accountAuthenticationProvider = new AccountAuthenticationProvider();
+        accountAuthenticationProvider.setCacheUtil(cacheUtil);
+        accountAuthenticationProvider.setUserDetailsService(multiAuthUserService);
+        accountAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        // 手机验证码登录provider
+        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setCacheUtil(cacheUtil);
+        smsCodeAuthenticationProvider.setUserDetailsService(multiAuthUserService);
+        smsCodeAuthenticationProvider.setSuperSmsCode(superSmsCode);
+        // 微信二维码登录provider
+        QrCodeAuthenticationProvider qrCodeAuthenticationProvider = new QrCodeAuthenticationProvider();
+        qrCodeAuthenticationProvider.setUserDetailsService(multiAuthUserService);
+        return new ProviderManager(accountAuthenticationProvider, smsCodeAuthenticationProvider, qrCodeAuthenticationProvider);
     }
 
     /**

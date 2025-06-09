@@ -7,6 +7,7 @@
     <title id="titleName"></title>
     <script th:src="@{webjars/jquery/3.7.1/jquery.min.js}"></script>
     <script th:src="@{static/js/jquery.validate.min.js}"></script>
+    <script th:src="@{static/js/wxLogin.js}"></script>
     <link th:href="@{/static/fontawesome-5.15.4/css/all.min.css}" rel="stylesheet">
     <style>
 
@@ -215,6 +216,11 @@
         .close-icon:hover {
             opacity: 1;
         }
+
+        #wechat_qrcode {
+            text-align: center;
+            height: 330px;
+        }
     </style>
 
 </head>
@@ -229,21 +235,20 @@
     
     <div class="login-container">
         <div class="tabs">
-            <div class="tab" onclick="switchTab('sms')">手机登录</div>
-            <div class="tab" onclick="switchTab('pwd')">账户登录</div>
+            <div class="tab phone" th:if="${loginTypes.contains('phone')}" onclick="switchTab('phone')">手机登录</div>
+            <div class="tab account" th:if="${loginTypes.contains('account')}" onclick="switchTab('account')">账户登录</div>
+            <div class="tab wechat" th:if="${loginTypes.contains('wechat')}" onclick="switchTab('wechat')">微信登录</div>
         </div>
-
         <!-- 账户登录表单 -->
-        <form id="pwdForm" class="form" style="display: none;" th:action="@{auth/doLogin}" method="post">
+        <form id="accountForm" class="form" style="display: none;" th:action="@{account/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
             <input type="hidden" id="formToken1" name="formToken" th:value="${formToken}">
-            <input type="hidden" name="loginType" th:value="pwd">
             <div class="form-group">
                 <div class="input-wrapper">
                     <svg class="icon input-icon" viewBox="0 0 1024 1024" width="20" height="20">
                         <path fill="currentColor" d="M634.784 540.544c94.976-45.888 160.864-142.912 160.864-255.328 0-156.384-127.264-283.616-283.648-283.616s-283.648 127.232-283.648 283.616c0 112.416 65.856 209.44 160.864 255.296-195.84 55.36-340.32 239.072-340.32 457.248l0 24.608 46.304 0 0-24.608c0-236.192 186.976-428.384 416.8-428.384 229.792 0 416.8 192.16 416.8 428.384l0 24.608 46.304 0 0-24.608c0-218.144-144.48-401.888-340.32-457.216zM274.656 285.248c0-130.848 106.464-237.312 237.344-237.312s237.344 106.464 237.344 237.312c0 130.88-106.464 237.344-237.344 237.344s-237.344-106.464-237.344-237.344z"></path>
                     </svg>
-                    <input type="text" name="account" class="input" placeholder="用户名">
+                    <input type="text" name="username" class="input" placeholder="用户名">
                 </div>
             </div>
 
@@ -272,19 +277,17 @@
             </div>
             <button type="submit" class="submit-btn">立即登录</button>
         </form>
-
         <!-- 手机登录表单 -->
-        <form id="smsForm" class="form" th:action="@{auth/doLogin}" method="post">
+        <form id="phoneForm" class="form" th:action="@{phone/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
             <input type="hidden" name="formToken" th:value="${formToken}">
-            <input type="hidden" name="loginType" th:value="sms">
             <div class="form-group">
                 <div class="input-wrapper">
                     <svg class="icon input-icon" viewBox="0 0 1024 1024" width="32" height="32">
                         <path fill="currentColor" d="M470.34769 884.839747h81.800292c16.459815 0 29.926936-13.467121 29.926937-29.926936s-13.467121-29.926936-29.926937-29.926937h-81.800292c-16.459815 0-29.926936 13.467121-29.926936 29.926937s13.467121 29.926936 29.926936 29.926936z"></path>
                         <path fill="currentColor" d="M835.210911 2.493911H188.789089c-32.91963 0-59.853872 26.934243-59.853872 59.853873v901.798344c0 32.91963 26.934243 59.853872 59.853872 59.853872h646.421822c32.91963 0 59.853872-26.934243 59.853872-59.853872v-901.798344c0-32.91963-26.934243-59.853872-59.853872-59.853873z m0 961.652217H188.789089V763.136873h646.421822v201.009255z m0-260.863128H188.789089V62.347784h646.421822V703.283z"></path>
                     </svg>
-                    <input type="tel" name="account" class="input" placeholder="手机号" oninput="this.value = this.value.replace(/\D/g,'')">
+                    <input type="tel" name="phone" class="input" placeholder="手机号" oninput="this.value = this.value.replace(/\D/g,'')">
                 </div>
                 <div class="error-message">请输入有效的手机号码</div>
             </div>
@@ -312,6 +315,10 @@
             </div>
             <button type="submit" class="submit-btn">立即登录</button>
         </form>
+        <!-- 手机登录表单 -->
+        <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post">
+            <div id="wechat_qrcode"></div>
+        </form>
     </div>
 
     <script>
@@ -323,7 +330,7 @@
                 url.searchParams.delete('error');
                 window.history.replaceState({}, '', url);
             }
-            const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'sms';
+            const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'phone';
             switchTab(lastLoginType);
         });
 
@@ -331,7 +338,13 @@
         function switchTab(type) {
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.form').forEach(form => form.style.display = 'none');
-            document.querySelector(`.tab:nth-child(${type === 'sms' ? 1 : 2})`).classList.add('active');
+            if(type==='phone') {
+                document.querySelector(`.tab.phone`).classList.add('active');
+            } else if(type==='account') {
+                document.querySelector(`.tab.account`).classList.add('active');
+            } else if(type==='wechat') {
+                document.querySelector(`.tab.wechat`).classList.add('active');
+            }
             document.getElementById(type + 'Form').style.display = 'block';
             localStorage.setItem('hiauth_last_loginType', type);
         }
@@ -356,9 +369,9 @@
         const errorIcon = '<i aria-hidden="true" class="fa fa-exclamation-circle"></i>';
 
         // 初始化账号登录表单验证
-        $("#pwdForm").validate({
+        $("#accountForm").validate({
             rules: {
-                account: {
+                username: {
                     required: true,
                     minlength: 3,
                     maxlength: 20
@@ -375,7 +388,7 @@
                 }
             },
             messages: {
-                account: {
+                username: {
                     required: errorIcon + " 用户名不能为空",
                     minlength: errorIcon + " 用户名至少3个字符",
                     maxlength: errorIcon + " 用户名不能超过20个字符"
@@ -396,10 +409,9 @@
             },
             submitHandler: function (form) {
                 // 存储登录信息
-                const loginType = form.querySelector('#pwdForm input[name="loginType"]').value;
-                const account = form.querySelector('#pwdForm input[name="account"]').value;
-                localStorage.setItem('hiauth_last_loginType', loginType);
-                localStorage.setItem('hiauth_last_username', account);
+                const username = form.querySelector('#accountForm input[name="username"]').value;
+                localStorage.setItem('hiauth_last_loginType', "account");
+                localStorage.setItem('hiauth_last_username', username);
                 form.submit();
             }
         });
@@ -410,9 +422,9 @@
         }, errorIcon + " 请输入正确的11位手机号码");
 
         // 初始化手机号登录表单验证
-        $("#smsForm").validate({
+        $("#phoneForm").validate({
             rules: {
-                account: {
+                phone: {
                     required: true,
                     minlength: 11,
                     maxlength: 11,
@@ -430,7 +442,7 @@
                 }
             },
             messages: {
-                account: {
+                phone: {
                     required: errorIcon + " 手机号不能为空",
                     minlength: errorIcon + " 请输入正确的11位手机号码",
                     maxlength: errorIcon + " 请输入正确的11位手机号码"
@@ -451,10 +463,9 @@
             },
             submitHandler: function (form) {
                 // 存储登录信息
-                const loginType = form.querySelector('#smsForm input[name="loginType"]').value;
-                const telNo = form.querySelector('#smsForm input[name="account"]').value;
-                localStorage.setItem('hiauth_last_loginType', loginType);
-                localStorage.setItem('hiauth_last_telNo', telNo);
+                const phone = form.querySelector('#phoneForm input[name="phone"]').value;
+                localStorage.setItem('hiauth_last_loginType', "phone");
+                localStorage.setItem('hiauth_last_phone', phone);
                 form.submit();
             }
         });
@@ -499,23 +510,23 @@
         // 绑定获取验证码按钮点击事件
         $("#smsCodeBtn").click(function () {
 
-            const telNoEl = $("#smsForm input[name='account']");
-            const imgCodeEl = $("#smsForm input[name='captcha']");
-            const formTokenEl = $("#smsForm input[name='formToken']");
+            const phoneEl = $("#phoneForm input[name='phone']");
+            const imgCodeEl = $("#phoneForm input[name='captcha']");
+            const formTokenEl = $("#phoneForm input[name='formToken']");
 
-            const telNoIsValid = telNoEl.valid();
+            const phoneIsValid = phoneEl.valid();
             const imgCodeIsValid = imgCodeEl.valid();
-            if (!telNoIsValid || !imgCodeIsValid) {
+            if (!phoneIsValid || !imgCodeIsValid) {
                 return;
             }
 
-            const telNo = telNoEl.val();
+            const phone = phoneEl.val();
             const imgCode = imgCodeEl.val();
             const formToken = formTokenEl.val();
 
             // 发送短信验证码请求
             $.ajax({
-                url: "auth/code/sms?telNo=" + telNo + "&formToken=" + formToken + "&imgCode=" + imgCode + "&r=" + Math.random(),
+                url: "auth/code/sms?telNo=" + phone + "&formToken=" + formToken + "&imgCode=" + imgCode + "&r=" + Math.random(),
                 type: "GET",
                 success: function (data) {
                     $(".error-alert").remove();
@@ -542,13 +553,23 @@
             const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'account';
             const lastUsername = localStorage.getItem('hiauth_last_username');
             if (lastUsername) {
-                document.querySelector(`#pwdForm input[name="account"]`).value = lastUsername;
+                document.querySelector(`#accountForm input[name="username"]`).value = lastUsername;
             }
-            const lastTelNo = localStorage.getItem('hiauth_last_telNo');
-            if (lastTelNo) {
-                document.querySelector(`#smsForm input[name="account"]`).value = lastTelNo;
+            const lastPhone = localStorage.getItem('hiauth_last_phone');
+            if (lastPhone) {
+                document.querySelector(`#phoneForm input[name="phone"]`).value = lastPhone;
             }
-            // switchTab(lastLoginType);
+        });
+
+        // 微信登录二维码
+        new WxLogin({
+            id: "wechat_qrcode",
+            appid: "[[${wechatAppid}]]",
+            scope: "snsapi_login",
+            redirect_uri: encodeURI("[[${wechatRedirectUri}]]"),
+            state: "[[${wechaState}]]",
+            style: "[[${wechatStyle}]]",
+            href: "[[${wechatHref}]]"
         });
 
     </script>

@@ -42,6 +42,14 @@ public class User extends BasicDO<Long> {
     @Schema(description = "密码")
     private String pwd;
 
+    @TableField("wx_openid")
+    @Schema(description = "微信openid")
+    private String wxOpenid;
+
+    @TableField("wx_unionid")
+    @Schema(description = "微信unionid")
+    private String wxUnionid;
+
     @TableField("status")
     @Schema(description = "状态，0：禁用，1：启用")
     private Integer status;

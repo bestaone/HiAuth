@@ -1,10 +1,11 @@
-package cn.hiauth.server.config;
+package cn.hiauth.server.config.props;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @Configuration
@@ -27,6 +28,9 @@ public class AppProperties implements Serializable {
 
     @Value(value = "${loginPage.passwordPlaceholder:密码}")
     private String loginPagePasswordPlaceholder;
+
+    @Value(value = "${loginPage.loginTypes:phone,account}")
+    private Set<String> loginTypes;
 
     /**
      * 公钥

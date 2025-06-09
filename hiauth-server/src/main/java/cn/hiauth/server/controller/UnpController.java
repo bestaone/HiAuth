@@ -1,7 +1,7 @@
 package cn.hiauth.server.controller;
 
 import cn.hiauth.server.api.dto.RegisterDto;
-import cn.hiauth.server.config.AppProperties;
+import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.rest.ResourceApi;
 import cn.hiauth.server.entity.File;
 import cn.hiauth.server.service.CorpService;

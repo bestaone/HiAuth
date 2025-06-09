@@ -1,6 +1,5 @@
 package cn.hiauth.server.mapper;
 
-import cn.hiauth.server.entity.App;
 import cn.hiauth.server.entity.CorpApp;
 import cn.hiauth.server.entity.CorpAppInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

@@ -56,14 +56,13 @@ public class SecurityConfig {
     @Bean
     public SecurityContextRepository securityContextRepository() {
         HttpSessionSecurityContextRepository httpSecurityRepository = new HttpSessionSecurityContextRepository();
-        DelegatingSecurityContextRepository defaultRepository = new DelegatingSecurityContextRepository(httpSecurityRepository, new RequestAttributeSecurityContextRepository());
-        return defaultRepository;
+        return new DelegatingSecurityContextRepository(httpSecurityRepository, new RequestAttributeSecurityContextRepository());
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/home").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
@@ -80,8 +79,8 @@ public class SecurityConfig {
                 // 设置全局authenticationManager
                 .authenticationManager(authenticationManager())
                 // 设置全局securityContextRepository
-                .securityContext(c -> c.securityContextRepository(securityContextRepository()))
-                .csrf(AbstractHttpConfigurer::disable);
+                .securityContext(c -> c.securityContextRepository(securityContextRepository()));
+                // .csrf(AbstractHttpConfigurer::disable)
         return http.build();
     }
 
