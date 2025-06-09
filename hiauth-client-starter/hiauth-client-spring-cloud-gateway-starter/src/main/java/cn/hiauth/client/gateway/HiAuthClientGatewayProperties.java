@@ -1,8 +1,8 @@
 package cn.hiauth.client.gateway;
 
+import cn.hiauth.client.Client;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,15 +33,16 @@ public class HiAuthClientGatewayProperties {
      */
     private Set<String> ignorePermissionUris = Set.of("/api/common/**");
 
-    @Data
-    public static class Client {
-        private String clientId;
-        private String clientSecret;
-        private String[] scope;
-        private String redirectUri;
-        private String authSuccessRedirectUri;
-        private String cachePrefix;
-        private Boolean checkPermission;
-    }
+//    @Data
+//    public static class Client {
+//        private String clientId;
+//        private String clientSecret;
+//        private String[] scope;
+//        private String redirectUri;
+//        private String authSuccessRedirectUri;
+//        private Boolean checkPermission;
+//        private String cachePrefix;
+//        private Integer cacheExpire;
+//    }
 
 }

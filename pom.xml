@@ -18,6 +18,7 @@
         <module>example/hiauth-client</module>
         <module>example/spring-cloud</module>
         <module>example/spring-cloud-with-hiauth-client</module>
+        <module>example/wechat-login</module>
     </modules>
 
 </project>

@@ -1,6 +1,7 @@
 package cn.hiauth.server.controller;
 
-import cn.hiauth.server.config.AppProperties;
+import cn.hiauth.server.config.props.AppProperties;
+import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.utils.Constant;
 import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
@@ -26,17 +27,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Slf4j
 @Controller
 public class LoginController {
 
     private final static long timeout = 180;
-    private final Random random = new Random();
 
     @Autowired
     private AppProperties appProperties;
+
+    @Autowired
+    private WechatProperties wechatProperties;
 
     @Autowired
     private CacheUtil cacheUtil;
@@ -52,12 +54,21 @@ public class LoginController {
 
     @GetMapping(value = {"/login"}, produces = "text/html")
     public String login(HttpServletRequest request, Model model) {
+        // 登录方式
+        model.addAttribute("loginTypes", appProperties.getLoginTypes());
+        // 登录页面配置
         model.addAttribute(Constant.REQUEST_KEY_FORM_TOKEN, idGenerator.nextId());
         model.addAttribute("title", appProperties.getLoginPageTitle());
-
+        model.addAttribute("username", appProperties.getLoginPageUsername());
+        model.addAttribute("password", appProperties.getLoginPagePassword());
         model.addAttribute("usernamePlaceholder", appProperties.getLoginPageUsernamePlaceholder());
         model.addAttribute("passwordPlaceholder", appProperties.getLoginPagePasswordPlaceholder());
-
+        // 微信登录配置
+        model.addAttribute("wechatAppid", wechatProperties.getAppid());
+        model.addAttribute("wechatRedirectUri", wechatProperties.getRedirectUri());
+        model.addAttribute("wechatStyle", wechatProperties.getStyle());
+        model.addAttribute("wechatHref", wechatProperties.getHref());
+        model.addAttribute("wechaState", idGenerator.nextId());
         return appProperties.getLoginPagePath();
     }
 

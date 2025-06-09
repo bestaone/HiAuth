@@ -42,9 +42,9 @@ public class HiAuthClientGatewayController {
 
     @GetMapping("/unpapi/{clientName}/oauth2/login")
     public Mono<Void> login(@PathVariable("clientName") String clientName, ServerWebExchange exchange) {
-        HiAuthClientGatewayProperties.Client client = hiauthClientProperties.getClients().get(clientName);
+        Client client = hiauthClientProperties.getClients().get(clientName);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                .fromHttpUrl(hiauthClientProperties.getAuthorizationUri())
+                .fromUriString(hiauthClientProperties.getAuthorizationUri())
                 .queryParam("response_type", "code")
                 .queryParam("client_id", client.getClientId())
                 .queryParam("scope", String.join(" ", client.getScope()))
@@ -56,7 +56,7 @@ public class HiAuthClientGatewayController {
 
     @GetMapping(value = "/unpapi/{clientName}/oauth2/token/redirect")
     public Mono<Void> getTokenHtml(@PathVariable("clientName") String clientName, @RequestParam("code") String code, ServerWebExchange exchange) {
-        HiAuthClientGatewayProperties.Client client = hiauthClientProperties.getClients().get(clientName);
+        Client client = hiauthClientProperties.getClients().get(clientName);
         Assert.notNull(client.getAuthSuccessRedirectUri(), SysCode.biz(1), "请先配置参数:hiauth.client.authSuccessRedirectUri");
         String customAuthSuccessRedirectUri = exchange.getRequest().getHeaders().getFirst("dev-auth-success-redirect-uri");
         String authSuccessRedirectUri = customAuthSuccessRedirectUri != null ? customAuthSuccessRedirectUri : client.getAuthSuccessRedirectUri();
@@ -64,7 +64,7 @@ public class HiAuthClientGatewayController {
             SessionContext context = auth(clientName, client, code);
             log.debug("REDIRECT-URI:{}?accessToken={}", authSuccessRedirectUri, context.getAccessToken());
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(authSuccessRedirectUri)
+                    .fromUriString(authSuccessRedirectUri)
                     .queryParam("accessToken", context.getAccessToken());
             exchange.getResponse().setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
             exchange.getResponse().getHeaders().setLocation(uriBuilder.build().toUri());
@@ -77,9 +77,9 @@ public class HiAuthClientGatewayController {
 
     @GetMapping("/unpapi/{clientName}/oauth2/logout")
     public Mono<Void> logout(@PathVariable("clientName") String clientName, ServerWebExchange exchange) {
-        HiAuthClientGatewayProperties.Client client = hiauthClientProperties.getClients().get(clientName);
+        Client client = hiauthClientProperties.getClients().get(clientName);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                .fromHttpUrl(hiauthClientProperties.getIssuerUri() + "/logoutWithRedirect")
+                .fromUriString(hiauthClientProperties.getIssuerUri() + "/logoutWithRedirect")
                 .queryParam("redirect_uri", client.getAuthSuccessRedirectUri());
         exchange.getResponse().setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
         exchange.getResponse().getHeaders().setLocation(uriBuilder.build().toUri());
@@ -101,21 +101,7 @@ public class HiAuthClientGatewayController {
         return updatePwdByOauthServer(token.getAccessToken(), body.getRawPwd(), body.getNewPwd());
     }
 
-    @ResponseBody
-    @PostMapping(value = "/api/common/myCorps")
-    public R<List<SecurityCorp>> myCorps() {
-        Authentication auth = SessionContextHolder.getContext().getAuth();
-        List<SecurityCorp> corps = securityService.loadUserCorps(auth.getUserId());
-        return R.success(corps);
-    }
-
-    @ResponseBody
-    @PostMapping(value = "/api/common/switchCorp")
-    public R<Boolean> switchCorp(@RequestParam("id") Long id) {
-        return R.success(securityService.switchCorp(id));
-    }
-
-    private SessionContext auth(String clientName, HiAuthClientGatewayProperties.Client client, String code) throws HttpClientErrorException {
+    private SessionContext auth(String clientName, Client client, String code) throws HttpClientErrorException {
         Assert.notEmpty(code, 300001, "code不能为空。");
         Map<?, ?> tokenMap = getTokenByOauthServer(client, code);
         assert tokenMap != null;
@@ -160,14 +146,14 @@ public class HiAuthClientGatewayController {
             auth.setPrincipal(principal);
         }
 
-        SessionContext context = new SessionContext(clientName,  client.getCachePrefix());
+        SessionContext context = new SessionContext(clientName, client.getCachePrefix(), client.getCacheExpire());
         context.setToken(token);
         context.setAuth(auth);
 
         return SessionContextHolder.auth(context);
     }
 
-    private Map<?, ?> getTokenByOauthServer(HiAuthClientGatewayProperties.Client client, String code) {
+    private Map<?, ?> getTokenByOauthServer(Client client, String code) {
         String basicStr = client.getClientId() + ":" + client.getClientSecret();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

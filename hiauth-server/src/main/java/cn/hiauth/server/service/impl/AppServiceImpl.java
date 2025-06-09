@@ -35,4 +35,9 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         return list.stream().collect(Collectors.toMap(App::getId, Function.identity()));
     }
 
+//    @Override
+//    public List<App> limitAppByUserId(Long userId) {
+//        return baseMapper.limitAppByUserId(userId);
+//    }
+
 }

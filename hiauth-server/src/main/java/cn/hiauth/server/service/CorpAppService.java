@@ -5,4 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface CorpAppService extends IService<CorpApp> {
 
+//    List<CorpAppInfo> limitCorpAppInfoByUserId(Long userId);
+
 }

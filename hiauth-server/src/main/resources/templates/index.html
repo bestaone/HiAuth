@@ -3,7 +3,12 @@
 <head>
 <th:block th:insert="~{common/include :: header('HiAuth')}" />
 <style>
-
+.corp-name {
+  margin: 20px 0;
+  padding: 5px;
+  font-size: 24px;
+  border-bottom: 1px solid #ced4da;
+}
 </style>
 </head>
 <body>
@@ -14,60 +19,26 @@
   </header>
 
   <main>
-    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h4 class="my-0 fw-normal">Featured</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$0<small class="text-muted fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>10 users included</li>
-              <li>2 GB of storage</li>
-              <li>Email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Pro</h4>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$15<small class="text-muted fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>20 users included</li>
-              <li>10 GB of storage</li>
-              <li>Priority email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm border-primary">
-          <div class="card-header py-3 text-bg-primary border-primary">
-            <h4 class="my-0 fw-normal">Enterprise</h4>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">$29<small class="text-muted fw-light">/mo</small></h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>30 users included</li>
-              <li>15 GB of storage</li>
-              <li>Phone and email support</li>
-              <li>Help center access</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+
+    <div class="corp" th:each="corpApp : ${corpApps}">
+      <div class="corp-name" th:text="${corpApp.corpName}"></div>
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col" th:each="app : ${corpApp.apps}">
+          <div class="card mb-4 rounded-3 shadow-sm">
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+              <h5 class="my-0 fw-normal" th:text="${app.appName}"></h5>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mt-3 mb-4">
+                <li th:text="${app.appRemark}"></li>
+              </ul>
+              <a type="button" class="w-100 btn btn-lg btn-outline-primary" th:href="@{/openApp(cid=${app.corpId},appId=${app.appId})}">打开</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </main>
 
   <th:block th:insert="~{common/include :: footer}" />

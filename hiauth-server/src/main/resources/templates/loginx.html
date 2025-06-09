@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Login Page</title>
+    <script th:src="@{webjars/jquery/3.7.1/jquery.min.js}"></script>
+    <script th:src="@{static/js/jquery.validate.min.js}"></script>
+    <script th:src="@{static/js/wxLogin.js}"></script>
+</head>
+<body>
+<h2>Account Login:</h2>
+<form th:action="@{/account/doLogin}" method="post">
+<!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <input type="hidden" name="formToken" th:value="${formToken}">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="admin"/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="123456"/>
+    </div>
+    <div>
+        <label for="captcha">Captcha:</label>
+        <input type="text" id="captcha" name="captcha"/>
+        <span><img th:src="@{/auth/code/image(formToken=${formToken})}" alt=""></span>
+    </div>
+    <div>
+        <label th:text="${session.SPRING_SECURITY_LAST_EXCEPTION} ? ${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></label>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>Phone Login:</h2>
+<form th:action="@{/phone/doLogin}" method="post">
+<!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <input type="hidden" name="formToken" th:value="${formToken}">
+    <div>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="13712345678"/>
+    </div>
+    <div>
+        <label for="smsCode">SmsCode:</label>
+        <input type="text" id="smsCode" name="smsCode" value="888888"/>
+    </div>
+    <div>
+        <label for="captcha1">Captcha:</label>
+        <input type="text" id="captcha1" name="captcha"/>
+        <span><img th:src="@{/auth/code/image(formToken=${formToken})}" alt=""></span>
+    </div>
+    <div class="input-invalid" style="text-align: center;">
+        <label th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION} ? ${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></label>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>Customer Login POST:</h2>
+<form th:action="@{/wechat/qrcode/doLogin}" method="post">
+    <!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="wxcode">Code:</label>
+        <input type="text" id="wxcode" name="code" value="1234"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>Customer Login GET:</h2>
+<form th:action="@{/wechat/qrcode/doLogin}" method="get">
+    <!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="wxcode1">Code:</label>
+        <input type="text" id="wxcode1" name="code" value="1234"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>WeChat Login:</h2>
+<div id="login_container"></div>
+<script>
+    $(document).ready(function() {
+        const obj = new WxLogin({
+            id: "login_container",
+            appid: "[[${wechatAppid}]]",
+            scope: "snsapi_login",
+            redirect_uri: encodeURI("[[${wechatRedirectUri}]]"),
+            state: "[[${wechaState}]]",
+            style: "[[${wechatStyle}]]",
+            href: "[[${wechatHref}]]"
+        });
+    });
+</script>
+</body>
+</html>

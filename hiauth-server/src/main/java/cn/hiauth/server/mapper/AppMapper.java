@@ -20,7 +20,7 @@ public interface AppMapper extends BaseMapper<App> {
                 LEFT JOIN t_corp_app AS O1 ON O1.app_id = O.id
                 WHERE o1.corp_id = #{cid}
             """)
-    List<App> findByCid(Long cid);
+    List<App> findByCid(@Param("cid") Long cid);
 
     @Select("""
                 SELECT * FROM t_app
@@ -41,4 +41,12 @@ public interface AppMapper extends BaseMapper<App> {
             """)
     List<App> limitHaveApp(@Param("dto") AppClientLimitDto dto);
 
+//    @Select("""
+//                SELECT DISTINCT O.* FROM t_app O
+//                LEFT JOIN t_corp_app AS O1 ON O1.app_id = O.id
+//                LEFT JOIN t_employee AS O2 ON O2.cid = O1.corp_id
+//                WHERE O2.is_deleted = FALSE AND O2.user_id = #{userId}
+//            """)
+//    List<App> limitAppByUserId(@Param("userId") Long userId);
+//
 }

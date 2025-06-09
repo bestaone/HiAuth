@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Login Page</title>
+</head>
+<body>
+<h2>Account Login</h2>
+<form th:action="@{/account/doLogin}" method="post">
+<!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="user"/>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" value="123456"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>Phone Login</h2>
+<form th:action="@{/phone/doLogin}" method="post">
+<!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="1388888888"/>
+    </div>
+    <div>
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code" value="1234"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>WeChat Login POST</h2>
+<form th:action="@{/wechat/qrcode/doLogin}" method="post">
+    <!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="wxcode">Code:</label>
+        <input type="text" id="wxcode" name="code" value="1234"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+<h2>WeChat Login GET</h2>
+<form th:action="@{/wechat/qrcode/doLogin}" method="get">
+    <!--    <input name="_csrf" type="hidden" th:value="${_csrf.token}">-->
+    <div>
+        <label for="wxcode1">Code:</label>
+        <input type="text" id="wxcode1" name="code" value="1234"/>
+    </div>
+    <div>
+        <button type="submit">Log In</button>
+    </div>
+</form>
+</body>
+</html>

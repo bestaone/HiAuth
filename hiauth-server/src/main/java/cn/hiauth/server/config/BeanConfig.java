@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Configuration
@@ -30,6 +31,11 @@ public class BeanConfig {
 
     @Value("${smsUils.sign:}")
     private String sign;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public SmsUtils smsUtils() {

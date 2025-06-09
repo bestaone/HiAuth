@@ -24,6 +24,11 @@ public class AppCreateDto extends CreateBody {
     @Size(min = 5, max = 20, message = "长度必须在5到20个字符之间")
     private String name;
 
+    @Schema(description = "主页地址")
+    @NotBlank(message = "不能为空")
+    @Size(min = 5, max = 100, message = "长度必须在5到100个字符之间")
+    private String home;
+
     @Schema(description = "备注")
     @Size(max = 100, message = "长度不能超过100")
     private String remark;
@@ -34,6 +39,7 @@ public class AppCreateDto extends CreateBody {
         o.setCid(cid);
         o.setIcon(icon);
         o.setName(name);
+        o.setHome(home);
         o.setRemark(remark);
         return o;
     }

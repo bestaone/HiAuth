@@ -12,7 +12,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -66,12 +65,8 @@ public class MultiAuthenticationProvider implements AuthenticationProvider {
                 log.debug("不支持的登录方式: " + loginType);
                 throw new BadCredentialsException("不支持的登录方式: " + loginType);
             }
-        } catch (CommonException ex) {
+        } catch (CommonException | BadCredentialsException ex) {
             throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);
-        } catch (BadCredentialsException ex) {
-            throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);
-        //} catch (UsernameNotFoundException | InternalAuthenticationServiceException ex) {
-        //     throw ex;
         } catch (Exception ex) {
             throw new InternalAuthenticationServiceException("登录失败:账号异常", ex);
         }
