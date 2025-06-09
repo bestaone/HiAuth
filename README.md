@@ -49,6 +49,10 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
   <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E8%AE%A4%E8%AF%81%E7%99%BB%E5%BD%95%E9%A1%B5.jpg">
 </p>
 
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/wechat_login.jpg">
+</p>
+
 - 管理后台登录页
 <p align="center">
   <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/%E7%AE%A1%E7%90%86%E5%90%8E%E5%8F%B0%E7%99%BB%E5%BD%95%E9%A1%B5.jpg">
@@ -121,11 +125,11 @@ $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 返回结果：
 ```json
 {
-    "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
-    "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
-    "scope": "profile",
-    "token_type": "Bearer",
-    "expires_in": 35999
+  "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
+  "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
+  "scope": "profile",
+  "token_type": "Bearer",
+  "expires_in": 35999
 }
 ```
 
