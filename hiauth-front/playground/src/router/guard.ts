@@ -18,7 +18,7 @@ function setupCommonGuard(router: Router) {
   // 记录已经加载的页面
   const loadedPaths = new Set<string>();
 
-  router.beforeEach(async (to) => {
+  router.beforeEach((to) => {
     to.meta.loaded = loadedPaths.has(to.path);
 
     // 页面加载进度条
@@ -105,11 +105,16 @@ function setupAccessGuard(router: Router) {
     accessStore.setAccessMenus(accessibleMenus);
     accessStore.setAccessRoutes(accessibleRoutes);
     accessStore.setIsAccessChecked(true);
-    const redirectPath = (from.query.redirect ??
-      (to.path === preferences.app.defaultHomePath
-        ? userInfo.homePath || preferences.app.defaultHomePath
-        : to.fullPath)) as string;
-
+    let redirectPath: string;
+    if (from.query.redirect) {
+      redirectPath = from.query.redirect as string;
+    } else if (to.path === preferences.app.defaultHomePath) {
+      redirectPath = preferences.app.defaultHomePath;
+    } else if (userInfo.homePath && to.path === userInfo.homePath) {
+      redirectPath = userInfo.homePath;
+    } else {
+      redirectPath = to.fullPath;
+    }
     return {
       ...router.resolve(decodeURIComponent(redirectPath)),
       replace: true,
