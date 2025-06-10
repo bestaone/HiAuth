@@ -104,8 +104,10 @@ $ mvn spring-boot:run
 
 **authorization_code模式：**
 - 访问授权端点获取`授权码`: http://auth.hiauth.cn/oauth2/authorize?response_type=code&client_id=himall&scope=profile&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code
-- 用户登录并授权后，重定向到`redirect_uri`并附带`授权码`(url里的参数code值)
-
+- 用户登录并授权后，重定向到`redirect_uri`并附带`授权码`，如下（注意：浏览器开发模式下，网络控制台中，url的参数code值）：
+```shell
+http://127.0.0.1:9000/login/oauth2/code/hiauth-code?code=u_ZK_pZKzhie9wbR4vhO65LvdsNqQ9A3KHwjb...
+```
 - 使用`授权码`换取访问`令牌`
 ```shell
 # 最后的yourCode替换为上面步骤获取的授权码
@@ -125,11 +127,11 @@ $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 返回结果：
 ```json
 {
-  "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
-  "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
-  "scope": "profile",
-  "token_type": "Bearer",
-  "expires_in": 35999
+    "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
+    "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
+    "scope": "profile",
+    "token_type": "Bearer",
+    "expires_in": 35999
 }
 ```
 

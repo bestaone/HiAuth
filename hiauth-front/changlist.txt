@@ -1,15 +1,20 @@
-升级注意：
-1、剔除源代码.git目录；
-2、剔除源代码.github目录；
-3、剔除源代码.idea目录；
-4、单独升级apps目录；
+本目录，除了如下内容，其他全部删除：
+1、changlist.txt；
+2、deploy.yaml；
+3、Dockerfile；
+4、apps；（单独处理）
 
-./package.json
+官方源码，剔除的内容：
+1、.git目录；
+2、.github目录；
+3、.idea目录；
+4、apps目录；（单独处理）
+
+需要手动合并的
+1、./package.json
   - "build:auth": "pnpm run build --filter=@vben/web-auth"
   - "dev:auth": "pnpm -F @vben/web-auth run dev",
-
-./vben-admin.code-workspace
+2、./vben-admin.code-workspace
   - 添加 web-auth
-
-./apps/web-auth/package.json
+3、./apps/web-auth/package.json
   - "jsencrypt": "^3.3.2"
