@@ -36,7 +36,7 @@ public class QrCodeAuthenticationProvider implements AuthenticationProvider {
 
         String code = (String) authenticationToken.getPrincipal();
         AuthUser authUser = null;
-        try  {
+        try {
             authUser = userDetailsService.loadUserWeChatCode(clientId, code);
         } catch (CommonException | BadCredentialsException ex) {
             throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);

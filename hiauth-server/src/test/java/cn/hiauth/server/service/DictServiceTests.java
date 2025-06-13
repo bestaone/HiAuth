@@ -1,7 +1,8 @@
 package cn.hiauth.server.service;
 
 import cn.hiauth.server.ServerStarter;
-import cn.hiauth.server.entity.Corp;
+import cn.hiauth.server.api.dto.dict.DictPageDto;
+import cn.hiauth.server.entity.Dict;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,54 +18,55 @@ import org.springframework.util.Assert;
 import java.time.LocalDateTime;
 
 /**
- * 租户
+ * 字典
  */
 @Slf4j
 @Transactional
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ServerStarter.class)
-class CorpServiceTests {
+class DictServiceTests {
 
     private static final String txt = RandomUtil.randomString("abcdefghigklmn", 5);
 
     private static final String txtNew = txt + "new";
 
     @Resource
-    private CorpService service;
+    private DictService service;
 
     @Test
     public void CRUDTest() {
 
         //add
-        Corp o = new Corp();
+        Dict o = new Dict();
+        o.setCid(1L);
+        o.setSort(1);
+        o.setCode(txt);
+        o.setPCode(txt);
         o.setName(txt);
-        o.setStatus(1);
-        o.setCreator(1L);
-        o.setUpdater(1L);
-        o.setDeleter(1L);
+        o.setValue(txt);
+        o.setIsEnable(false);
         o.setCreateTime(LocalDateTime.now());
-        o.setUpdateTime(LocalDateTime.now());
-        o.setDeleteTime(LocalDateTime.now());
-        o.setIsDeleted(false);
-        o.setAppCount(1);
-        o.setDepCount(1);
-        o.setEmpCount(1);
-        o.setIcon(txt);
         service.save(o);
         Assert.notNull(o.getId(), "添加失败");
 
         //update
-        o.setName(txtNew);
+        o.setCode(txtNew);
         service.updateById(o);
 
         //get
         o = service.getById(o.getId());
         Assert.notNull(o.getId(), "主键查询失败");
-        Assert.isTrue(txtNew.equals(o.getName()), "更新失败");
+        Assert.isTrue(txtNew.equals(o.getCode()), "更新失败");
 
         //page
-        Page<Corp> page = new Page<>(1, 2, true);
-        IPage<Corp> oPage = service.page(page);
+        Page<Dict> page = new Page<>(1, 2, true);
+        IPage<Dict> oPage = service.page(page);
+        Assert.isTrue(oPage.getTotal() > 0, "分页查询失败");
+
+        //find root
+        DictPageDto dto = new DictPageDto();
+        dto.setCid(1L);
+        oPage = service.pageByPcode(page, null, txt, false);
         Assert.isTrue(oPage.getTotal() > 0, "分页查询失败");
 
         //delete

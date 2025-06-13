@@ -115,7 +115,7 @@ async function viewDrawer(vo: RoleVo) {
 
 async function addDrawer() {
   roleDrawerApi.setState({ title: '新增' });
-  roleDrawerApi.setData({ action: ACTION.ADD, callback: reloadGrid });
+  roleDrawerApi.setData({ action: ACTION.ADD, role: {}, callback: reloadGrid });
   roleDrawerApi.open();
 }
 
