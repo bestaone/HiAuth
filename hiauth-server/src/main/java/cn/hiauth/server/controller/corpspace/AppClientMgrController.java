@@ -7,8 +7,11 @@ import cn.hiauth.server.api.dto.appClient.AppClientUpdateDto;
 import cn.hiauth.server.api.vo.CorpAppVo;
 import cn.hiauth.server.config.rest.ResourceApi;
 import cn.hiauth.server.entity.App;
+import cn.hiauth.server.entity.AppResource;
+import cn.hiauth.server.entity.CorpApp;
 import cn.hiauth.server.entity.Oauth2RegisteredClient;
 import cn.hiauth.server.service.AppService;
+import cn.hiauth.server.service.CorpAppService;
 import cn.hiauth.server.service.Oauth2RegisteredClientService;
 import cn.hiauth.server.utils.Oauth2RegisteredClientUtils;
 import cn.webestar.scms.commons.Assert;
@@ -16,6 +19,7 @@ import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
 import cn.webestar.scms.commons.api.PageVO;
 import cn.webestar.scms.security.SessionContextHolder;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -44,19 +48,23 @@ public class AppClientMgrController {
     @Autowired
     private AppService appService;
 
+    @Autowired
+    private CorpAppService corpAppService;
+
     @PostMapping("/page")
     public R<PageVO<CorpAppVo>> page(@RequestBody @Valid AppClientPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Oauth2RegisteredClient> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
-        IPage<Oauth2RegisteredClient> page = oauth2RegisteredClientService.page(p, dto.toQueryWapper());
+        IPage<Oauth2RegisteredClient> page = oauth2RegisteredClientService.pageByCorpId(p, dto.toQueryWapper(), cid);
         Set<Long> appIds = new HashSet<>();
         page.getRecords().forEach(i -> appIds.add(i.getAppId()));
         Map<Long, App> apps = new HashMap<>();
         if (!appIds.isEmpty()) {
             apps = appService.findByIds(appIds);
         }
+
         return R.success(CorpAppVo.toPageVo(page, apps));
     }
 
@@ -75,13 +83,19 @@ public class AppClientMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCorpId(cid);
         List<Oauth2RegisteredClient> list = new ArrayList<>();
+        List<CorpApp> corpApps = new ArrayList<>();
         for (Long appId : dto.getAppIds()) {
             App app = appService.getById(appId);
             String clientSecret = passwordEncoder.encode("123456");
             Oauth2RegisteredClient o = Oauth2RegisteredClientUtils.getDefaultClient(dto.getCorpId(), appId, app.getName(), clientSecret);
             list.add(o);
+            CorpApp corpApp = new CorpApp();
+            corpApp.setCorpId(dto.getCorpId());
+            corpApp.setAppId(appId);
+            corpApps.add(corpApp);
         }
         Boolean b = oauth2RegisteredClientService.saveBatch(list);
+        corpAppService.saveBatch(corpApps);
         return R.success(b);
     }
 
@@ -101,8 +115,15 @@ public class AppClientMgrController {
     public R<Boolean> delete(@RequestBody Map<String, Set<String>> map) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
+        Set<Long> appIds = new HashSet<>();
         Set<String> ids = map.get("ids");
+        List<Oauth2RegisteredClient> list = oauth2RegisteredClientService.listByIds(ids);
+        list.forEach(i -> appIds.add(i.getAppId()));
         boolean b = oauth2RegisteredClientService.removeByIds(ids);
+        LambdaQueryWrapper<CorpApp> qw = new LambdaQueryWrapper<>();
+        qw.eq(CorpApp::getCorpId, cid);
+        qw.in(CorpApp::getAppId, appIds);
+        corpAppService.remove(qw);
         return R.success(b);
     }
 

@@ -3,12 +3,14 @@ package cn.hiauth.server.entity;
 import cn.webestar.scms.commons.entity.BasicDO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @Accessors(chain = true)
@@ -44,5 +46,9 @@ public class App extends BasicDO<Long> {
     @TableField("remark")
     @Schema(description = "说明")
     private String remark;
+
+    @Schema(description = "扩展字段")
+    @TableField(value = "extend", typeHandler = JacksonTypeHandler.class)
+    private Map<String, ?> extend;
 
 }

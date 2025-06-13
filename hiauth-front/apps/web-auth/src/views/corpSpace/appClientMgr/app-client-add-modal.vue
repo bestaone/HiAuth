@@ -40,6 +40,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
+      await formApi.resetForm();
       const param = { offset: 0, limit: 100 };
       apps.value = await limitNotHaveAppApi(param);
     }
@@ -97,9 +98,9 @@ async function onSubmit(values: Record<string, any>) {
   height: 60px;
   padding: 0 5px;
   overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 16px;
   line-height: 60px;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 </style>

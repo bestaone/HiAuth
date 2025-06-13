@@ -12,11 +12,12 @@
         <result column="create_time" property="createTime" />
         <result column="creator" property="creator" />
         <result column="remark" property="remark" />
+        <result column="extend" property="extend" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cid, name, icon, home, create_time, creator, remark
+        id, cid, name, icon, home, create_time, creator, remark, extend
     </sql>
 
 </mapper>

@@ -5,6 +5,7 @@ import cn.hiauth.server.entity.App;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -41,12 +42,12 @@ public interface AppMapper extends BaseMapper<App> {
             """)
     List<App> limitHaveApp(@Param("dto") AppClientLimitDto dto);
 
-//    @Select("""
-//                SELECT DISTINCT O.* FROM t_app O
-//                LEFT JOIN t_corp_app AS O1 ON O1.app_id = O.id
-//                LEFT JOIN t_employee AS O2 ON O2.cid = O1.corp_id
-//                WHERE O2.is_deleted = FALSE AND O2.user_id = #{userId}
-//            """)
-//    List<App> limitAppByUserId(@Param("userId") Long userId);
-//
+    @ResultMap("BaseResultMap")
+    @Select("""
+                SELECT O.* FROM t_app O
+                LEFT JOIN oauth2_registered_client AS O1 ON O1.app_id = O.id
+                WHERE O1.client_id = #{clientId}
+            """)
+    App findByClientId(@Param("clientId") String clientId);
+
 }

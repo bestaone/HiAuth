@@ -42,6 +42,10 @@ public class User extends BasicDO<Long> {
     @Schema(description = "密码")
     private String pwd;
 
+    @TableField("wxmp_openid")
+    @Schema(description = "微信小程序openid")
+    private String wxmpOpenid;
+
     @TableField("wx_openid")
     @Schema(description = "微信openid")
     private String wxOpenid;

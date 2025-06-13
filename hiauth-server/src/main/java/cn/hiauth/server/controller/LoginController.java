@@ -2,6 +2,8 @@ package cn.hiauth.server.controller;
 
 import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.props.WechatProperties;
+import cn.hiauth.server.entity.App;
+import cn.hiauth.server.mapper.AppMapper;
 import cn.hiauth.server.utils.Constant;
 import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +30,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Controller
@@ -49,13 +55,35 @@ public class LoginController {
     @Autowired
     private SmsUtils smsUtils;
 
+    @Autowired
+    private AppMapper appMapper;
+
     @Value("${smsUils.smsTemplateCode:}")
     private String smsTemplateCode;
 
     @GetMapping(value = {"/login"}, produces = "text/html")
     public String login(HttpServletRequest request, Model model) {
+        Set<String> loginTypes = appProperties.getLoginTypes();
+        String loginPage = appProperties.getLoginPagePath();
+        // 获取当前授权应用，查询自定义配
+        DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+        if (savedRequest != null) {
+            String[] clientIds = savedRequest.getParameterValues("client_id");
+            if (clientIds != null && clientIds.length > 0) {
+                App app = appMapper.findByClientId(clientIds[0]);
+                if (app != null && app.getExtend() != null) {
+                    if (app.getExtend().containsKey("loginTypes")) {
+                        String str = (String) app.getExtend().get("loginTypes");
+                        loginTypes = Stream.of(str.split(",")).collect(Collectors.toSet());
+                    }
+                    if (app.getExtend().containsKey("loginPage")) {
+                        loginPage = (String) app.getExtend().get("loginPage");
+                    }
+                }
+            }
+        }
         // 登录方式
-        model.addAttribute("loginTypes", appProperties.getLoginTypes());
+        model.addAttribute("loginTypes", loginTypes);
         // 登录页面配置
         model.addAttribute(Constant.REQUEST_KEY_FORM_TOKEN, idGenerator.nextId());
         model.addAttribute("title", appProperties.getLoginPageTitle());
@@ -69,7 +97,7 @@ public class LoginController {
         model.addAttribute("wechatStyle", wechatProperties.getStyle());
         model.addAttribute("wechatHref", wechatProperties.getHref());
         model.addAttribute("wechaState", idGenerator.nextId());
-        return appProperties.getLoginPagePath();
+        return loginPage;
     }
 
     /**

@@ -75,6 +75,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
+      formApi.resetForm();
       const { action, role, callback } =
         drawerApi.getData<Record<string, any>>();
       const disabled = action === ACTION.VIEW;

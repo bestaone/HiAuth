@@ -63,7 +63,7 @@ const routes: RouteRecordRaw[] = [
     },
     children: [
       {
-        name: 'corpList',
+        name: 'roleList',
         path: '/corpSpace/roleMgr/list',
         meta: {
           title: '角色列表',
@@ -102,6 +102,29 @@ const routes: RouteRecordRaw[] = [
           icon: 'ant-design:bars-outlined',
         },
         component: () => import('#/views/corpSpace/appClientMgr/index.vue'),
+      },
+    ],
+  },
+  {
+    component: BasicLayout,
+    name: 'sysMgr',
+    path: '/corpSpace/sysMgr',
+    meta: {
+      title: '系统管理',
+      icon: 'ant-design:setting-outlined',
+      keepAlive: true,
+      order: 1000,
+      authority: [ROLE_CORP_ADMIN],
+    },
+    children: [
+      {
+        name: 'dictMgr',
+        path: '/corpSpace/sysMgr/dictMgr/list',
+        meta: {
+          title: '字典管理',
+          icon: 'material-symbols:book-3-outline',
+        },
+        component: () => import('#/views/corpSpace/sysMgr/dictMgr/index.vue'),
       },
     ],
   },

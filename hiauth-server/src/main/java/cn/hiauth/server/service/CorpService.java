@@ -7,6 +7,7 @@ import cn.hiauth.server.entity.Corp;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 租户
@@ -18,5 +19,7 @@ public interface CorpService extends IService<Corp> {
     void register(RegisterDto dto);
 
     List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId);
+
+    void saveCorpAppBatch(Long cid, Set<Long> appIds);
 
 }

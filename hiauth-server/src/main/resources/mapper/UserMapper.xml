@@ -11,6 +11,7 @@
         <result column="phone_num" property="phoneNum" />
         <result column="username" property="username" />
         <result column="pwd" property="pwd" />
+        <result column="wxmp_openid" property="wxmpOpenid" />
         <result column="wx_openid" property="wxOpenid" />
         <result column="wx_unionid" property="wxUnionid" />
         <result column="status" property="status" />
@@ -28,7 +29,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, gender, avatar_url, phone_num, username, pwd, wx_openid, status, regtime, last_login_time, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_sys_admin
+        id, name, gender, avatar_url, phone_num, username, pwd, wxmp_openid, wx_openid, wx_unionid, status, regtime, last_login_time, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_sys_admin
     </sql>
 
 </mapper>

@@ -126,6 +126,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
+      formApi.resetForm();
       isResetClientSecret.value = false;
       const { action, appClient, callback } =
         drawerApi.getData<Record<string, any>>();

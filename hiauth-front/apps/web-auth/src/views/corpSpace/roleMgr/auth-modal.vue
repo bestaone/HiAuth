@@ -73,6 +73,7 @@ const [Modal, modalApi] = useVbenModal({
   },
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
+      await formApi.resetForm();
       const { roleId, callback } = modalApi.getData<Record<string, any>>();
       await resetForm();
       roleIdRef.value = roleId;

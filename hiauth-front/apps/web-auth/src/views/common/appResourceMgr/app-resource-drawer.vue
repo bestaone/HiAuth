@@ -132,6 +132,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   },
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
+      formApi.resetForm();
       const { appId, action, appResource, callback } =
         drawerApi.getData<Record<string, any>>();
       appIdRef.value = appId;

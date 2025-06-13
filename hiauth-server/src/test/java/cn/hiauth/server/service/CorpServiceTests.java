@@ -1,10 +1,10 @@
 package cn.hiauth.server.service;
 
+import cn.hiauth.server.ServerStarter;
+import cn.hiauth.server.entity.Corp;
 import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import cn.hiauth.server.ServerStarter;
-import cn.hiauth.server.entity.Corp;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -25,18 +25,18 @@ import java.time.LocalDateTime;
 @SpringBootTest(classes = ServerStarter.class)
 class CorpServiceTests {
 
-	private static String txt = RandomUtil.randomString("abcdefghigklmn",5);
+    private static final String txt = RandomUtil.randomString("abcdefghigklmn", 5);
 
-	private static String txtNew = txt + "new";
+    private static final String txtNew = txt + "new";
 
     @Resource
     private CorpService service;
 
-	@Test
-	public void CRUDTest() {
+    @Test
+    public void CRUDTest() {
 
-		//add
-		Corp o = new Corp();
+        //add
+        Corp o = new Corp();
         o.setName(txt);
         o.setStatus(1);
         o.setCreator(1L);
@@ -50,8 +50,8 @@ class CorpServiceTests {
         o.setDepCount(1);
         o.setEmpCount(1);
         o.setIcon(txt);
-		service.save(o);
-		Assert.notNull(o.getId(), "添加失败");
+        service.save(o);
+        Assert.notNull(o.getId(), "添加失败");
 
         //update
         o.setName(txtNew);
@@ -62,16 +62,16 @@ class CorpServiceTests {
         Assert.notNull(o.getId(), "主键查询失败");
         Assert.isTrue(txtNew.equals(o.getName()), "更新失败");
 
-		//page
-		Page<Corp> page = new Page<>(1, 2, true);
-		IPage<Corp> oPage = service.page(page);
-		Assert.isTrue(oPage.getTotal() > 0,"分页查询失败");
+        //page
+        Page<Corp> page = new Page<>(1, 2, true);
+        IPage<Corp> oPage = service.page(page);
+        Assert.isTrue(oPage.getTotal() > 0, "分页查询失败");
 
-		//delete
-		service.removeById(o.getId());
-		o = service.getById(o.getId());
-		Assert.isNull(o, "删除失败");
+        //delete
+        service.removeById(o.getId());
+        o = service.getById(o.getId());
+        Assert.isNull(o, "删除失败");
 
-	}
+    }
 
 }

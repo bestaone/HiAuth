@@ -139,4 +139,9 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
         return IndexCorpAppVo.convert(cpis);
     }
 
+    @Override
+    public void saveCorpAppBatch(Long cid, Set<Long> appIds) {
+        
+    }
+
 }

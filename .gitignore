@@ -54,3 +54,5 @@ temp
 /docs/.vitepress/cache
 /docs/package-lock.json
 /docs/pnpm-lock.yaml
+
+lefthook.yml
