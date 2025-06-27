@@ -7,7 +7,6 @@ import cn.hiauth.server.api.dto.appClient.AppClientUpdateDto;
 import cn.hiauth.server.api.vo.CorpAppVo;
 import cn.hiauth.server.config.rest.ResourceApi;
 import cn.hiauth.server.entity.App;
-import cn.hiauth.server.entity.AppResource;
 import cn.hiauth.server.entity.CorpApp;
 import cn.hiauth.server.entity.Oauth2RegisteredClient;
 import cn.hiauth.server.service.AppService;
@@ -55,7 +54,6 @@ public class AppClientMgrController {
     public R<PageVO<CorpAppVo>> page(@RequestBody @Valid AppClientPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
-        dto.setCid(cid);
         Page<Oauth2RegisteredClient> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
         IPage<Oauth2RegisteredClient> page = oauth2RegisteredClientService.pageByCorpId(p, dto.toQueryWapper(), cid);
         Set<Long> appIds = new HashSet<>();

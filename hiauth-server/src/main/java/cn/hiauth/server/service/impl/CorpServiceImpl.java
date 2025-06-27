@@ -141,7 +141,7 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
 
     @Override
     public void saveCorpAppBatch(Long cid, Set<Long> appIds) {
-        
+
     }
 
 }

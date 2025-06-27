@@ -49,6 +49,6 @@ public class App extends BasicDO<Long> {
 
     @Schema(description = "扩展字段")
     @TableField(value = "extend", typeHandler = JacksonTypeHandler.class)
-    private Map<String, ?> extend;
+    private Map<String, Object> extend;
 
 }

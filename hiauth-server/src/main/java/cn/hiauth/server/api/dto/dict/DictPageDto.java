@@ -37,7 +37,7 @@ public class DictPageDto extends PageBody {
         if (StringUtils.hasText(pCode)) {
             // 通过父编码查询字典值
             queryWrapper.like(Dict::getPCode, pCode);
-        } else if(isRoot) {
+        } else if (isRoot) {
             // 查询字典分类
             queryWrapper.isNull(Dict::getPCode);
         }
