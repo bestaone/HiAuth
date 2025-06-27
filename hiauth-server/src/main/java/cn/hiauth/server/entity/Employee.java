@@ -2,7 +2,6 @@ package cn.hiauth.server.entity;
 
 import cn.webestar.scms.commons.entity.BasicDO;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -70,7 +69,8 @@ public class Employee extends BasicDO<Long> {
     @Schema(description = "删除时间")
     private LocalDateTime deleteTime;
 
-    @TableLogic(value = "false", delval = "true")
+    // 逻辑不好控制，去掉
+    // @TableLogic(value = "false", delval = "true")
     @TableField("is_deleted")
     @Schema(description = "是否已删除")
     private Boolean isDeleted;

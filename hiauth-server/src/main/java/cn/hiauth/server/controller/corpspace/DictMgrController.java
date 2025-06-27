@@ -77,7 +77,7 @@ public class DictMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         Set<Long> ids = map.get("ids");
         int childCount = dictService.childCount(ids);
-        Assert.isTrue(childCount==0, SysCode.biz(2), "有子级数据，不能删除");
+        Assert.isTrue(childCount == 0, SysCode.biz(2), "有子级数据，不能删除");
         boolean b = dictService.removeByIds(ids);
         return R.success(b);
     }

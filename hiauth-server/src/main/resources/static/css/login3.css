@@ -1,0 +1,434 @@
+ :root {
+  --primary-color: #2174FF;
+  --error-color: #ff4d4f;
+  --text-black-color: rgba(0, 0, 0, 0.9);
+  --text-gray-color: rgba(0, 0, 0, 0.5);
+  --text-primary-color: #478DFF;
+  --code-bgcolor: #FFFFFF;
+  --code-border-color: #DDDDDD;
+  --input-bgcolor: #FFFFFF;
+  --input-border-color: #DDDDDD;
+ }
+
+ body {
+   margin: 0;
+   min-height: 100vh;
+   font-family: 'Orbitron', sans-serif;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .login-container {
+   padding-bottom: 100px;
+   border-radius: 8px;
+   width: 100%;
+   max-width: 420px;
+ }
+
+ .login-title {
+   font-size: 36px;
+   font-weight: normal;
+   margin: 0;
+   margin-bottom: 40px;
+   color: var(--text-black-color);
+ }
+
+ .tabs {
+   display: flex;
+   margin-bottom: 24px;
+   /* border-bottom: 1px solid #eee; */
+ }
+
+ .tab {
+   padding: 12px 20px;
+   cursor: pointer;
+   color: var(--text-gray-color);
+   /* border-bottom: 3px solid transparent; */
+   transition: all 0.3s;
+   position: relative;
+ }
+
+ .tab::after {
+   content: "";
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   width: 100%;
+   height: 3px;
+   border-radius: 100px 100px 0px 0px;
+   background-color: transparent;
+ }
+
+ .tab.active {
+   color: var(--text-black-color);
+   border-bottom-color: var(--primary-color);
+ }
+
+ .tab.active::after {
+   background-color: var(--primary-color);
+ }
+
+ .form-group label {
+   display: block;
+   margin-bottom: 8px;
+   color: var(--text-black-color);
+   font-weight: 500;
+ }
+
+ .input {
+   width: calc(100% - 18px);
+   padding: 14px 0px 14px 16px;
+   /* 增加左侧padding */
+   border: 1px solid var(--input-border-color);
+   /* border-color: var(--input-border-color); */
+   background-color: var(--input-bgcolor) !important;
+   border-radius: 4px;
+   font-size: 14px;
+   transition: border-color 0.3s;
+   font-size: 14px;
+   line-height: 22px;
+   color: var(--text-black-color);
+ }
+ .dark-box .input:autofill{
+    box-shadow:0 0 0 1000px rgb(17 17 17)  inset !important;
+    border-color: rgb(64 64 64);
+ }
+ .light-box .input:autofill{
+    box-shadow:0 0 0 1000px var(--input-bgcolor) inset !important;
+    border-color: var(--input-border-color);
+ }
+  .input:-internal-autofill-previewed,
+  .input:-internal-autofill-selected {
+    -webkit-text-fill-color: var(--text-black-color) !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--primary-color) !important;
+    background-color: var(--input-bgcolor) !important;
+    color: var(--text-black-color) !important;
+  }
+
+
+ .password {
+   width: calc(100% - 52px);
+ }
+
+ /* 新增图标容器样式 */
+ .input-wrapper {
+   position: relative;
+   margin-bottom: 4px;
+ }
+
+ .input-sub-wrapper {
+   width: 300px;
+ }
+
+ /* 修改错误提示定位方式 */
+ .form-group>.error {
+   color: #ff4d4f;
+   font-size: 10px;
+ }
+
+ /* 增加表单组最小高度 */
+ .form-group {
+   position: relative;
+   min-height: 74px;
+   /* 保持固定高度避免跳动 */
+ }
+
+ .input-icon {
+   position: absolute;
+   left: 15px;
+   top: 50%;
+   transform: translateY(-50%);
+   color: var(--primary-color);
+   width: 16px;
+   height: 16px;
+ }
+
+ .captcha-row {
+   display: flex;
+   gap: 10px;
+ }
+
+ .captcha-img {
+   border-radius: 4px;
+   cursor: pointer;
+   width: 110px;
+   height: 52px;
+   color: var(--text-gray-color);
+ }
+
+ .sms-code-row {
+   display: flex;
+   gap: 10px;
+ }
+
+ .get-code-btn {
+   color: var(--text-primary-color);
+   border: 1px solid var(--code-border-color);
+   padding: 0 15px;
+   border-radius: 4px;
+   cursor: pointer;
+   transition: opacity 0.3s;
+   width: 110px;
+   height: 52px;
+   background-color: var(--code-bgcolor);
+ }
+
+ .get-code-btn:disabled {
+   background: #ccc;
+   cursor: not-allowed;
+ }
+
+ .submit-btn {
+   width: 100%;
+   background: var(--primary-color);
+   color: white;
+   padding: 8px;
+   margin-bottom: 10px;
+   border: none;
+   border-radius: 4px;
+   font-size: 16px;
+   line-height: 24px;
+   cursor: pointer;
+   transition: opacity 0.3s;
+ }
+
+ .submit-btn:hover {
+   opacity: 0.9;
+ }
+
+ .error-message {
+   color: var(--error-color);
+   font-size: 12px;
+   margin-top: 2px;
+   display: none;
+   height: 20px;
+   /* 固定错误信息高度 */
+ }
+
+ input.invalid {
+   border-color: var(--error-color);
+ }
+
+ input.invalid+.error-message {
+   display: block;
+ }
+
+ /* 新增错误提示样式 */
+ .error-alert {
+   position: fixed;
+   top: 20px;
+   background: #ff4444;
+   color: white;
+   padding: 12px 20px;
+   border-radius: 6px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+   cursor: pointer;
+   transition: 0.3s all;
+   z-index: 1000;
+ }
+
+ .error-alert:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+ }
+
+ .close-icon {
+   width: 18px;
+   height: 18px;
+   opacity: 0.8;
+ }
+
+ .close-icon:hover {
+   opacity: 1;
+ }
+
+ #wechat_qrcode {
+   text-align: center;
+   height: 272px;
+ }
+
+ .login-page-container {
+   width: 100vw;
+   height: 100vh;
+   display: flex;
+ }
+
+ .lft-container {
+   width: 35%;
+   height: 100%;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
+ .lft-container .gb {
+   width: 100%;
+   height: 100%;
+   position: absolute;
+   left: 0;
+   top: 0;
+   z-index: 4;
+ }
+ .lft-container .logo{
+  width: 134px;
+  height: 180px;
+  position: relative;
+  z-index: 5;
+ }
+ .lft-container p{
+  position: absolute;
+  width: 100%;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  bottom: 40px;
+  z-index: 5;
+  text-align: center;
+  margin: 0;
+ }
+
+ .rgt-container {
+   height: 100%;
+   width: 65%;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+
+ .dark-box {
+   background: #181818;
+ }
+
+ .light-box {
+   background: #FFFFFF;
+ }
+
+ .switch-container {
+   width: 60px;
+   height: 32px;
+   position: absolute;
+   right: 24px;
+   top: 24px;
+   border-radius: 4px;
+   box-sizing: border-box;
+   user-select: none;
+ }
+
+ .switch-container>.switch-inner {
+   width: 100%;
+   height: 100%;
+   border-radius: 4px;
+ }
+
+ .switch-inner>.inner-box {
+   width: 100%;
+   height: 100%;
+   border-radius: 4px;
+   display: flex;
+   align-items: center;
+   padding: 2px;
+   box-sizing: border-box;
+ }
+
+ .switch-container>.switch-inner .switch-item {
+   flex: 1;
+   height: 100%;
+   border-radius: 4px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   cursor: pointer;
+
+ }
+
+ .switch-inner>.inner-box img {
+   width: 16px;
+   height: 16px;
+ }
+
+ .light-inner .switch-item:first-child {
+   background: #FFFFFF;
+   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+ }
+
+ .light-switch {
+   background: #EEEEEE;
+ }
+
+ .light-switch>.light-inner {
+   display: block;
+ }
+
+ .light-switch>.dark-inner {
+   display: none;
+ }
+
+ .dark-switch {
+   background: #383838;
+ }
+
+ .dark-switch>.light-inner {
+   display: none;
+ }
+
+ .dark-switch>.dark-inner {
+   display: block;
+ }
+
+ .dark-inner .switch-item:last-child {
+   background: #4B4B4B;
+   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+ }
+
+ .record-text {
+   width: 100%;
+   position: absolute;
+   bottom: 40px;
+   left: 0;
+   font-size: 16px;
+   font-weight: normal;
+   line-height: 24px;
+   text-align: center;
+   letter-spacing: normal;
+   color: var(--text-gray-color);
+   margin: 0;
+ }
+
+ .record-text>span {
+   color: var(--text-primary-color);
+ }
+
+ /* 深色模式 */
+ .dark-box {
+  --text-black-color: rgba(255, 255, 255, 0.9);
+  --text-gray-color: rgba(255, 255, 255, 0.5);
+  --input-bgcolor: rgba(0, 0, 0, 0.3);
+  --input-border-color: rgba(255, 255, 255, 0.2);
+  --code-bgcolor: rgba(255, 255, 255, 0.1);
+  --code-border-color: rgba(255, 255, 255, 0.1);
+ }
+ /* 白色模式模式 */
+ .light-box {
+  --text-black-color: rgba(0, 0, 0, 0.9);
+  --text-gray-color: rgba(0, 0, 0, 0.5);
+  --input-bgcolor: #FFFFFF;
+  --input-border-color: #DDDDDD;
+  --code-bgcolor: #FFFFFF;
+  --code-border-color: #DDDDDD;
+ }
+
+
+
+ 

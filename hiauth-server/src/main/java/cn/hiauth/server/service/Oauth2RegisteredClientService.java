@@ -1,6 +1,5 @@
 package cn.hiauth.server.service;
 
-import cn.hiauth.server.entity.Employee;
 import cn.hiauth.server.entity.Oauth2RegisteredClient;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
