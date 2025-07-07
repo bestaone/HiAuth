@@ -69,7 +69,7 @@ public class Employee extends BasicDO<Long> {
     @Schema(description = "删除时间")
     private LocalDateTime deleteTime;
 
-    // 逻辑不好控制，去掉
+    // 使用起来太麻烦，去掉
     // @TableLogic(value = "false", delval = "true")
     @TableField("is_deleted")
     @Schema(description = "是否已删除")

@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 用户
@@ -35,6 +37,9 @@ class UserServiceTests {
     @Test
     public void CRUDTest() {
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("pwdStatus", 0);
+
         //add
         User o = new User();
         o.setName(txt);
@@ -54,6 +59,7 @@ class UserServiceTests {
         o.setDeleteTime(LocalDateTime.now());
         o.setIsDeleted(false);
         o.setIsSysAdmin(false);
+        o.setExtend(map);
         service.save(o);
         Assert.notNull(o.getId(), "添加失败");
 

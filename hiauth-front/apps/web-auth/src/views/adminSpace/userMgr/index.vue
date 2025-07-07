@@ -13,7 +13,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteUsersApi, GenderType, getUserByIdApi, pageUserApi } from '#/api';
 import {
   EnableStatusUseNum,
-  YesOrNoUseNum,
+  YesOrNoUseBool,
   YesOrNoUseNumOpt,
 } from '#/api/core/common';
 import { ACTION } from '#/common/constants';
@@ -242,7 +242,11 @@ onMounted(async () => {});
       </template>
       <template #isSysAdmin="{ row }">
         <div>
-          {{ YesOrNoUseNum[row.isSysAdmin as keyof typeof YesOrNoUseNum] }}
+          {{
+            YesOrNoUseBool[
+              row.isSysAdmin?.toString() as keyof typeof YesOrNoUseBool
+            ]
+          }}
         </div>
       </template>
       <template #status="{ row }">

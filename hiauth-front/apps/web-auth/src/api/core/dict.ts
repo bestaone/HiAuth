@@ -29,6 +29,7 @@ export interface DictUpdateDto {
   pcode?: string;
   name?: string;
   value?: string;
+  isEnable?: boolean;
 }
 
 export interface DictVo {
@@ -38,6 +39,7 @@ export interface DictVo {
   pCode: string;
   name: string;
   value: string;
+  isEnable: boolean;
   createTime: string;
   hasChild: boolean;
 }
