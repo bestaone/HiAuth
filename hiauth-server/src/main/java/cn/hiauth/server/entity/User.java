@@ -3,12 +3,14 @@ package cn.hiauth.server.entity;
 import cn.webestar.scms.commons.entity.BasicDO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @Accessors(chain = true)
@@ -89,7 +91,7 @@ public class User extends BasicDO<Long> {
     @Schema(description = "删除时间")
     private LocalDateTime deleteTime;
 
-    // 逻辑不好控制，去掉
+    // 使用起来太麻烦，去掉
     //@TableLogic(value = "false", delval = "true")
     @TableField("is_deleted")
     @Schema(description = "是否已删除")
@@ -98,5 +100,9 @@ public class User extends BasicDO<Long> {
     @TableField("is_sys_admin")
     @Schema(description = "是否为系统管理员")
     private Boolean isSysAdmin;
+
+    @Schema(description = "扩展字段")
+    @TableField(value = "extend", typeHandler = JacksonTypeHandler.class)
+    private Map<String, Object> extend;
 
 }

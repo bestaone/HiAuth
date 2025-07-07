@@ -160,7 +160,7 @@ async function delRole(row: RoleVo) {
         <div>
           {{
             EnableStatusUseBool[
-              row.isEnable as keyof typeof EnableStatusUseBool
+              row.isEnable?.toString() as keyof typeof EnableStatusUseBool
             ]
           }}
         </div>

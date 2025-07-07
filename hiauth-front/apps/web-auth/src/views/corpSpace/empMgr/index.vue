@@ -203,7 +203,9 @@ onMounted(async () => {
           <template #isCorpAdmin="{ row }">
             <div>
               {{
-                YesOrNoUseBool[row.isCorpAdmin as keyof typeof YesOrNoUseBool]
+                YesOrNoUseBool[
+                  row.isCorpAdmin?.toString() as keyof typeof YesOrNoUseBool
+                ]
               }}
             </div>
           </template>
