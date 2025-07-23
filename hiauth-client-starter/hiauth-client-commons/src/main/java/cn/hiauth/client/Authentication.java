@@ -18,5 +18,6 @@ public class Authentication {
     private String avatarUrl;
     private List<Map<String, String>> authorities;
     private SecurityUser principal;
+    private Boolean isCorpAdmin;
 
 }

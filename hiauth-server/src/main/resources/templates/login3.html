@@ -49,7 +49,10 @@
             </div>
 
             <div class="login-container">
-                <p class="login-title">欢迎登录蚂蚁智飞</p>
+                <div class="login-title" th:with="isEmpty=${#strings.isEmpty(appName)}">
+                    <span th:if="${!isEmpty}" th:text="${appName}"></span>
+                    <span th:if="${isEmpty}">认证中心</span>
+                </div>
                 <div class="tabs">
                     <div class="tab phone" th:if="${loginTypes.contains('phone')}" onclick="switchTab('phone')">验证码登录
                     </div>

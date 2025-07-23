@@ -71,13 +71,16 @@ public class LoginController {
             String[] clientIds = savedRequest.getParameterValues("client_id");
             if (clientIds != null && clientIds.length > 0) {
                 App app = appMapper.findByClientId(clientIds[0]);
-                if (app != null && app.getExtend() != null) {
-                    if (app.getExtend().containsKey("loginTypes")) {
-                        String str = (String) app.getExtend().get("loginTypes");
-                        loginTypes = Stream.of(str.split(",")).collect(Collectors.toSet());
-                    }
-                    if (app.getExtend().containsKey("loginPage")) {
-                        loginPage = (String) app.getExtend().get("loginPage");
+                if (app != null ) {
+                    model.addAttribute("appName", app.getName());
+                    if(app.getExtend() != null){
+                        if (app.getExtend().containsKey("loginTypes")) {
+                            String str = (String) app.getExtend().get("loginTypes");
+                            loginTypes = Stream.of(str.split(",")).collect(Collectors.toSet());
+                        }
+                        if (app.getExtend().containsKey("loginPage")) {
+                            loginPage = (String) app.getExtend().get("loginPage");
+                        }
                     }
                 }
             }

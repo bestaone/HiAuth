@@ -29,13 +29,14 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
         String phoneNum = readJsonNode(jsonNode, "phoneNum").asText();
         String avatarUrl = readJsonNode(jsonNode, "avatarUrl").asText();
         Boolean isSysAdmin = readJsonNode(jsonNode, "isSysAdmin").asBoolean();
+        Boolean isCorpAdmin = readJsonNode(jsonNode, "isCorpAdmin").asBoolean();
 
         Set<AuthGrantedAuthority> authorities = mapper.convertValue(jsonNode.get("authorities"), AUTHORITY_SET);
 
         JsonNode passwordNode = readJsonNode(jsonNode, "password");
         String password = passwordNode.asText("");
 
-        return new AuthUser(appId, cid, userId, empId, name, username, password, phoneNum, avatarUrl, isSysAdmin, authorities);
+        return new AuthUser(appId, cid, userId, empId, name, username, password, phoneNum, avatarUrl, isSysAdmin, authorities, isCorpAdmin);
     }
 
     private JsonNode readJsonNode(JsonNode jsonNode, String field) {

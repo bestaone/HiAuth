@@ -21,6 +21,11 @@ public class HiAuthClientProperties implements Serializable {
     private String cachePrefix = "auth";
 
     /**
+     * 缓存过期时间（秒），默认值：10天
+     */
+    private Integer cacheExpire = 60 * 60 * 24 * 10;
+
+    /**
      * 是否开启检查权限
      */
     private boolean checkPermission = true;

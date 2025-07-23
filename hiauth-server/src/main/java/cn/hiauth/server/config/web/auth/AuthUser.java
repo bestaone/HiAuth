@@ -25,6 +25,7 @@ public class AuthUser implements UserDetails, CredentialsContainer {
     private String avatarUrl;
     private Boolean isSysAdmin;
     private Collection<AuthGrantedAuthority> authorities;
+    private Boolean isCorpAdmin;
 
     public AuthUser() {
     }
@@ -36,8 +37,8 @@ public class AuthUser implements UserDetails, CredentialsContainer {
         if (employee != null) {
             this.empId = employee.getId();
             this.cid = employee.getCid();
+            this.isCorpAdmin = employee.getIsCorpAdmin();
         }
-
         this.userId = user.getId();
         this.name = user.getName();
         this.username = user.getUsername();
@@ -48,7 +49,7 @@ public class AuthUser implements UserDetails, CredentialsContainer {
         this.authorities = authorities;
     }
 
-    public AuthUser(Long appId, Long cid, Long userId, Long empId, String name, String username, String password, String phoneNum, String avatarUrl, Boolean isSysAdmin, Collection<AuthGrantedAuthority> authorities) {
+    public AuthUser(Long appId, Long cid, Long userId, Long empId, String name, String username, String password, String phoneNum, String avatarUrl, Boolean isSysAdmin, Collection<AuthGrantedAuthority> authorities, Boolean isCorpAdmin) {
         this.appId = appId;
         this.cid = cid;
         this.userId = userId;
@@ -60,6 +61,7 @@ public class AuthUser implements UserDetails, CredentialsContainer {
         this.avatarUrl = avatarUrl;
         this.isSysAdmin = isSysAdmin;
         this.authorities = authorities;
+        this.isCorpAdmin = isCorpAdmin;
     }
 
     @Override

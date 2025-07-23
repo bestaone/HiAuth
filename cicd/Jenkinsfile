@@ -29,7 +29,7 @@ pipeline {
         stage('Install') {
             steps {
                 sh "mvn clean install -Dmaven.test.skip=false"
-                sh "cd hiauth-front && pnpm install && pnpm build:auth"
+                sh "cd hiauth-front && pnpm install --no-frozen-lockfile && pnpm build:auth"
                 // sh "cd docs && pnpm install && pnpm run build"
                 sh 'docker stop hiauth || true'
                 sh 'docker rm -f hiauth || true'
