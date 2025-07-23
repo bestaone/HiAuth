@@ -123,6 +123,11 @@ public class HiAuthClientGatewayController {
         String name = (String) userinfoMap.get("name");
         List<Map<String, String>> authorities = (List<Map<String, String>>) userinfoMap.get("authorities");
 
+        Boolean isCorpAdmin = null;
+        if(userinfoMap.containsKey("isCorpAdmin")){
+            isCorpAdmin = (Boolean) userinfoMap.get("isCorpAdmin");
+        }
+
         HiAuthToken token = new HiAuthToken();
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
@@ -140,6 +145,7 @@ public class HiAuthClientGatewayController {
         auth.setEmpId(empId);
         auth.setName(name);
         auth.setAuthorities(authorities);
+        auth.setIsCorpAdmin(isCorpAdmin);
         //设置用户扩展信息
         if (securityService != null) {
             SecurityUser principal = securityService.loadSecurityUser(auth);

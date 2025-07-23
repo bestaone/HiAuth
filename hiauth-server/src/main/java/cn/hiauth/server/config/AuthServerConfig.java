@@ -157,6 +157,7 @@ public class AuthServerConfig {
                     claims.put("username", user.getUsername());
                     claims.put("phoneNum", user.getPhoneNum());
                     claims.put("avatarUrl", user.getAvatarUrl());
+                    claims.put("isCorpAdmin", user.getIsCorpAdmin());
                     if (user.getAuthorities() != null) {
                         Set<Map<String, String>> authorities = new HashSet<>();
                         user.getAuthorities().forEach(i -> {

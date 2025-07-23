@@ -116,6 +116,11 @@ public class HiAuthClientController {
         String name = (String) userinfoMap.get("name");
         List<Map<String, String>> authorities = (List<Map<String, String>>) userinfoMap.get("authorities");
 
+        Boolean isCorpAdmin = null;
+        if(userinfoMap.containsKey("isCorpAdmin")){
+            isCorpAdmin = Boolean.parseBoolean((String) userinfoMap.get("isCorpAdmin"));
+        }
+
         HiAuthToken token = new HiAuthToken();
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
@@ -133,13 +138,14 @@ public class HiAuthClientController {
         auth.setEmpId(empId);
         auth.setName(name);
         auth.setAuthorities(authorities);
+        auth.setIsCorpAdmin(isCorpAdmin);
         //设置用户扩展信息
         if (securityService != null) {
             SecurityUser principal = securityService.loadSecurityUser(auth);
             auth.setPrincipal(principal);
         }
 
-        SessionContext context = new SessionContext(null, authClientProperties.getCachePrefix());
+        SessionContext context = new SessionContext(null, authClientProperties.getCachePrefix(), authClientProperties.getCacheExpire());
         context.setToken(token);
         context.setAuth(auth);
 

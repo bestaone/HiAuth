@@ -4,6 +4,7 @@ import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.config.web.auth.AuthGrantedAuthority;
 import cn.hiauth.server.config.web.auth.AuthUser;
 import cn.hiauth.server.entity.*;
+import cn.hiauth.server.mapper.AppMapper;
 import cn.hiauth.server.mapper.EmployeeMapper;
 import cn.hiauth.server.mapper.UserMapper;
 import cn.hiauth.server.service.AppResourceService;
@@ -31,6 +32,9 @@ public class MultiAuthUserService {
 
     @Resource
     private EmployeeMapper employeeMapper;
+
+    @Resource
+    private AppMapper appMapper;
 
     @Resource
     private RoleService roleService;
@@ -77,7 +81,12 @@ public class MultiAuthUserService {
         Employee employee = null;
         Set<AuthGrantedAuthority> authorities = new HashSet<>();
         if (client != null && client.getAppId() != null) {
-            employee = employeeMapper.findOneByAppIdAndUserId(client.getAppId(), user.getId());
+            App app = appMapper.selectById(client.getAppId());
+            Boolean corpAdminOnly = null;
+            if(app!=null && app.getExtend()!=null && app.getExtend().containsKey("corpAdminOnly")){
+                corpAdminOnly = (Boolean) app.getExtend().get("corpAdminOnly");
+            }
+            employee = employeeMapper.findOneByAppIdAndUserId(client.getAppId(), user.getId(), corpAdminOnly);
             Assert.notNull(employee, String.format("不是应用%s的用户", client.getClientName()));
             List<Role> roles = roleService.findByEmpId(employee.getId());
             Set<Long> roleIds = new HashSet<>();

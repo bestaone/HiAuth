@@ -36,13 +36,43 @@ Apache Maven 3.8.6 (36645f6c9b5079805ea5009217e36f2cffd34256)
 ### Configure the HiAuth Startup Configuration File {#config-file}
 - Create the configuration file `/opt/install/hiauth/conf/hiauth.properties` and configure the correct parameters;
 ```properties [hiauth.properties]
-# Only PostgreSQL is supported
+# login page title, default:
+loginPage.title=Welcome Login
+# login page static file name
+loginPage.path=login
+# login page default username
+loginPage.username=
+# login page default password
+loginPage.password=
+# login page username placeholder
+loginPage.usernamePlaceholder=
+# login page password placeholder
+loginPage.passwordPlaceholder=
+# login types
+loginPage.loginTypes=phone,account,wechat
+
+# aliyun sms
+aliyun.sms.accessKeyId=abcdefghi
+aliyun.sms.accessKeySecret=abcdefghi
+aliyun.sms.sign=HiAuth
+aliyun.sms.smsTemplateCode=SMS_00000001
+aliyun.sms.superSmsCode=888888
+
+# supported wechat qrcode login, config in wx open platform
+wechat.open.appid=wx123456789
+wechat.open.appSecret=abcdefghijklmnopqrstuvwxyz
+wechat.open.redirectUri=http://127.0.0.1:8080/wechat/doLogin
+wechat.open.style=black
+wechat.open.href=
+
+# only supported postgresql
 datasource.type=com.alibaba.druid.pool.DruidDataSource
 datasource.driverClassName=org.postgresql.Driver
-datasource.url=jdbc:postgresql://db_host:5432/hiauth
+datasource.url=jdbc:postgresql://db_host:5432/hiauth?stringtype=unspecified
 datasource.username=test
 datasource.password=123456
 
+# redis
 redis.host=redis_host
 redis.port=6379
 redis.database=0

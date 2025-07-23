@@ -17,6 +17,7 @@ public class UserinfoVo {
     private String phoneNum;
     private String avatarUrl;
     private List<String> authorities;
+    private Boolean isCorpAdmin;
 
     public static UserinfoVo toVo(Authentication auth) {
         UserinfoVo vo = new UserinfoVo();
@@ -32,6 +33,7 @@ public class UserinfoVo {
             vo.setAuthorities(new ArrayList<>());
             auth.getAuthorities().forEach(item -> vo.getAuthorities().add(item.get("code")));
         }
+        vo.setIsCorpAdmin(auth.getIsCorpAdmin());
         return vo;
     }
 

@@ -36,10 +36,13 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
                 SELECT O.* FROM t_employee O
                 LEFT JOIN t_corp_app O1 ON O1.corp_id = O.cid
                 WHERE O.user_id=#{userId} AND O1.app_id=#{appId}
+                    <if test="corpAdminOnly!=null">
+                        AND O.is_corp_admin=#{corpAdminOnly}
+                    </if>
                 ORDER BY O.last_login_time DESC
                 LIMIT 1 OFFSET 0
                 </script>
             """)
-    Employee findOneByAppIdAndUserId(@Param("appId") Long appId, @Param("userId") Long userId);
+    Employee findOneByAppIdAndUserId(@Param("appId") Long appId, @Param("userId") Long userId, @Param("corpAdminOnly") Boolean corpAdminOnly);
 
 }
