@@ -69,7 +69,7 @@ catalog:
   ant-design-vue: ^4.2.6
   archiver: ^7.0.1
   autoprefixer: ^10.4.21
-  axios: ^1.10.0
+  axios: ^1.11.0
   axios-mock-adapter: ^2.1.0
   cac: ^6.7.14
   chalk: ^5.4.1
