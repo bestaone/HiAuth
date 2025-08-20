@@ -144,22 +144,22 @@
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>commons</artifactId>
-            <version>1.1.4</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>cache-spring-boot-starter</artifactId>
-            <version>1.0.7</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>mybatis-plus-spring-boot-starter</artifactId>
-            <version>1.0.3</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>security-spring-boot-starter</artifactId>
-            <version>1.0.20</version>
+            <version>1.2.0</version>
         </dependency>
         <!-- 数据库 -->
         <dependency>

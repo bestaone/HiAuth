@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title id="titleName"></title>
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/jquery.validate.min.js"></script>
+    <script src="../static/js/wxLogin.js"></script>
+    <link rel="stylesheet" href="../static/fontawesome-5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/login4.css">
+</head>
+
+<body>
+    <!-- 登录失败提示 -->
+    <div class="error-alert" th:if="${param.error}" onclick="this.style.display='none'">
+        <span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION} ? ${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></span>
+        <svg viewBox="0 0 24 24" class="close-icon">
+            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+        </svg>
+    </div>
+    <div class="login-page-container">
+        <div class="lft-container">
+            <img class="gb" src="../static/img/login3-bg.png" alt="">
+            <img class="logo" src="../static/img/lhkj-logo_1.png" alt="">
+            <p>汇聚海量用户，提供专业服务</p>
+        </div>
+        <div class="rgt-container dark-box" id="right-box">
+            <div class="switch-container dark-switch" id="switch">
+                <div class="switch-inner light-inner">
+                    <div class="inner-box">
+                        <div class="switch-item" onclick="handleSwitch(1)"><img src="../static/img/light_sun.png" alt=""></div>
+                        <div class="switch-item" onclick="handleSwitch(2)"><img src="../static/img/light_moon.png" alt=""></div>
+                    </div>
+                </div>
+                <div class="switch-inner dark-inner">
+                    <div class="inner-box">
+                        <div class="switch-item" onclick="handleSwitch(1)"><img src="../static/img/dark_sun.png" alt=""></div>
+                        <div class="switch-item" onclick="handleSwitch(2)"><img src="../static/img/dark_moon.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="login-container">
+                <div class="login-title" th:with="isEmpty=${#strings.isEmpty(appName)}">
+                    <span th:if="${!isEmpty}" th:text="${appName}"></span>
+                    <span th:if="${isEmpty}">认证中心</span>
+                </div>
+                <div class="tabs">
+                    <div id="phone" class="tab" th:if="${loginTypes.contains('phone')}" onclick="switchTab('phone')">验证码登录</div>
+                    <div id="account" class="tab" th:if="${loginTypes.contains('account')}" onclick="switchTab('account')">账户登录</div>
+                    <div id="wechat" class="tab" th:if="${loginTypes.contains('wechat')}" onclick="switchTab('wechat')">扫码登录</div>
+                </div>
+                <!-- 账户登录表单 -->
+                <form id="accountForm" class="form" style="display: none;" th:action="@{account/doLogin}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="hidden" id="formToken1" name="formToken" th:value="${formToken}">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="text" name="username"  class="input" placeholder="请输入您的账号">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="password" id="passwordInput" name="password" class="input password" placeholder="请输入密码" style="padding-right: 34px;">
+                            <!-- 新增右侧眼睛图标 -->
+                            <svg class="icon input-icon" style="right:10px; left:auto; cursor:pointer;" viewBox="0 0 1024 1024" width="32" height="32" onclick="togglePasswordVisibility()" id="eyeIcon">
+                                <path fill="currentColor" d="M97.834667 97.834667a42.666667 42.666667 0 0 1 60.373333 0l155.221333 155.264c2.517333 1.962667 4.778667 4.266667 6.826667 6.826666l443.349333 443.306667c2.901333 2.261333 5.546667 4.864 7.850667 7.893333l154.752 154.709334a42.666667 42.666667 0 0 1-60.373333 60.330666l-134.528-134.570666C669.653333 827.733333 596.138667 853.333333 512 853.333333c-122.069333 0-221.610667-53.973333-295.381333-115.498666-73.642667-61.482667-124.16-132.565333-149.418667-172.629334a539.477333 539.477333 0 0 0-1.024-1.621333c-5.034667-7.893333-11.52-18.133333-14.848-32.512a92.117333 92.117333 0 0 1 0-38.144c3.285333-14.378667 9.813333-24.661333 14.848-32.597333l1.066667-1.621334c25.685333-40.661333 77.866667-114.176 154.453333-176.682666L97.834667 158.165333a42.666667 42.666667 0 0 1 0-60.330666z m184.533333 244.906666C212.48 397.866667 163.584 465.92 139.392 504.234667a388.565333 388.565333 0 0 0-4.693333 7.68V512a409.941333 409.941333 0 0 0 4.693333 7.594667c22.656 36.010667 67.626667 98.986667 131.925333 152.661333C335.488 725.845333 416.298667 768 512 768c57.728 0 109.994667-15.317333 156.458667-39.210667l-69.76-69.76a170.666667 170.666667 0 0 1-233.728-233.728L282.368 342.698667z m147.2 147.157334a85.333333 85.333333 0 0 0 104.533333 104.533333l-104.533333-104.533333zM512 256c-16.256 0-32.085333 1.194667-47.36 3.498667a42.666667 42.666667 0 0 1-12.501333-84.437334A409.045333 409.045333 0 0 1 512 170.666667c122.112 0 221.653333 53.973333 295.424 115.498666 73.642667 61.482667 124.16 132.565333 149.418667 172.629334l1.024 1.621333c5.034667 7.893333 11.52 18.133333 14.848 32.512 2.645333 11.605333 2.645333 26.538667 0 38.144-3.285333 14.378667-9.813333 24.661333-14.890667 32.597333l-1.024 1.664a788.778667 788.778667 0 0 1-61.525333 84.138667 42.666667 42.666667 0 1 1-65.408-54.784 704.853333 704.853333 0 0 0 59.52-82.645333V512v-0.042667a62.336 62.336 0 0 0-1.28-2.090666l-3.413334-5.546667c-22.698667-35.968-67.712-98.986667-131.968-152.618667C688.554667 298.154667 607.744 256 512 256z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper captcha-row">
+                            <div class="input-sub-wrapper">
+                                <input type="text" name="captcha" class="input" placeholder="请输入图片验证码" style="flex:1">
+                            </div>
+                            <img class="captcha-img" alt="图形验证码">
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">立即登录</button>
+                </form>
+                <!-- 手机登录表单 -->
+                <form id="phoneForm" class="form" th:action="@{phone/doLogin}" method="post">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="hidden" name="formToken" th:value="${formToken}">
+                    <div class="form-group">
+                        <div class="input-wrapper">
+                            <input type="tel" name="phone" autocomplete="on" class="input" placeholder="请输入您的手机号码" oninput="this.value = this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="error-message">请输入有效的手机号码</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper sms-code-row">
+                            <div class="input-sub-wrapper">
+                                <input class="input" name="smsCode" placeholder="请输入验证码" style="flex:1" type="text">
+                            </div>
+                            <button class="get-code-btn" id="smsCodeBtn" type="button">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-wrapper captcha-row">
+                            <div class="input-sub-wrapper">
+                                <input type="text" name="captcha" class="input" placeholder="请输入图片验证码" style="flex:1">
+                            </div>
+                            <img class="captcha-img" alt="图形验证码">
+                        </div>
+                    </div>
+                    <button type="submit" class="submit-btn">立即登录</button>
+                </form>
+                <!-- 手机登录表单 -->
+                <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post" style="width: 330px">
+                    <div id="wechat_qrcode"></div>
+                </form>
+            </div>
+            <p class="record-text">登录即表示您同意HiAuth的<span>用户协议</span>和<span>隐私协议</span></p>
+        </div>
+    </div>
+</body>
+<script>
+    // 新增初始化登录方式
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // 新增URL参数清除逻辑
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('error')) {
+            url.searchParams.delete('error');
+            window.history.replaceState({}, '', url);
+        }
+        const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'phone';
+        const screenModel = localStorage.getItem('hiauth_screen_model') || 1;
+        switchTab(lastLoginType);
+        handleSwitch(screenModel)
+    });
+
+    function handleSwitch(type) {
+        if (type == 1) {
+            //切换白色模式
+            $('#switch').attr('class', 'switch-container light-switch')
+            $('#right-box').attr('class', 'rgt-container light-box')
+        }
+        if (type == 2) {
+            //切换黑色模式
+            $('#switch').attr('class', 'switch-container dark-switch')
+            $('#right-box').attr('class', 'rgt-container dark-box')
+        }
+        localStorage.setItem('hiauth_screen_model', type);
+    }
+
+
+    // 切换登录方式
+    function switchTab(type) {
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.form').forEach(form => form.style.display = 'none');
+        let tab = document.querySelector(`.tab#` + type);
+        if(tab==null){
+            tab = document.querySelector('.tabs > .tab:first-child');
+        }
+        tab.classList.add('active');
+        type = tab.id;
+        document.getElementById(type + 'Form').style.display = 'block';
+        localStorage.setItem('hiauth_last_loginType', type);
+    }
+
+    // 切换密码可见性
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('passwordInput');
+        const eyeIcon = document.getElementById('eyeIcon');
+        const isPassword = passwordField.type === 'password';
+        // 切换输入框类型
+        passwordField.type = isPassword ? 'text' : 'password';
+        // 切换图标路径
+        if (isPassword) {
+            // 睁眼图标（明文状态）
+            eyeIcon.innerHTML = '<path fill="currentColor" d="M341.333333 512a170.666667 170.666667 0 1 1 341.333334 0 170.666667 170.666667 0 0 1-341.333334 0z m170.666667-85.333333a85.333333 85.333333 0 1 0 0 170.666666 85.333333 85.333333 0 0 0 0-170.666666z"></path><path fill="currentColor" d="M216.618667 286.165333C290.389333 224.64 389.973333 170.666667 512 170.666667c122.112 0 221.653333 53.973333 295.424 115.498666 73.642667 61.482667 124.16 132.565333 149.418667 172.629334l1.024 1.621333c5.034667 7.893333 11.52 18.133333 14.848 32.512a92.16 92.16 0 0 1 0 38.144c-3.285333 14.378667-9.813333 24.618667-14.848 32.512l-1.024 1.621333c-25.301333 40.064-75.776 111.146667-149.418667 172.629334C733.653333 799.36 634.112 853.333333 512 853.333333c-122.069333 0-221.610667-53.973333-295.381333-115.498666-73.642667-61.482667-124.16-132.565333-149.418667-172.629334a539.477333 539.477333 0 0 0-1.024-1.621333c-5.034667-7.893333-11.52-18.133333-14.848-32.512a92.117333 92.117333 0 0 1 0-38.144c3.285333-14.378667 9.813333-24.618667 14.848-32.512l1.024-1.621333c25.258667-40.064 75.776-111.146667 149.418667-172.629334zM271.36 351.701333C207.018667 405.333333 162.090667 468.352 139.349333 504.32a409.173333 409.173333 0 0 0-4.693333 7.594667V512l1.237333 2.090667 3.413334 5.546666c22.741333 35.968 67.712 98.986667 132.010666 152.618667C335.488 725.845333 416.298667 768 512 768c95.744 0 176.554667-42.154667 240.725333-95.701333 64.256-53.632 109.226667-116.650667 131.968-152.661334a445.610667 445.610667 0 0 0 4.693334-7.594666V512a445.610667 445.610667 0 0 0-4.693334-7.594667c-22.741333-36.010667-67.712-98.986667-131.968-152.661333C688.554667 298.154667 607.744 256 512 256c-95.701333 0-176.512 42.154667-240.682667 95.701333z"></path>';
+        } else {
+            // 闭眼图标（密文状态）
+            eyeIcon.innerHTML = '<path fill="currentColor" d="M97.834667 97.834667a42.666667 42.666667 0 0 1 60.373333 0l155.221333 155.264c2.517333 1.962667 4.778667 4.266667 6.826667 6.826666l443.349333 443.306667c2.901333 2.261333 5.546667 4.864 7.850667 7.893333l154.752 154.709334a42.666667 42.666667 0 0 1-60.373333 60.330666l-134.528-134.570666C669.653333 827.733333 596.138667 853.333333 512 853.333333c-122.069333 0-221.610667-53.973333-295.381333-115.498666-73.642667-61.482667-124.16-132.565333-149.418667-172.629334a539.477333 539.477333 0 0 0-1.024-1.621333c-5.034667-7.893333-11.52-18.133333-14.848-32.512a92.117333 92.117333 0 0 1 0-38.144c3.285333-14.378667 9.813333-24.661333 14.848-32.597333l1.066667-1.621334c25.685333-40.661333 77.866667-114.176 154.453333-176.682666L97.834667 158.165333a42.666667 42.666667 0 0 1 0-60.330666z m184.533333 244.906666C212.48 397.866667 163.584 465.92 139.392 504.234667a388.565333 388.565333 0 0 0-4.693333 7.68V512a409.941333 409.941333 0 0 0 4.693333 7.594667c22.656 36.010667 67.626667 98.986667 131.925333 152.661333C335.488 725.845333 416.298667 768 512 768c57.728 0 109.994667-15.317333 156.458667-39.210667l-69.76-69.76a170.666667 170.666667 0 0 1-233.728-233.728L282.368 342.698667z m147.2 147.157334a85.333333 85.333333 0 0 0 104.533333 104.533333l-104.533333-104.533333zM512 256c-16.256 0-32.085333 1.194667-47.36 3.498667a42.666667 42.666667 0 0 1-12.501333-84.437334A409.045333 409.045333 0 0 1 512 170.666667c122.112 0 221.653333 53.973333 295.424 115.498666 73.642667 61.482667 124.16 132.565333 149.418667 172.629334l1.024 1.621333c5.034667 7.893333 11.52 18.133333 14.848 32.512 2.645333 11.605333 2.645333 26.538667 0 38.144-3.285333 14.378667-9.813333 24.661333-14.890667 32.597333l-1.024 1.664a788.778667 788.778667 0 0 1-61.525333 84.138667 42.666667 42.666667 0 1 1-65.408-54.784 704.853333 704.853333 0 0 0 59.52-82.645333V512v-0.042667a62.336 62.336 0 0 0-1.28-2.090666l-3.413334-5.546667c-22.698667-35.968-67.712-98.986667-131.968-152.618667C688.554667 298.154667 607.744 256 512 256z"/>';
+        }
+    }
+
+    const errorIcon = '<i aria-hidden="true" class="fa fa-exclamation-circle"></i>';
+
+    // 初始化账号登录表单验证
+    $("#accountForm").validate({
+        rules: {
+            username: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            password: {
+                required: true,
+                minlength: 5,
+                maxlength: 20
+            },
+            captcha: {
+                required: true,
+                minlength: 4,
+                maxlength: 4
+            }
+        },
+        messages: {
+            username: {
+                required: errorIcon + " 用户名不能为空",
+                minlength: errorIcon + " 用户名至少3个字符",
+                maxlength: errorIcon + " 用户名不能超过20个字符"
+            },
+            password: {
+                required: errorIcon + " 密码不能为空",
+                minlength: errorIcon + " 密码至少5个字符",
+                maxlength: errorIcon + " 密码不能超过20个字符"
+            },
+            captcha: {
+                required: errorIcon + " 图形验证码不能为空",
+                minlength: errorIcon + " 图形验证为4个字符",
+                maxlength: errorIcon + " 图形验证为4个字符"
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.closest('.input-wrapper').parent());
+        },
+        submitHandler: function (form) {
+            // 存储登录信息
+            const username = form.querySelector('#accountForm input[name="username"]').value;
+            localStorage.setItem('hiauth_last_loginType', "account");
+            localStorage.setItem('hiauth_last_username', username);
+            form.submit();
+        }
+    });
+
+    // 添加自定义验证方法
+    $.validator.addMethod("chineseMobile", function (value, element) {
+        return this.optional(element) || /^1[3-9]\d{9}$/.test(value);
+    }, errorIcon + " 请输入正确的11位手机号码");
+
+    // 初始化手机号登录表单验证
+    $("#phoneForm").validate({
+        rules: {
+            phone: {
+                required: true,
+                minlength: 11,
+                maxlength: 11,
+                chineseMobile: true
+            },
+            captcha: {
+                required: true,
+                minlength: 4,
+                maxlength: 4
+            },
+            smsCode: {
+                required: true,
+                minlength: 6,
+                maxlength: 6
+            }
+        },
+        messages: {
+            phone: {
+                required: errorIcon + " 手机号不能为空",
+                minlength: errorIcon + " 请输入正确的11位手机号码",
+                maxlength: errorIcon + " 请输入正确的11位手机号码"
+            },
+            captcha: {
+                required: errorIcon + " 图形验证码不能为空",
+                minlength: errorIcon + " 验证码必须为4位",
+                maxlength: errorIcon + " 验证码必须为4位"
+            },
+            smsCode: {
+                required: errorIcon + " 短信验证码不能为空",
+                minlength: errorIcon + " 验证码必须为6位",
+                maxlength: errorIcon + " 验证码必须为6位"
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.appendTo(element.closest('.input-wrapper').parent());
+        },
+        submitHandler: function (form) {
+            // 存储登录信息
+            const phone = form.querySelector('#phoneForm input[name="phone"]').value;
+            localStorage.setItem('hiauth_last_loginType', "phone");
+            localStorage.setItem('hiauth_last_phone', phone);
+            form.submit();
+        }
+    });
+
+    // 获取图像验证码配置
+    const contentPath = "";
+    const imgUrl = contentPath + "auth/code/image";
+
+    // 获取图形验证码
+    function getCaptcha(formToken) {
+        const $this = $(".captcha-img");
+        const url = imgUrl + "?formToken=" + formToken + "&r=" + Math.random();
+        $this.attr('src', url);
+    }
+
+    //点击更新图形验证码
+    $('.captcha-img').click(function () {
+        const formToken = $("#formToken1").val();
+        getCaptcha(formToken);
+    });
+    getCaptcha($("#formToken1").val());
+
+    // 短信验证码倒计时功能
+    let countdown = 60;
+    let timer = null;
+
+    function startCountdown() {
+        const btn = $("#smsCodeBtn");
+        btn.prop("disabled", true).text(`${countdown}秒后重发`);
+        timer = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                btn.prop("disabled", false).text("获取验证码");
+                countdown = 60;
+                return;
+            }
+            btn.text(`${countdown}秒后重发`);
+        }, 1000);
+    }
+
+    // 绑定获取验证码按钮点击事件
+    $("#smsCodeBtn").click(function () {
+
+        const phoneEl = $("#phoneForm input[name='phone']");
+        const imgCodeEl = $("#phoneForm input[name='captcha']");
+        const formTokenEl = $("#phoneForm input[name='formToken']");
+
+        const phoneIsValid = phoneEl.valid();
+        const imgCodeIsValid = imgCodeEl.valid();
+        if (!phoneIsValid || !imgCodeIsValid) {
+            return;
+        }
+
+        const phone = phoneEl.val();
+        const imgCode = imgCodeEl.val();
+        const formToken = formTokenEl.val();
+
+        // 发送短信验证码请求
+        $.ajax({
+            url: "auth/code/sms?telNo=" + phone + "&formToken=" + formToken + "&imgCode=" + imgCode + "&r=" + Math.random(),
+            type: "GET",
+            success: function (data) {
+                $(".error-alert").remove();
+                if (data.code !== 10000) {
+                    $("body").prepend(`
+                            <div class="error-alert" onclick="this.remove()">
+                                ${data.message}
+                                <svg viewBox="0 0 24 24" class="close-icon">
+                                    <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                                </svg>
+                            </div>
+                        `);
+                    const formToken = $("#formToken1").val();
+                    getCaptcha(formToken);
+                } else {
+                    startCountdown();
+                }
+            }
+        });
+    });
+
+    // 在页面加载时读取存储的登录信息
+    document.addEventListener('DOMContentLoaded', function () {
+        const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'account';
+        const lastUsername = localStorage.getItem('hiauth_last_username');
+        if (lastUsername) {
+            document.querySelector(`#accountForm input[name="username"]`).value = lastUsername;
+        }
+        const lastPhone = localStorage.getItem('hiauth_last_phone');
+        if (lastPhone) {
+            document.querySelector(`#phoneForm input[name="phone"]`).value = lastPhone;
+        }
+    });
+
+    // 微信登录二维码
+    new WxLogin({
+        id: "wechat_qrcode",
+        appid: "[[${wechatAppid}]]",
+        scope: "snsapi_login",
+        redirect_uri: encodeURI("[[${wechatRedirectUri}]]"),
+        state: "[[${wechaState}]]",
+        style: "[[${wechatStyle}]]",
+        href: "[[${wechatHref}]]"
+    });
+
+</script>
+<script th:src="@{static/js/particle.js}"></script>
+
+</html>

@@ -8,6 +8,7 @@ import cn.hiauth.server.utils.Constant;
 import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ICaptcha;
+import cn.hutool.captcha.generator.RandomGenerator;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.RandomUtil;
 import cn.webestar.scms.cache.CacheUtil;
@@ -61,6 +62,9 @@ public class LoginController {
     @Value("${smsUils.smsTemplateCode:}")
     private String smsTemplateCode;
 
+    @Autowired
+    private RandomGenerator randomGenerator;
+
     @GetMapping(value = {"/login"}, produces = "text/html")
     public String login(HttpServletRequest request, Model model) {
         Set<String> loginTypes = appProperties.getLoginTypes();
@@ -110,7 +114,7 @@ public class LoginController {
     @GetMapping("/auth/code/image")
     public void image(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String formToken = request.getParameter(Constant.REQUEST_KEY_FORM_TOKEN);
-        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(90, 30, 4, 10, 1);
+        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(90, 30, randomGenerator, 10);
         cacheUtil.set(Constant.CACHE_KEY_CAPTCHA + ":" + formToken, captcha.getCode(), timeout);
         log.debug("生成图形验证码：{}, 有效期:{}妙", captcha.getCode(), timeout);
         captcha.write(response.getOutputStream());
