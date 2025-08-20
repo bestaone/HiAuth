@@ -28,7 +28,7 @@
     <div class="login-page-container">
         <div class="lft-container">
             <img class="gb" src="../static/img/login3-bg.png" alt="">
-            <img class="logo" src="../static/img/login3_logo.png" alt="">
+            <img class="logo" src="http://uavs-common-oss.mayizhifei.com/wxmp/images/myzf_logo_1.png" alt="">
             <p>汇聚海量飞手，提供专业无人机服务</p>
         </div>
         <div class="rgt-container dark-box" id="right-box">
@@ -41,24 +41,21 @@
                 </div>
                 <div class="switch-inner dark-inner">
                     <div class="inner-box">
-                        <div class="switch-item" onclick="handleSwitch(1)"><img src="../static/img/dark_sun.png" alt="">
-                        </div>
+                        <div class="switch-item" onclick="handleSwitch(1)"><img src="../static/img/dark_sun.png" alt=""></div>
                         <div class="switch-item" onclick="handleSwitch(2)"><img src="../static/img/dark_moon.png" alt=""></div>
                     </div>
                 </div>
             </div>
-
             <div class="login-container">
+                
                 <div class="login-title" th:with="isEmpty=${#strings.isEmpty(appName)}">
                     <span th:if="${!isEmpty}" th:text="${appName}"></span>
                     <span th:if="${isEmpty}">认证中心</span>
                 </div>
                 <div class="tabs">
-                    <div class="tab phone" th:if="${loginTypes.contains('phone')}" onclick="switchTab('phone')">验证码登录
-                    </div>
-                    <div class="tab account" th:if="${loginTypes.contains('account')}" onclick="switchTab('account')">账户登录</div>
-                    <div class="tab wechat" th:if="${loginTypes.contains('wechat')}" onclick="switchTab('wechat')">扫码登录
-                    </div>
+                    <div id="phone" class="tab" th:if="${loginTypes.contains('phone')}" onclick="switchTab('phone')">验证码登录</div>
+                    <div id="account" class="tab" th:if="${loginTypes.contains('account')}" onclick="switchTab('account')">账户登录</div>
+                    <div id="wechat" class="tab" th:if="${loginTypes.contains('wechat')}" onclick="switchTab('wechat')">扫码登录</div>
                 </div>
                 <!-- 账户登录表单 -->
                 <form id="accountForm" class="form" style="display: none;" th:action="@{account/doLogin}" method="post">
@@ -118,8 +115,16 @@
                     <button type="submit" class="submit-btn">立即登录</button>
                 </form>
                 <!-- 手机登录表单 -->
-                <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post" style="width: 330px">
+                <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post" style="width: 330px;position: relative;">
                     <div id="wechat_qrcode"></div>
+                    <div class="wechat_register" onclick="onShowRegisterQRcode()">还没注册，点击注册</div>
+                    <div class="wechat_modal">
+                        <div class="box">
+                            <div class="title">使用微信扫一扫</div>
+                            <img class="QRcode" alt="二维码" src="http://uavs-common-oss.mayizhifei.com/wxmp/images/QRCode.png">
+                        </div>
+                        <img class="close" src="../static/img/close.png" onclick="onCloseRegisterQRcode()" >
+                    </div>
                 </form>
             </div>
             <p class="record-text">登录即表示您同意蚂蚁智飞的 <span>用户协议</span>和<span>隐私协议</span></p>
@@ -161,13 +166,12 @@
     function switchTab(type) {
         document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.form').forEach(form => form.style.display = 'none');
-        if (type === 'phone') {
-            document.querySelector(`.tab.phone`).classList.add('active');
-        } else if (type === 'account') {
-            document.querySelector(`.tab.account`).classList.add('active');
-        } else if (type === 'wechat') {
-            document.querySelector(`.tab.wechat`).classList.add('active');
+        let tab = document.querySelector(`.tab#` + type);
+        if(tab==null){
+            tab = document.querySelector('.tabs > .tab:first-child');
         }
+        tab.classList.add('active');
+        type = tab.id;
         document.getElementById(type + 'Form').style.display = 'block';
         localStorage.setItem('hiauth_last_loginType', type);
     }
@@ -394,6 +398,15 @@
         style: "[[${wechatStyle}]]",
         href: "[[${wechatHref}]]"
     });
+
+    function onShowRegisterQRcode(){
+        const QRcode = document.querySelector('.wechat_modal')
+        QRcode.style.display = 'flex';
+    }
+    function onCloseRegisterQRcode(){
+        const QRcode = document.querySelector('.wechat_modal')
+        QRcode.style.display = 'none';
+    }
 
 </script>
 <script th:src="@{static/js/particle.js}"></script>

@@ -14,8 +14,8 @@ defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
 const contentStore = useContentStore();
-const up = ref<string>('xxx');
-const pp = ref<string>('sww');
+const up = ref<string>('请输入用户名');
+const pp = ref<string>('请输入密码');
 
 onBeforeMount(async () => {
   const { publicKey, encryptType, usernamePlaceholder, passwordPlaceholder } =

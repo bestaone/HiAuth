@@ -7,7 +7,7 @@
 
     <groupId>cn.hiauth</groupId>
     <artifactId>hiauth-client-session-spring-boot-starter</artifactId>
-    <version>0.9.9</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>hiauth-client-session-spring-boot-starter</name>
     <description>hiauth-client-session-spring-boot-starter</description>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>cn.webestar.scms</groupId>
             <artifactId>commons</artifactId>
-            <version>1.1.4</version>
+            <version>1.2.0</version>
         </dependency>
         <dependency>
             <groupId>cn.hiauth</groupId>

@@ -12,7 +12,7 @@
 
     <modules>
         <module>hiauth-server</module>
-<!--        <module>hiauth-client-starter</module>-->
+<!--        <module>hiauth-client-starter</modulse>-->
         <module>example/demo</module>
         <module>example/himall</module>
         <module>example/hiauth-client</module>

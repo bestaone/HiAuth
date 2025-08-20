@@ -3,6 +3,7 @@ package cn.hiauth.server.config;
 import cn.hiauth.server.config.rest.security.ReadonlyFilter;
 import cn.hiauth.server.utils.AliyunSmsUtils;
 import cn.hiauth.server.utils.SmsUtils;
+import cn.hutool.captcha.generator.RandomGenerator;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,9 @@ public class BeanConfig {
     @Value("${app.readonly.account:}")
     private String readonlyAccount;
 
+    @Value("${app.login.baseImageChar:}")
+    private String baseImageChar;
+
     @Value("${smsUils.accessKeyId:}")
     private String accessKeyId;
 
@@ -35,6 +39,11 @@ public class BeanConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public RandomGenerator randomGenerator() {
+        return new RandomGenerator(baseImageChar, 4);
     }
 
     @Bean
