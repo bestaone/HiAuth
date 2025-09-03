@@ -134,8 +134,8 @@ public class CorpServiceImpl extends ServiceImpl<CorpMapper, Corp> implements Co
     }
 
     @Override
-    public List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId) {
-        List<CorpAppInfo> cpis = corpAppMapper.limitCorpAppInfoByUserId(userId);
+    public List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId, Long appId) {
+        List<CorpAppInfo> cpis = corpAppMapper.limitCorpAppInfoByUserId(userId, appId);
         return IndexCorpAppVo.convert(cpis);
     }
 

@@ -103,13 +103,20 @@ public class AuthFilter implements Filter {
 
     private SessionContext getSessionContext(HttpServletRequest request) throws Exception {
 
+        String accessToken = null;
+
         String authHeader = request.getHeader(Constant.TOKEN_HEADER);
-        Assert.notNull(authHeader, 10401, "miss token");
+        if (StringUtils.hasText(authHeader)) {
+            authHeader = URLDecoder.decode(authHeader, StandardCharsets.UTF_8);
+            Assert.isTrue(authHeader.startsWith(Constant.TOKEN_PREFIX), 10401, "miss bearer");
+            accessToken = authHeader.substring(Constant.TOKEN_PREFIX.length()).trim();
+        }
 
-        authHeader = URLDecoder.decode(authHeader, StandardCharsets.UTF_8);
-        Assert.isTrue(authHeader.startsWith(Constant.TOKEN_PREFIX), 10401, "miss bearer");
+        if(!StringUtils.hasText(accessToken)) {
+            accessToken = request.getParameter(Constant.PARAMETER_TOKEN_KEY);
+        }
+        Assert.notNull(accessToken, 10401, "miss token");
 
-        String accessToken = authHeader.substring(Constant.TOKEN_PREFIX.length()).trim();
         JWT jwt = JwtUtils.parseToken(accessToken);
         Assert.notNull(jwt, 10401, "invalid token");
 

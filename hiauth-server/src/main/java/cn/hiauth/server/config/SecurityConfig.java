@@ -1,5 +1,8 @@
 package cn.hiauth.server.config;
 
+import cn.hiauth.server.config.web.security.CustomAuthenticationFailureHandler;
+import cn.hiauth.server.config.web.security.CustomAuthenticationSuccessHandler;
+import cn.hiauth.server.config.web.security.MultiAppHttpSessionRequestCache;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
 import cn.hiauth.server.config.web.security.account.AccountAuthenticationFilter;
 import cn.hiauth.server.config.web.security.account.AccountAuthenticationProvider;
@@ -7,12 +10,12 @@ import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationFilter;
 import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationProvider;
 import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationFilter;
 import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationProvider;
+import cn.hiauth.server.mapper.AppMapper;
 import cn.webestar.scms.cache.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.Customizer;
@@ -24,11 +27,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.DelegatingSecurityContextRepository;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.HashMap;
@@ -48,6 +54,9 @@ public class SecurityConfig {
     @Autowired
     private MultiAuthUserService multiAuthUserService;
 
+    @Autowired
+    private AppMapper appMapper;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         String encodingId = "bcrypt";
@@ -56,33 +65,26 @@ public class SecurityConfig {
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }
 
-    /**
-     * 定义securityContextRepository，加入两种securityContextRepository
-     */
     @Bean
-    public SecurityContextRepository securityContextRepository() {
-        HttpSessionSecurityContextRepository httpSecurityRepository = new HttpSessionSecurityContextRepository();
-        return new DelegatingSecurityContextRepository(httpSecurityRepository, new RequestAttributeSecurityContextRepository());
-    }
-
-    @Bean
-    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .cors(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
                 // 用户名密码登录配置
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/account/doLogin")
-                        .permitAll()
+                                .loginPage("/login")
+                                .loginProcessingUrl("/account/doLogin")
+                                .permitAll()
+                        //.successHandler(customAuthenticationSuccessHandler())
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/phone/doLogin")
-                        .permitAll()
+                                .loginPage("/login")
+                                .loginProcessingUrl("/phone/doLogin")
+                                .permitAll()
+                        //.successHandler(customAuthenticationSuccessHandler())
                 )
                 // 用户名证码认证过滤器
                 .addFilterBefore(accountAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -98,14 +100,53 @@ public class SecurityConfig {
     }
 
     /**
+     * 定义securityContextRepository，加入两种securityContextRepository
+     */
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        HttpSessionSecurityContextRepository httpSecurityRepository = new HttpSessionSecurityContextRepository();
+        return new DelegatingSecurityContextRepository(httpSecurityRepository, new RequestAttributeSecurityContextRepository());
+    }
+
+    /**
+     * 自定义登录成功处理器
+     */
+    @Bean
+    public SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler() {
+        SavedRequestAwareAuthenticationSuccessHandler authenticationSuccessHandler = new CustomAuthenticationSuccessHandler();
+        authenticationSuccessHandler.setRequestCache(httpSessionRequestCache());
+        return authenticationSuccessHandler;
+    }
+
+    /**
+     * 自定义登录失败处理器
+     */
+    @Bean
+    public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler("/login?error");
+    }
+
+    /**
+     * 请求缓存
+     */
+    @Bean
+    public HttpSessionRequestCache httpSessionRequestCache() {
+        HttpSessionRequestCache requestCache = new MultiAppHttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName("continue");
+        return requestCache;
+    }
+
+    /**
      * 账号登录过滤器
      */
     @Bean
     public AccountAuthenticationFilter accountAuthenticationFilter() {
-        AccountAuthenticationFilter smsCodeAuthenticationFilter = new AccountAuthenticationFilter("/account/doLogin", "/login?error");
-        smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
-        smsCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
-        return smsCodeAuthenticationFilter;
+        AccountAuthenticationFilter accountAuthenticationFilter = new AccountAuthenticationFilter("/account/doLogin");
+        accountAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        accountAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        accountAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        accountAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        return accountAuthenticationFilter;
     }
 
     /**
@@ -116,6 +157,8 @@ public class SecurityConfig {
         SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/phone/doLogin", "/login?error");
         smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
         smsCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
         return smsCodeAuthenticationFilter;
     }
 
@@ -127,6 +170,8 @@ public class SecurityConfig {
         QrCodeAuthenticationFilter qrCodeAuthenticationFilter = new QrCodeAuthenticationFilter("/wechat/qrcode/doLogin", "/login?error");
         qrCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
         qrCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
+        qrCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
+        qrCodeAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
         return qrCodeAuthenticationFilter;
     }
 
@@ -134,17 +179,23 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() {
         // 账号登录provider
         AccountAuthenticationProvider accountAuthenticationProvider = new AccountAuthenticationProvider();
+        accountAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        accountAuthenticationProvider.setHttpSessionRequestCache(httpSessionRequestCache());
         accountAuthenticationProvider.setCacheUtil(cacheUtil);
         accountAuthenticationProvider.setUserDetailsService(multiAuthUserService);
-        accountAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        accountAuthenticationProvider.setAppMapper(appMapper);
         // 手机验证码登录provider
         SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+        smsCodeAuthenticationProvider.setHttpSessionRequestCache(httpSessionRequestCache());
         smsCodeAuthenticationProvider.setCacheUtil(cacheUtil);
         smsCodeAuthenticationProvider.setUserDetailsService(multiAuthUserService);
         smsCodeAuthenticationProvider.setSuperSmsCode(superSmsCode);
+        smsCodeAuthenticationProvider.setAppMapper(appMapper);
         // 微信二维码登录provider
         QrCodeAuthenticationProvider qrCodeAuthenticationProvider = new QrCodeAuthenticationProvider();
+        qrCodeAuthenticationProvider.setHttpSessionRequestCache(httpSessionRequestCache());
         qrCodeAuthenticationProvider.setUserDetailsService(multiAuthUserService);
+        qrCodeAuthenticationProvider.setAppMapper(appMapper);
         return new ProviderManager(accountAuthenticationProvider, smsCodeAuthenticationProvider, qrCodeAuthenticationProvider);
     }
 

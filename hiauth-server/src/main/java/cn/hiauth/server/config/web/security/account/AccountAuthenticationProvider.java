@@ -2,6 +2,8 @@ package cn.hiauth.server.config.web.security.account;
 
 import cn.hiauth.server.config.web.auth.AuthUser;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
+import cn.hiauth.server.entity.App;
+import cn.hiauth.server.mapper.AppMapper;
 import cn.hiauth.server.utils.Constant;
 import cn.webestar.scms.cache.CacheUtil;
 import cn.webestar.scms.commons.CommonException;
@@ -15,7 +17,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.security.web.savedrequest.SimpleSavedRequest;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -29,16 +35,31 @@ public class AccountAuthenticationProvider implements AuthenticationProvider {
 
     private MultiAuthUserService userDetailsService;
 
+    private HttpSessionRequestCache httpSessionRequestCache;
+
+    private AppMapper appMapper;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         AccountAuthenticationToken authenticationToken = (AccountAuthenticationToken) authentication;
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        DefaultSavedRequest savedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+        SavedRequest savedRequest = httpSessionRequestCache.getRequest(request, null);
+        String loginClientId = authenticationToken.getClientId();
         String clientId = null;
         if (savedRequest != null) {
-            String[] clientIds = savedRequest.getParameterValues("client_id");
+            String[] clientIds = savedRequest.getParameterValues(OAuth2ParameterNames.CLIENT_ID);
             if (clientIds != null && clientIds.length > 0) {
                 clientId = clientIds[0];
+            }
+        }
+        // 如果登录时指定了具体的应用，并且应用和跳转授权指定的应用不一致时，使用登录时指定的应用
+        if (StringUtils.hasText(loginClientId) && !loginClientId.equals(clientId)) {
+            clientId = loginClientId;
+            App app = appMapper.findByClientId(loginClientId);
+            if (app!=null && StringUtils.hasText(app.getHome())) {
+                savedRequest = new SimpleSavedRequest(app.getHome());
+                request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST", savedRequest);
+                request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST" + "_" + clientId, savedRequest);
             }
         }
         AuthUser authUser = null;
@@ -84,7 +105,6 @@ public class AccountAuthenticationProvider implements AuthenticationProvider {
         //销毁图形验证码，以免别人使用次图像验证码刷接口
         cacheUtil.expire(imgCodeKey, 0);
     }
-
 
     @Override
     public boolean supports(Class<?> authentication) {

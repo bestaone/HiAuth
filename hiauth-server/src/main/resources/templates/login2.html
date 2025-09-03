@@ -67,7 +67,7 @@
         }
 
         .input {
-            width: calc(100% - 36px);
+            width: calc(100% - 42px);
             padding: 10px 0px 10px 40px; /* 增加左侧padding */
             border: 1px solid #d9d9d9;
             border-radius: 4px;
@@ -76,7 +76,7 @@
         }
 
         .password {
-            width: calc(100% - 70px);
+            width: calc(100% - 76px);
         }
 
         /* 新增图标容器样式 */
@@ -242,6 +242,7 @@
         <!-- 账户登录表单 -->
         <form id="accountForm" class="form" style="display: none;" th:action="@{account/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="hidden" name="clientId" th:value="${clientId}">
             <input type="hidden" id="formToken1" name="formToken" th:value="${formToken}">
             <div class="form-group">
                 <div class="input-wrapper">
@@ -280,6 +281,7 @@
         <!-- 手机登录表单 -->
         <form id="phoneForm" class="form" th:action="@{phone/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="hidden" name="clientId" th:value="${clientId}">
             <input type="hidden" name="formToken" th:value="${formToken}">
             <div class="form-group">
                 <div class="input-wrapper">
@@ -318,6 +320,7 @@
         <!-- 手机登录表单 -->
         <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post">
             <div id="wechat_qrcode"></div>
+            <input type="hidden" name="clientId" th:value="${clientId}">
         </form>
     </div>
 

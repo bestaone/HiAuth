@@ -1,0 +1,19 @@
+server.port: 9000
+
+spring.security.oauth2.client:
+  provider:
+    hiauth-code:
+      issuer-uri: http://localhost:8080
+      authorizationUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/authorize
+      tokenUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/token
+      userInfoUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/userinfo
+      jwkSetUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/jwks
+      user-name-attribute: sub
+  registration:
+    hiauth-code:
+      client-name: HiAuth Authorization Server
+      client-id: himall
+      client-secret: secret
+      authorization-grant-type: authorization_code
+      redirect-uri: http://127.0.0.1:9000/login/oauth2/code/hiauth-code
+      scope: openid,profile

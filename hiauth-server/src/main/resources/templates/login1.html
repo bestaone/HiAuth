@@ -165,6 +165,7 @@
         <p class="title" th:text="${title}">用户登录</p>
         <form id="accountForm"  th:action="@{account/doLogin}" method="post">
             <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+            <input type="hidden" name="clientId" th:value="${clientId}">
             <input type="hidden" id="formToken" name="formToken" th:value="${formToken}">
             <input type="hidden" name="loginType" th:value="pwd">
             <div class="form-item input-group">

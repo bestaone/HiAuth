@@ -1,0 +1,23 @@
+app.version: '@project.version@'
+app.build.timestamp: '@app.build.timestamp@'
+spring.application.name: hiauth-server
+
+# 加载模块化配置
+spring.profiles.active: hiauth,redis
+
+# 加载外部配置文件，覆盖内置配置文件
+spring.config.import: ${CONFIG_FILE:optional:/hiauth/conf/hiauth.properties}
+
+datasource:
+  type: com.alibaba.druid.pool.DruidDataSource
+  driverClassName: org.postgresql.Driver
+  url: jdbc:mysql://${DB_HOST:127.0.0.1}:3306/hiauth
+  username: ${DB_USER:test}
+  password: ${DB_pwd:123456}
+
+redis:
+  host: ${REDIS_HOST:127.0.0.1}
+  username: ${REDIS_USERNAME:}
+  password: ${REDIS_PWD:}
+  port: 6379
+  database: 0

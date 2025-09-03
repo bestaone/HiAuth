@@ -7,7 +7,7 @@
 
     <groupId>cn.hiauth</groupId>
     <artifactId>hiauth-client-spring-boot-starter</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <packaging>jar</packaging>
     <name>hiauth-client-spring-boot-starter</name>
     <description>hiauth-client-spring-boot-starter</description>
@@ -71,7 +71,7 @@
         <dependency>
             <groupId>cn.hiauth</groupId>
             <artifactId>hiauth-client-commons</artifactId>
-            <version>0.9.8</version>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

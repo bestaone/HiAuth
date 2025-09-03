@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -24,7 +26,7 @@ public class IndexController {
     private String userInfoUri;
 
     @GetMapping("/")
-    public Map<?, ?> index(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    public Map<?, ?> index(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient oAuth2AuthorizedClient, @AuthenticationPrincipal OidcUser oidcUser) {
         // 认证完后会获取到 accessToken
         String accessToken = oAuth2AuthorizedClient.getAccessToken().getTokenValue();
         HttpHeaders headers = new HttpHeaders();

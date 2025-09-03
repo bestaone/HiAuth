@@ -8,16 +8,14 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 
 public class AccountAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public AccountAuthenticationFilter(String processUrl, String failureUrl) {
+    public AccountAuthenticationFilter(String processUrl) {
         super(new AntPathRequestMatcher(processUrl, HttpMethod.POST.name()));
-        setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(failureUrl));
     }
 
     @Override
@@ -27,10 +25,11 @@ public class AccountAuthenticationFilter extends AbstractAuthenticationProcessin
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
             String formToken = request.getParameter("formToken");
+            String clientId = request.getParameter("clientId");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String captcha = request.getParameter("captcha");
-            AccountAuthenticationToken authenticationToken = new AccountAuthenticationToken(formToken, username, password, captcha);
+            AccountAuthenticationToken authenticationToken = new AccountAuthenticationToken(formToken, clientId, username, password, captcha);
             return this.getAuthenticationManager().authenticate(authenticationToken);
         }
     }

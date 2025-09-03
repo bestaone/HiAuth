@@ -61,7 +61,7 @@
         <dependency>
             <groupId>cn.hiauth</groupId>
             <artifactId>hiauth-client-spring-boot-starter</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.9</version>
         </dependency>
     </dependencies>
 

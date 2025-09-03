@@ -1,18 +1,20 @@
 package cn.hiauth.server.config;
 
 import cn.hiauth.server.config.web.auth.*;
+import cn.hiauth.server.config.web.security.CustomLoginUrlAuthenticationEntryPoint;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
+import cn.hiauth.server.utils.jose.Jwks;
 import cn.webestar.scms.cache.CacheUtil;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,11 +28,9 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
-import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
@@ -45,13 +45,8 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
 import java.util.*;
 
@@ -67,24 +62,82 @@ public class AuthServerConfig {
     private MultiAuthUserService multiAuthUserService;
 
     /**
-     * 生成RSA密钥对，给上面jwkSource() 方法的提供密钥对
+     * Spring Authorization Server 相关配置
+     * 主要配置OAuth 2.1和OpenID Connect 1.0
      */
-    private static KeyPair generateRsaKey() {
-        KeyPair keyPair;
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048);
-            keyPair = keyPairGenerator.generateKeyPair();
-        } catch (Exception ex) {
-            throw new IllegalStateException(ex);
-        }
-        return keyPair;
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = OAuth2AuthorizationServerConfigurer.authorizationServer();
+        http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, (authorizationServer) ->
+                        authorizationServer
+                                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
+                                        //自定义授权页
+                                        .consentPage("/oauth2/consent")
+                                        //自定义授权处理
+                                        //.authorizationResponseHandler(customAuthorizationResponseHandler())
+                                        //自定义异常处理
+                                        .errorResponseHandler(new AuthFailureHandler())
+                                )
+                                //开启OpenID Connect 1.0（其中oidc为OpenID Connect的缩写）
+                                .oidc(oidcConfigurer -> oidcConfigurer.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer.userInfoMapper(userInfoAuthenticationContext -> {
+                                    String accessToken = userInfoAuthenticationContext.getAccessToken().getTokenValue();
+                                    String clientId = userInfoAuthenticationContext.getAuthorization().getRegisteredClientId();
+                                    JwtAuthenticationToken token = (JwtAuthenticationToken) userInfoAuthenticationContext.getAuthentication().getPrincipal();
+                                    Jwt jwt = (Jwt) token.getPrincipal();
+                                    Long userId = (Long) jwt.getClaims().get("userId");
+                                    AuthUser user = multiAuthUserService.loadUserByUserId(clientId, userId);
+                                    cacheUtil.set("userinfo:" + accessToken, user, EXPIRE);
+                                    Map<String, Object> claims = new HashMap<>(10);
+                                    claims.put("sub", user.getUsername());
+                                    claims.put("appId", user.getAppId());
+                                    claims.put("cid", user.getCid());
+                                    claims.put("userId", user.getUserId());
+                                    claims.put("empId", user.getEmpId());
+                                    claims.put("name", user.getName());
+                                    claims.put("username", user.getUsername());
+                                    claims.put("phoneNum", user.getPhoneNum());
+                                    claims.put("avatarUrl", user.getAvatarUrl());
+                                    claims.put("isCorpAdmin", user.getIsCorpAdmin());
+                                    if (user.getAuthorities() != null) {
+                                        Set<Map<String, String>> authorities = new HashSet<>();
+                                        user.getAuthorities().forEach(i -> {
+                                            Map<String, String> map = new HashMap<>();
+                                            map.put("code", i.getCode());
+                                            map.put("page", i.getPage());
+                                            map.put("api", i.getApi());
+                                            authorities.add(map);
+                                        });
+                                        claims.put("authorities", authorities);
+                                    }
+                                    return new OidcUserInfo(claims);
+                                })))
+                )
+                .authorizeHttpRequests((authorize) ->
+                        authorize.anyRequest().authenticated()
+                )
+                // Redirect to the login page when not authenticated from the authorization endpoint
+                // 将需要认证的请求，重定向到login进行登录认证。
+                .exceptionHandling((exceptions) -> exceptions
+                        .defaultAuthenticationEntryPointFor(
+                                new CustomLoginUrlAuthenticationEntryPoint("/login"),
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
+                        )
+                )
+                // Accept access tokens for User Info and/or Client Registration
+                // 使用jwt处理接收到的access token
+                .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
+                //.oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
+                //   .jwt(Customizer.withDefaults()) // 使用jwt
+                //   .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 请求未携带Token处理
+                //   .accessDeniedHandler(new MyAccessDeniedHandler()) // 权限不足处理
+                //   //.authenticationFailureHandler(this::failureHandler) // Token解析失败处理
+                //);
+        return http.build();
     }
 
-    /**
-     * 客户端信息
-     * 对应表：oauth2_registered_client
-     */
     @Bean
     public SimpleJdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
         SimpleJdbcRegisteredClientRepository registeredClientRepository = new SimpleJdbcRegisteredClientRepository(jdbcTemplate);
@@ -119,88 +172,13 @@ public class AuthServerConfig {
      * 对应表：oauth2_authorization_consent
      */
     @Bean
-    public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+    public JdbcOAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
     }
 
-    /**
-     * Spring Authorization Server 相关配置
-     * 主要配置OAuth 2.1和OpenID Connect 1.0
-     */
     @Bean
-    @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .authorizationEndpoint(authorizationEndpoint -> authorizationEndpoint
-                        //自定义授权页
-                        .consentPage("/oauth2/consent")
-                        //自定义异常处理
-                        .errorResponseHandler(new AuthFailureHandler())
-                )
-                //开启OpenID Connect 1.0（其中oidc为OpenID Connect的缩写）
-                .oidc(oidcConfigurer -> oidcConfigurer.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer.userInfoMapper(userInfoAuthenticationContext -> {
-                    String accessToken = userInfoAuthenticationContext.getAccessToken().getTokenValue();
-                    String clientId = userInfoAuthenticationContext.getAuthorization().getRegisteredClientId();
-                    JwtAuthenticationToken token = (JwtAuthenticationToken) userInfoAuthenticationContext.getAuthentication().getPrincipal();
-                    Jwt jwt = (Jwt) token.getPrincipal();
-                    Long userId = (Long) jwt.getClaims().get("userId");
-                    AuthUser user = multiAuthUserService.loadUserByUserId(clientId, userId);
-                    cacheUtil.set("userinfo:" + accessToken, user, EXPIRE);
-                    Map<String, Object> claims = new HashMap<>(10);
-                    claims.put("sub", user.getUsername());
-                    claims.put("appId", user.getAppId());
-                    claims.put("cid", user.getCid());
-                    claims.put("userId", user.getUserId());
-                    claims.put("empId", user.getEmpId());
-                    claims.put("name", user.getName());
-                    claims.put("username", user.getUsername());
-                    claims.put("phoneNum", user.getPhoneNum());
-                    claims.put("avatarUrl", user.getAvatarUrl());
-                    claims.put("isCorpAdmin", user.getIsCorpAdmin());
-                    if (user.getAuthorities() != null) {
-                        Set<Map<String, String>> authorities = new HashSet<>();
-                        user.getAuthorities().forEach(i -> {
-                            Map<String, String> map = new HashMap<>();
-                            map.put("code", i.getCode());
-                            map.put("page", i.getPage());
-                            map.put("api", i.getApi());
-                            authorities.add(map);
-                        });
-                        claims.put("authorities", authorities);
-                    }
-                    return new OidcUserInfo(claims);
-                })));
-        http
-                // Redirect to the login page when not authenticated from the authorization endpoint
-                // 将需要认证的请求，重定向到login进行登录认证。
-                .exceptionHandling((exceptions) -> exceptions.defaultAuthenticationEntryPointFor(
-                        new LoginUrlAuthenticationEntryPoint("/login"),
-                        new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                ))
-                // Accept access tokens for User Info and/or Client Registration
-                // 使用jwt处理接收到的access token
-                .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
-        //.oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
-        //   .jwt(Customizer.withDefaults()) // 使用jwt
-        //   .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 请求未携带Token处理
-        //   .accessDeniedHandler(new MyAccessDeniedHandler()) // 权限不足处理
-        //   //.authenticationFailureHandler(this::failureHandler) // Token解析失败处理
-        //);
-        return http.build();
-    }
-
-    @Bean
-    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer() {
-        return context -> {
-            if (context.getPrincipal().getPrincipal() instanceof AuthUser user) {
-                String cid = context.getRegisteredClient().getClientSettings().getSetting("cid");
-                JwtClaimsSet.Builder claims = context.getClaims();
-                claims.claim("cid", Long.parseLong(cid));
-                claims.claim("userId", user.getUserId());
-                claims.claim("empId", user.getEmpId());
-            }
-        };
+    public OAuth2TokenCustomizer<JwtEncodingContext> idTokenCustomizer() {
+        return new FederatedIdentityIdTokenCustomizer();
     }
 
     /**
@@ -209,15 +187,9 @@ public class AuthServerConfig {
      */
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        KeyPair keyPair = generateRsaKey();
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-        RSAKey rsaKey = new RSAKey.Builder(publicKey)
-                .privateKey(privateKey)
-                .keyID(UUID.randomUUID().toString())
-                .build();
+        RSAKey rsaKey = Jwks.generateRsa();
         JWKSet jwkSet = new JWKSet(rsaKey);
-        return new ImmutableJWKSet<>(jwkSet);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
     /**
@@ -233,10 +205,8 @@ public class AuthServerConfig {
      */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        // 什么都不配置，则使用默认地址
         return AuthorizationServerSettings.builder().build();
     }
-
 
     /**
      * 创建一个客户端供测试

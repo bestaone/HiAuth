@@ -10,12 +10,14 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = 1L;
     private final Object principal;
     private String formToken;
+    private String clientId;
     private String smsCode;
     private String captcha;
 
-    public SmsCodeAuthenticationToken(String formToken, String phone, String smsCode, String captcha) {
+    public SmsCodeAuthenticationToken(String formToken, String clientId, String phone, String smsCode, String captcha) {
         super(null);
         this.formToken = formToken;
+        this.clientId = clientId;
         this.principal = phone;
         this.smsCode = smsCode;
         this.captcha = captcha;
@@ -44,6 +46,10 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     public String getCaptcha() {
         return captcha;
+    }
+
+    public String getClientId() {
+        return clientId;
     }
 
 }

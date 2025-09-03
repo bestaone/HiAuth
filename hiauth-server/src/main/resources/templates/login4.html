@@ -56,6 +56,7 @@
                 <!-- 账户登录表单 -->
                 <form id="accountForm" class="form" style="display: none;" th:action="@{account/doLogin}" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="hidden" name="clientId" th:value="${clientId}">
                     <input type="hidden" id="formToken1" name="formToken" th:value="${formToken}">
                     <div class="form-group">
                         <div class="input-wrapper">
@@ -85,20 +86,13 @@
                 <!-- 手机登录表单 -->
                 <form id="phoneForm" class="form" th:action="@{phone/doLogin}" method="post">
                     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+                    <input type="hidden" name="clientId" th:value="${clientId}">
                     <input type="hidden" name="formToken" th:value="${formToken}">
                     <div class="form-group">
                         <div class="input-wrapper">
                             <input type="tel" name="phone" autocomplete="on" class="input" placeholder="请输入您的手机号码" oninput="this.value = this.value.replace(/\D/g,'')">
                         </div>
                         <div class="error-message">请输入有效的手机号码</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-wrapper sms-code-row">
-                            <div class="input-sub-wrapper">
-                                <input class="input" name="smsCode" placeholder="请输入验证码" style="flex:1" type="text">
-                            </div>
-                            <button class="get-code-btn" id="smsCodeBtn" type="button">获取验证码</button>
-                        </div>
                     </div>
                     <div class="form-group">
                         <div class="input-wrapper captcha-row">
@@ -108,11 +102,20 @@
                             <img class="captcha-img" alt="图形验证码">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="input-wrapper sms-code-row">
+                            <div class="input-sub-wrapper">
+                                <input class="input" name="smsCode" placeholder="请输入验证码" style="flex:1" type="text">
+                            </div>
+                            <button class="get-code-btn" id="smsCodeBtn" type="button">获取验证码</button>
+                        </div>
+                    </div>
                     <button type="submit" class="submit-btn">立即登录</button>
                 </form>
                 <!-- 手机登录表单 -->
                 <form id="wechatForm" class="form" th:action="@{wechat/qrcode/doLogin}" method="post" style="width: 330px">
                     <div id="wechat_qrcode"></div>
+                    <input type="hidden" name="clientId" th:value="${clientId}">
                 </form>
             </div>
             <p class="record-text">登录即表示您同意HiAuth的<span>用户协议</span>和<span>隐私协议</span></p>

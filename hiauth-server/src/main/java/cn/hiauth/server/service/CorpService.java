@@ -18,7 +18,7 @@ public interface CorpService extends IService<Corp> {
 
     void register(RegisterDto dto);
 
-    List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId);
+    List<IndexCorpAppVo> findIndexCorpAppByUserId(Long userId, Long appId);
 
     void saveCorpAppBatch(Long cid, Set<Long> appIds);
 

@@ -1,0 +1,28 @@
+server.port: 8080
+
+logging.level:
+  root: INFO
+  cn.hiauth: DEBUG
+  com.alibaba.nacos: INFO
+  org.springframework.data.redis: INFO
+  io.lettuce.core: INFO
+
+spring.datasource:
+  type: ${datasource.type}
+  driver-class-name: ${datasource.driverClassName}
+  url: ${datasource.url}
+  username: ${datasource.username}
+  password: ${datasource.password}
+
+spring.session.timeout: 600m
+spring.session.redis:
+  # 支持发布session事件，默认值不支持发布session事件
+  repository-type: indexed
+  namespace: "hiauth:session"
+  # 每次保存或更新 session 时立即将数据同步到 Redis
+  flush-mode: on_save
+  # 每次请求结束时都保存 session
+  save-mode: always
+  # 关闭Spring Session的自动配置检查,否则在使用aliyun redis（Tair）时会报错
+  # 报错内容为：NOPERM this user has no permissions to run the 'config|get' command
+  configure-action: none
