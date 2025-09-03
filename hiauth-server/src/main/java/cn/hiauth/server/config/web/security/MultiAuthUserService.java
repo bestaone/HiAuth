@@ -83,7 +83,7 @@ public class MultiAuthUserService {
         if (client != null && client.getAppId() != null) {
             App app = appMapper.selectById(client.getAppId());
             Boolean corpAdminOnly = null;
-            if(app!=null && app.getExtend()!=null && app.getExtend().containsKey("corpAdminOnly")){
+            if (app != null && app.getExtend() != null && app.getExtend().containsKey("corpAdminOnly")) {
                 corpAdminOnly = (Boolean) app.getExtend().get("corpAdminOnly");
             }
             employee = employeeMapper.findOneByAppIdAndUserId(client.getAppId(), user.getId(), corpAdminOnly);

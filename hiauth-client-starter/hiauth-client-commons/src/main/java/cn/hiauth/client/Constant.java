@@ -6,6 +6,8 @@ public class Constant {
 
     public final static String HIAUTH_BASIC_PKG = "cn.hiauth.client";
 
+    public final static String PARAMETER_TOKEN_KEY = "accessToken";
+
     public final static String TOKEN_HEADER = "Authorization";
 
     public final static String TOKEN_PREFIX = "Bearer";

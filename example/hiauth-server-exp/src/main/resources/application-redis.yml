@@ -1,0 +1,10 @@
+
+# 单节点写法
+spring.data.redis:
+  host: ${redis.host}
+  port: ${redis.port}
+  database: ${redis.database}
+  username: ${redis.username}
+  password: ${redis.password}
+  timeout: 10000
+  connect-timeout: 10000

@@ -8,6 +8,8 @@ logging.level:
   root: INFO
   cn.hiauth: DEBUG
   com.alibaba.nacos: INFO
+  org.springframework.data.redis: INFO
+  io.lettuce.core: INFO
 
 spring.datasource:
   type: ${datasource.type}

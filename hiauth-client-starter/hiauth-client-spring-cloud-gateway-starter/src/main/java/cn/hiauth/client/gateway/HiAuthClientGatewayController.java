@@ -79,7 +79,7 @@ public class HiAuthClientGatewayController {
     public Mono<Void> logout(@PathVariable("clientName") String clientName, ServerWebExchange exchange) {
         Client client = hiauthClientProperties.getClients().get(clientName);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                .fromUriString(hiauthClientProperties.getIssuerUri() + "/logoutWithRedirect")
+                .fromUriString(hiauthClientProperties.getIssuerUri() + "/unpapi/logoutWithRedirect")
                 .queryParam("redirect_uri", client.getAuthSuccessRedirectUri());
         exchange.getResponse().setStatusCode(HttpStatus.TEMPORARY_REDIRECT);
         exchange.getResponse().getHeaders().setLocation(uriBuilder.build().toUri());

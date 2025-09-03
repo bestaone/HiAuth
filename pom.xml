@@ -11,8 +11,10 @@
     <packaging>pom</packaging>
 
     <modules>
+<!--        <module>hiauth-client-starter</module>-->
         <module>hiauth-server</module>
-<!--        <module>hiauth-client-starter</modulse>-->
+        <module>example/hiauth-server-exp</module>
+        <module>example/hiauth-client-exp</module>
         <module>example/demo</module>
         <module>example/himall</module>
         <module>example/hiauth-client</module>

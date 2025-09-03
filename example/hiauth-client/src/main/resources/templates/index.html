@@ -17,11 +17,10 @@
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active"><a th:href="@{/}">Home</a></li>
-                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/profile}">Profile</a></li>
-                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/api/client}">Client</a></li>
-                <li role="presentation" th:if="${session.isAuth!=null ? !session.isAuth : true}"><a th:href="@{/oauth2/login}">Login</a></li>
-                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="@{/logout}">Logout</a></li>
+                <li role="presentation" class="active"><a th:href="'/?accessToken=' + ${accessToken}">Home</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="'/api/profile?accessToken=' + ${accessToken}">Profile</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? !session.isAuth : true}"><a th:href="'/oauth2/login?accessToken=' + ${accessToken}">Login</a></li>
+                <li role="presentation" th:if="${session.isAuth!=null ? session.isAuth : false}"><a th:href="'/oauth2/logout?accessToken=' + ${accessToken}">Logout</a></li>
             </ul>
         </nav>
         <h3 class="text-muted">HIMALL</h3>

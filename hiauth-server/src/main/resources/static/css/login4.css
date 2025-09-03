@@ -158,10 +158,11 @@ body {
 }
 
 .captcha-img {
+    border: 1px solid var(--code-border-color);
     border-radius: 4px;
     cursor: pointer;
     width: 110px;
-    height: 52px;
+    height: 50px;
     color: var(--text-gray-color);
 }
 

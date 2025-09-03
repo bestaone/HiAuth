@@ -4,12 +4,12 @@ import cn.hiauth.server.api.vo.IndexCorpAppVo;
 import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.config.web.auth.AuthUser;
-import cn.hiauth.server.entity.App;
-import cn.hiauth.server.entity.AuthorizationConsent;
-import cn.hiauth.server.entity.User;
+import cn.hiauth.server.entity.*;
+import cn.hiauth.server.mapper.CorpAppMapper;
 import cn.hiauth.server.service.AppService;
 import cn.hiauth.server.service.CorpService;
 import cn.hiauth.server.service.EmployeeService;
+import cn.hiauth.server.service.Oauth2RegisteredClientService;
 import cn.hiauth.server.utils.Constant;
 import cn.hutool.core.lang.Snowflake;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,10 +55,28 @@ public class IndexController {
     @Autowired
     private WechatProperties wechatProperties;
 
+    @Autowired
+    private Oauth2RegisteredClientService oauth2RegisteredClientService;
+
+    @Autowired
+    private CorpAppMapper corpAppMapper;
+
     @GetMapping(value = {"/", "/index"})
-    public String index(Model model, Authentication auth) {
+    public String index(HttpServletRequest request, Model model, Authentication auth) {
         AuthUser authUser = (AuthUser) auth.getPrincipal();
-        List<IndexCorpAppVo> indexCorpApps = corpService.findIndexCorpAppByUserId(authUser.getUserId());
+        //如果主动添加了client_id,则跳转到对应的系统
+        String clientId = (String) request.getSession().getAttribute("clientId");
+        if (StringUtils.hasText(clientId)) {
+            Oauth2RegisteredClient client = oauth2RegisteredClientService.findByClientId(clientId);
+            if (client != null && client.getAppId() != null) {
+                List<CorpAppInfo> cpis = corpAppMapper.limitCorpAppInfoByUserId(authUser.getUserId(), client.getAppId());
+                if (cpis != null && !cpis.isEmpty() && StringUtils.hasText(cpis.get(0).getAppHome())) {
+                    return "redirect:" + cpis.get(0).getAppHome();
+                }
+            }
+        }
+        //如果主动添加了client_id,则跳转到对应的系统
+        List<IndexCorpAppVo> indexCorpApps = corpService.findIndexCorpAppByUserId(authUser.getUserId(), null);
         model.addAttribute("corpApps", indexCorpApps);
         return "index";
     }

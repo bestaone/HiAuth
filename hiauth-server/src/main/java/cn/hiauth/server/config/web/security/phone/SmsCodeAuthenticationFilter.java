@@ -7,14 +7,12 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public SmsCodeAuthenticationFilter(String processUrl, String failureUrl) {
         super(new AntPathRequestMatcher(processUrl, HttpMethod.POST.name()));
-        setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(failureUrl));
     }
 
     @Override
@@ -24,10 +22,11 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         } else {
             String formToken = request.getParameter("formToken");
+            String clientId = request.getParameter("clientId");
             String phone = request.getParameter("phone");
             String smsCode = request.getParameter("smsCode");
             String captcha = request.getParameter("captcha");
-            SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(formToken, phone, smsCode, captcha);
+            SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(formToken, clientId, phone, smsCode, captcha);
             return this.getAuthenticationManager().authenticate(authenticationToken);
         }
     }

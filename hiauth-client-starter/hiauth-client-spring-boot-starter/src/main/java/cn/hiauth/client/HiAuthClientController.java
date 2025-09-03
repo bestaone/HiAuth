@@ -62,7 +62,7 @@ public class HiAuthClientController {
         if (!StringUtils.hasText(redirectUri)) {
             redirectUri = authClientRegistrationProperties.getRedirectUri();
         }
-        String logoutUrl = authClientProviderProperties.getIssuerUri() + "/logoutWithRedirect?redirect_uri=" + redirectUri;
+        String logoutUrl = authClientProviderProperties.getIssuerUri() + "/unpapi/logoutWithRedirect?redirect_uri=" + redirectUri;
         return "redirect:" + logoutUrl;
     }
 
@@ -118,7 +118,7 @@ public class HiAuthClientController {
 
         Boolean isCorpAdmin = null;
         if(userinfoMap.containsKey("isCorpAdmin")){
-            isCorpAdmin = Boolean.parseBoolean((String) userinfoMap.get("isCorpAdmin"));
+            isCorpAdmin = (Boolean) userinfoMap.get("isCorpAdmin");
         }
 
         HiAuthToken token = new HiAuthToken();

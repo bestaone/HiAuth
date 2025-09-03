@@ -14,4 +14,6 @@ mybatis-plus:
     cache-expire: 300
     map-underscore-to-camel-case: true
     call-setters-on-nulls: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    #log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

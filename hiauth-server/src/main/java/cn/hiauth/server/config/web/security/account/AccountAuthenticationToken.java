@@ -10,12 +10,14 @@ public class AccountAuthenticationToken extends AbstractAuthenticationToken {
     private static final long serialVersionUID = 1L;
     private final Object principal;
     private String formToken;
+    private String clientId;
     private String password;
     private String captcha;
 
-    public AccountAuthenticationToken(String formToken, String username, String password, String captcha) {
+    public AccountAuthenticationToken(String formToken, String clientId, String username, String password, String captcha) {
         super(null);
         this.formToken = formToken;
+        this.clientId = clientId;
         this.principal = username;
         this.password = password;
         this.captcha = captcha;
@@ -44,6 +46,10 @@ public class AccountAuthenticationToken extends AbstractAuthenticationToken {
 
     public String getCaptcha() {
         return captcha;
+    }
+
+    public String getClientId() {
+        return clientId;
     }
 
 }

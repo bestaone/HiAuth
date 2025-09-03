@@ -9,11 +9,13 @@ public class QrCodeAuthenticationToken extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = 1L;
     private final Object principal;
+    private String clientId;
     private String code;
 
-    public QrCodeAuthenticationToken(String code) {
+    public QrCodeAuthenticationToken(String clientId, String code) {
         super(null);
         this.principal = code;
+        this.clientId = clientId;
         this.code = code;
         setAuthenticated(false);
     }
@@ -32,6 +34,10 @@ public class QrCodeAuthenticationToken extends AbstractAuthenticationToken {
     @Override
     public Object getPrincipal() {
         return principal;
+    }
+
+    public String getClientId() {
+        return clientId;
     }
 
 }
