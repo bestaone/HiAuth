@@ -4,18 +4,18 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="Department">
-        <result column="id" property="id" />
-        <result column="cid" property="cid" />
-        <result column="pid" property="pid" />
-        <result column="sort" property="sort" />
-        <result column="no" property="no" />
-        <result column="name" property="name" />
-        <result column="creator" property="creator" />
-        <result column="updater" property="updater" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="status" property="status" />
-        <result column="remark" property="remark" />
+        <result column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="pid" property="pid"/>
+        <result column="sort" property="sort"/>
+        <result column="no" property="no"/>
+        <result column="name" property="name"/>
+        <result column="creator" property="creator"/>
+        <result column="updater" property="updater"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

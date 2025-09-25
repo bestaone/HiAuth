@@ -1,18 +1,8 @@
 package cn.hiauth.server.config;
 
-//import cn.hiauth.server.config.web.security.MultiAuthUserService;
-//import cn.hiauth.server.config.web.security.account.AccountAuthenticationFilter;
-//import cn.hiauth.server.config.web.security.account.AccountAuthenticationProvider;
-//import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationFilter;
-//import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationProvider;
-//import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationFilter;
-//import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationProvider;
-//import cn.webestar.scms.cache.CacheUtil;
-
 import cn.hiauth.server.federation.FederatedIdentityAuthenticationSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

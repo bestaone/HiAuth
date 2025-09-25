@@ -1,0 +1,8 @@
+{
+  "properties": {
+    "hiauth.client.resource.url": {
+      "description": "授权服务端地址",
+      "type": "string"
+    }
+  }
+}

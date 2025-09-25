@@ -1,4 +1,3 @@
-
 # 单节点写法
 spring.data.redis:
   host: ${redis.host}

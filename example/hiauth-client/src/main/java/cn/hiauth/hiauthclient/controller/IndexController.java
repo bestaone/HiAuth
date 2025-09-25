@@ -21,7 +21,7 @@ public class IndexController {
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         // 这个为了简单就直接判断accessToken了，实际情况应该判断 SessionContextHolder.getContext().getAuth()
         String accessToken = request.getParameter(Constant.PARAMETER_TOKEN_KEY);
-        if(StringUtils.hasText(accessToken)){
+        if (StringUtils.hasText(accessToken)) {
             request.getSession().setAttribute("isAuth", true);
             model.addAttribute(Constant.PARAMETER_TOKEN_KEY, accessToken);
         } else {

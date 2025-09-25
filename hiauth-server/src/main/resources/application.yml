@@ -3,7 +3,7 @@ app.build.timestamp: '@app.build.timestamp@'
 spring.application.name: hiauth-server
 
 # 加载模块化配置
-spring.profiles.active: hiauth,common,mybatis,redis
+spring.profiles.active: hiauth,doc,common,mybatis,redis
 
 # 加载外部配置文件，覆盖内置配置文件
 spring.config.import: ${CONFIG_FILE:optional:/hiauth/conf/hiauth.properties}

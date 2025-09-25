@@ -16,6 +16,9 @@ import org.springframework.util.StringUtils;
 
 /**
  * 记录请求，重写缓存工具，实现需求：登录页如果携带了client_id，指定了具体的应用，则登录成功后跳转到指定应用
+ * 在原有的缓存逻辑中添加自定义逻辑：将savedRequest用对应的key单独存储了一份，
+ * 应用于在同一个浏览器、同一个session下，同时对多个应用授权，不至于后一个应用覆盖前一个，导致错乱。
+ * 如果去除此逻辑，不至于影响核心功能，但是同一个浏览器、同一个session下对多应用授权可能会错乱。
  */
 public class MultiAppHttpSessionRequestCache extends HttpSessionRequestCache {
 

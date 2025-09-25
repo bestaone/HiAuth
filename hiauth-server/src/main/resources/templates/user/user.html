@@ -1,19 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
 </head>
 
-<body >
+<body>
 
-    <div class="container" style="margin-top: 60px">
-        <img src="http://upload.jianshu.io/users/upload_avatars/3424642/fb55f16faaf6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240" />
-        <p th:text="${username}">Anoy</p>
-        <form th:action="@{/logout}" method="post">
-            <button style="margin-top: 20px">退出登录</button>
-        </form>
-    </div>
+<div class="container" style="margin-top: 60px">
+    <img src="http://upload.jianshu.io/users/upload_avatars/3424642/fb55f16faaf6.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240"/>
+    <p th:text="${username}">Anoy</p>
+    <form method="post" th:action="@{/logout}">
+        <button style="margin-top: 20px">退出登录</button>
+    </form>
+</div>
 
 </body>
 

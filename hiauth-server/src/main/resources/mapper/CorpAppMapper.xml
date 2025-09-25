@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="CorpApp">
-        <result column="id" property="id" />
-        <result column="app_id" property="appId" />
-        <result column="corp_id" property="corpId" />
+        <result column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="corp_id" property="corpId"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

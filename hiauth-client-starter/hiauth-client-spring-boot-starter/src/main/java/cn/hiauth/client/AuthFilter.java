@@ -112,7 +112,7 @@ public class AuthFilter implements Filter {
             accessToken = authHeader.substring(Constant.TOKEN_PREFIX.length()).trim();
         }
 
-        if(!StringUtils.hasText(accessToken)) {
+        if (!StringUtils.hasText(accessToken)) {
             accessToken = request.getParameter(Constant.PARAMETER_TOKEN_KEY);
         }
         Assert.notNull(accessToken, 10401, "miss token");

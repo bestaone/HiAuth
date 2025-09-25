@@ -4,33 +4,35 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="User">
-        <result column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="gender" property="gender" />
-        <result column="avatar_url" property="avatarUrl" />
-        <result column="phone_num" property="phoneNum" />
-        <result column="username" property="username" />
-        <result column="pwd" property="pwd" />
-        <result column="wxmp_openid" property="wxmpOpenid" />
-        <result column="wx_openid" property="wxOpenid" />
-        <result column="wx_unionid" property="wxUnionid" />
-        <result column="status" property="status" />
-        <result column="regtime" property="regtime" />
-        <result column="last_login_time" property="lastLoginTime" />
-        <result column="creator" property="creator" />
-        <result column="updater" property="updater" />
-        <result column="deleter" property="deleter" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="delete_time" property="deleteTime" />
-        <result column="is_deleted" property="isDeleted" />
-        <result column="is_sys_admin" property="isSysAdmin" />
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="gender" property="gender"/>
+        <result column="avatar_url" property="avatarUrl"/>
+        <result column="phone_num" property="phoneNum"/>
+        <result column="username" property="username"/>
+        <result column="pwd" property="pwd"/>
+        <result column="wxmp_openid" property="wxmpOpenid"/>
+        <result column="wx_openid" property="wxOpenid"/>
+        <result column="wx_unionid" property="wxUnionid"/>
+        <result column="status" property="status"/>
+        <result column="regtime" property="regtime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="creator" property="creator"/>
+        <result column="updater" property="updater"/>
+        <result column="deleter" property="deleter"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="delete_time" property="deleteTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="is_sys_admin" property="isSysAdmin"/>
         <result column="extend" property="extend" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, gender, avatar_url, phone_num, username, pwd, wxmp_openid, wx_openid, wx_unionid, status, regtime, last_login_time, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_sys_admin, extend
+        id, name, gender, avatar_url, phone_num, username, pwd, wxmp_openid, wx_openid, wx_unionid, status, regtime,
+        last_login_time, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_sys_admin,
+        extend
     </sql>
 
 </mapper>

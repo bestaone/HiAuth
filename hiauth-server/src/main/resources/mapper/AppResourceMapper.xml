@@ -4,17 +4,18 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="AppResource">
-        <result column="id" property="id" />
-        <result column="pid" property="pid" />
-        <result column="app_id" property="appId" />
-        <result column="code" property="code" />
-        <result column="url" property="url" />
-        <result column="api" property="api" />
-        <result column="sort" property="sort" />
-        <result column="name" property="name" />
-        <result column="type" property="type" />
-        <result column="remark" property="remark" />
-        <result column="extend" property="extend" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="id" property="id"/>
+        <result column="pid" property="pid"/>
+        <result column="app_id" property="appId"/>
+        <result column="code" property="code"/>
+        <result column="url" property="url"/>
+        <result column="api" property="api"/>
+        <result column="sort" property="sort"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="remark" property="remark"/>
+        <result column="extend" property="extend"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

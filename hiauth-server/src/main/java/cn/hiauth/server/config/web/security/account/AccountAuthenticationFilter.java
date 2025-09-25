@@ -18,6 +18,9 @@ public class AccountAuthenticationFilter extends AbstractAuthenticationProcessin
         super(new AntPathRequestMatcher(processUrl, HttpMethod.POST.name()));
     }
 
+    /**
+     * 获取登录表单中提交的参数（formToken、clientId...），并创建authenticationToken，进行认证
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, ServletException, IOException {
         String method = request.getMethod();

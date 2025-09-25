@@ -20,18 +20,18 @@ public class AuthUserDeserializer extends JsonDeserializer<AuthUser> {
     public AuthUser deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = mapper.readTree(jp);
-        Long appId = readJsonNode(jsonNode, "appId").asLong();
-        Long cid = readJsonNode(jsonNode, "cid").asLong();
-        Long userId = readJsonNode(jsonNode, "userId").asLong();
-        Long empId = readJsonNode(jsonNode, "empId").asLong();
-        String name = readJsonNode(jsonNode, "name").asText();
-        String username = readJsonNode(jsonNode, "username").asText();
-        String phoneNum = readJsonNode(jsonNode, "phoneNum").asText();
-        String avatarUrl = readJsonNode(jsonNode, "avatarUrl").asText();
-        Boolean isSysAdmin = readJsonNode(jsonNode, "isSysAdmin").asBoolean();
-        Boolean isCorpAdmin = readJsonNode(jsonNode, "isCorpAdmin").asBoolean();
+        Long appId = readJsonNode(jsonNode, CustomAuthUserAttrs.APP_ID).asLong();
+        Long cid = readJsonNode(jsonNode, CustomAuthUserAttrs.CID).asLong();
+        Long userId = readJsonNode(jsonNode, CustomAuthUserAttrs.USER_ID).asLong();
+        Long empId = readJsonNode(jsonNode, CustomAuthUserAttrs.EMP_ID).asLong();
+        String name = readJsonNode(jsonNode, CustomAuthUserAttrs.NAME).asText();
+        String username = readJsonNode(jsonNode, CustomAuthUserAttrs.USERNAME).asText();
+        String phoneNum = readJsonNode(jsonNode, CustomAuthUserAttrs.PHONE_NUM).asText();
+        String avatarUrl = readJsonNode(jsonNode, CustomAuthUserAttrs.AVATAR_URL).asText();
+        Boolean isSysAdmin = readJsonNode(jsonNode, CustomAuthUserAttrs.IS_SYS_ADMIN).asBoolean();
+        Boolean isCorpAdmin = readJsonNode(jsonNode, CustomAuthUserAttrs.IS_CORP_ADMIN).asBoolean();
 
-        Set<AuthGrantedAuthority> authorities = mapper.convertValue(jsonNode.get("authorities"), AUTHORITY_SET);
+        Set<AuthGrantedAuthority> authorities = mapper.convertValue(jsonNode.get(CustomAuthUserAttrs.AUTHORITIES), AUTHORITY_SET);
 
         JsonNode passwordNode = readJsonNode(jsonNode, "password");
         String password = passwordNode.asText("");

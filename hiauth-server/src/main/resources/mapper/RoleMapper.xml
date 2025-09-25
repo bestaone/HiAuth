@@ -4,15 +4,15 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="Role">
-        <result column="id" property="id" />
-        <result column="cid" property="cid" />
-        <result column="name" property="name" />
-        <result column="remark" property="remark" />
-        <result column="creator" property="creator" />
-        <result column="updater" property="updater" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="is_enable" property="isEnable" />
+        <result column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="name" property="name"/>
+        <result column="remark" property="remark"/>
+        <result column="creator" property="creator"/>
+        <result column="updater" property="updater"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_enable" property="isEnable"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

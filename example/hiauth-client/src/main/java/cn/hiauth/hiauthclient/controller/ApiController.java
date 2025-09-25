@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
     @GetMapping("/getAuth")
-    public R<Authentication> getAuth(HttpServletRequest request){
+    public R<Authentication> getAuth(HttpServletRequest request) {
         Authentication auth = SessionContextHolder.getAuthentication();
         return R.success(auth);
     }

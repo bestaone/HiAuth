@@ -18,6 +18,7 @@ import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
 import cn.webestar.scms.commons.api.PageVO;
 import cn.webestar.scms.security.SessionContextHolder;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -56,7 +57,9 @@ public class EmpMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Employee> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
-        IPage<Employee> page = employeeService.pageByDepId(p, dto.toQueryWapper(), dto.getDepIds());
+        LambdaQueryWrapper<Employee> qw = dto.toQueryWapper();
+        qw.orderByDesc(Employee::getCreateTime);
+        IPage<Employee> page = employeeService.pageByDepId(p, qw, dto.getDepIds());
         return R.success(EmpVo.toPageVo(page));
     }
 

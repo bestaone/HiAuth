@@ -45,7 +45,7 @@ public class IndexController {
     @GetMapping("/user/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         SecurityContextHolder.clearContext();
-        Cookie cookie = new Cookie("JSESSIONID",null);
+        Cookie cookie = new Cookie("JSESSIONID", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);

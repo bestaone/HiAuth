@@ -61,7 +61,7 @@ spring.thymeleaf:
     content-type: text/html
 
 smsUils:
-  accessKeyId:  ${aliyun.sms.accessKeyId}
+  accessKeyId: ${aliyun.sms.accessKeyId}
   accessKeySecret: ${aliyun.sms.accessKeySecret}
   sign: ${aliyun.sms.sign}
   smsTemplateCode: ${aliyun.sms.smsTemplateCode}

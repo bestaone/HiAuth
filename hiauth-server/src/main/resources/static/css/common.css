@@ -14,7 +14,7 @@ main {
 
 @media (min-width: 768px) {
     .bd-toc-collapse {
-        display:block !important;
+        display: block !important;
     }
 }
 
@@ -43,7 +43,7 @@ main {
 
 .bd-toc nav a {
     color: inherit;
-    padding:.1875rem .3rem;
+    padding: .1875rem .3rem;
     text-decoration: none
 }
 
