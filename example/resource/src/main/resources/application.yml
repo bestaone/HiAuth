@@ -1,0 +1,14 @@
+server.port: 9002
+
+logging.level:
+  root: DEBUG
+
+spring.jackson:
+  default-property-inclusion: NON_NULL
+  serialization:
+    indent-output: true
+
+spring.security.oauth2.resourceServer:
+  jwt:
+    issuerUri: http://auth.hiauth.cn
+    jwkSetUri: ${spring.security.oauth2.resourceServer.jwt.issuerUri}/oauth2/jwks

@@ -9,10 +9,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 public class QrCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    public QrCodeAuthenticationFilter(String processUrl, String failureUrl) {
+    public QrCodeAuthenticationFilter(String processUrl) {
         super(new AntPathRequestMatcher(processUrl));
     }
 
+    /**
+     * 获取登录表单中提交的两个参数（clientId、code），并创建authenticationToken，进行认证
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String clientId = request.getParameter("clientId");

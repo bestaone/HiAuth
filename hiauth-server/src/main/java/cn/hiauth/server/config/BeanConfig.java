@@ -41,11 +41,17 @@ public class BeanConfig {
         return new RestTemplate();
     }
 
+    /**
+     * 验证码生成器，用于图形验证码生成
+     */
     @Bean
     public RandomGenerator randomGenerator() {
         return new RandomGenerator(baseImageChar, 4);
     }
 
+    /**
+     * 短信发送工具类
+     */
     @Bean
     public SmsUtils smsUtils() {
         return new AliyunSmsUtils(accessKeyId, accessKeySecret, endpoint, sign);
@@ -61,6 +67,9 @@ public class BeanConfig {
                 .serializerByType(Long.TYPE, ToStringSerializer.instance);
     }
 
+    /**
+     * 只读过滤器，配置中申明的账号只有读权限
+     */
     @Bean
     @ConditionalOnProperty(prefix = "app.readonly", name = "account")
     public FilterRegistrationBean<ReadonlyFilter> readOnlyFilterRegister() {

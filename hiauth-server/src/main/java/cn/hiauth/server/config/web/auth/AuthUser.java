@@ -23,9 +23,9 @@ public class AuthUser implements UserDetails, CredentialsContainer {
     private String password;
     private String phoneNum;
     private String avatarUrl;
-    private Boolean isSysAdmin;
     private Collection<AuthGrantedAuthority> authorities;
     private Boolean isCorpAdmin;
+    private Boolean isSysAdmin;
 
     public AuthUser() {
     }

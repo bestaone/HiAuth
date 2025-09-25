@@ -1,9 +1,6 @@
 package cn.hiauth.server.config;
 
-import cn.hiauth.server.config.web.security.CustomAuthenticationFailureHandler;
-import cn.hiauth.server.config.web.security.CustomAuthenticationSuccessHandler;
-import cn.hiauth.server.config.web.security.MultiAppHttpSessionRequestCache;
-import cn.hiauth.server.config.web.security.MultiAuthUserService;
+import cn.hiauth.server.config.web.security.*;
 import cn.hiauth.server.config.web.security.account.AccountAuthenticationFilter;
 import cn.hiauth.server.config.web.security.account.AccountAuthenticationProvider;
 import cn.hiauth.server.config.web.security.phone.SmsCodeAuthenticationFilter;
@@ -12,7 +9,7 @@ import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationFilter;
 import cn.hiauth.server.config.web.security.wechat.QrCodeAuthenticationProvider;
 import cn.hiauth.server.mapper.AppMapper;
 import cn.webestar.scms.cache.CacheUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -40,6 +38,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 安全管理配置
+ */
 @Configuration(proxyBeanMethods = true)
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true, securedEnabled = true)
@@ -48,13 +49,13 @@ public class SecurityConfig {
     @Value("${smsUils.superSmsCode:}")
     private String superSmsCode;
 
-    @Autowired
+    @Resource
     private CacheUtil cacheUtil;
 
-    @Autowired
+    @Resource
     private MultiAuthUserService multiAuthUserService;
 
-    @Autowired
+    @Resource
     private AppMapper appMapper;
 
     @Bean
@@ -72,19 +73,25 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())
+                // 跨站攻击防护，默认开启，两个登录的应用先后退出，第二个退出操作会导致前一个退出后的登录页面中的csrf token失效
+                // 禁用csrf能够解决这个问题，但是会带来安全风险，所以这里不禁用
+                //.csrf(AbstractHttpConfigurer::disable)
                 //.formLogin(Customizer.withDefaults())
                 // 用户名密码登录配置
                 .formLogin(form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/account/doLogin")
-                                .permitAll()
-                        //.successHandler(customAuthenticationSuccessHandler())
+                        .loginPage("/login")
+                        .loginProcessingUrl("/account/doLogin")
+                        .permitAll()
                 )
                 .formLogin(form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/phone/doLogin")
-                                .permitAll()
-                        //.successHandler(customAuthenticationSuccessHandler())
+                        .loginPage("/login")
+                        .loginProcessingUrl("/phone/doLogin")
+                        .permitAll()
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        // 此处添加AuthenticationEntryPoint，会在登录失败后被执行
+                        // 此处自定义，解决登录失败后，在url中保持client_id参数
+                        .authenticationEntryPoint(authenticationEntryPoint())
                 )
                 // 用户名证码认证过滤器
                 .addFilterBefore(accountAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -127,6 +134,14 @@ public class SecurityConfig {
     }
 
     /**
+     * 自定义自定义登录页面
+     */
+    @Bean
+    public LoginUrlAuthenticationEntryPoint authenticationEntryPoint() {
+        return new CustomLoginUrlAuthenticationEntryPoint("/login");
+    }
+
+    /**
      * 请求缓存
      */
     @Bean
@@ -154,7 +169,7 @@ public class SecurityConfig {
      */
     @Bean
     public SmsCodeAuthenticationFilter smsCodeAuthenticationFilter() {
-        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/phone/doLogin", "/login?error");
+        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter("/phone/doLogin");
         smsCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
         smsCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
         smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
@@ -167,7 +182,7 @@ public class SecurityConfig {
      */
     @Bean
     public QrCodeAuthenticationFilter qrCodeAuthenticationFilter() {
-        QrCodeAuthenticationFilter qrCodeAuthenticationFilter = new QrCodeAuthenticationFilter("/wechat/qrcode/doLogin", "/login?error");
+        QrCodeAuthenticationFilter qrCodeAuthenticationFilter = new QrCodeAuthenticationFilter("/wechat/qrcode/doLogin");
         qrCodeAuthenticationFilter.setAuthenticationManager(authenticationManager());
         qrCodeAuthenticationFilter.setSecurityContextRepository(securityContextRepository());
         qrCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler());
@@ -208,6 +223,7 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher("/api/**"),
                 AntPathRequestMatcher.antMatcher("/unpapi/**"),
                 AntPathRequestMatcher.antMatcher("/auth/code/image"),
+                AntPathRequestMatcher.antMatcher("/auth/code/captcha"),
                 AntPathRequestMatcher.antMatcher("/auth/code/sms"),
                 AntPathRequestMatcher.antMatcher("/actuator/**"),
                 AntPathRequestMatcher.antMatcher("/static/**"),

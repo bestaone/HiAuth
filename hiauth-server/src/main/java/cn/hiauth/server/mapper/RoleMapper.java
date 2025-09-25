@@ -16,10 +16,10 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     @ResultMap("BaseResultMap")
     @Select("""
-                SELECT o.*
-                FROM t_role AS o 
-                LEFT JOIN t_emp_role AS o1 ON o1.role_id = o.id
-                WHERE o1.emp_id = #{empId}
+                SELECT O.*
+                FROM t_role AS O
+                LEFT JOIN t_emp_role AS O1 ON O1.role_id = O.id
+                WHERE O1.emp_id = #{empId}
             """)
     List<Role> findByEmpId(@Param("empId") Long empId);
 

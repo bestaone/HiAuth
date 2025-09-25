@@ -12,6 +12,7 @@ import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
 import cn.webestar.scms.commons.api.PageVO;
 import cn.webestar.scms.security.SessionContextHolder;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -40,7 +41,10 @@ public class DictMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Dict> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
-        IPage<Dict> page = dictService.pageByPcode(p, dto.toQueryWapper(), dto.getPCode(), dto.getIsRoot());
+        LambdaQueryWrapper<Dict> qw = dto.toQueryWapper();
+        qw.orderByAsc(Dict::getSort);
+        qw.orderByDesc(Dict::getCreateTime);
+        IPage<Dict> page = dictService.pageByPcode(p, qw, dto.getPCode(), dto.getIsRoot());
         return R.success(new PageVO<>(page));
     }
 
@@ -88,7 +92,10 @@ public class DictMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Dict> p = new Page<>(dto.getOffset(), dto.getLimit(), true);
-        IPage<Dict> page = dictService.pageByPcode(p, dto.toQueryWapper(), dto.getPcode(), false);
+        LambdaQueryWrapper<Dict> qw = dto.toQueryWapper();
+        qw.orderByAsc(Dict::getSort);
+        qw.orderByDesc(Dict::getCreateTime);
+        IPage<Dict> page = dictService.pageByPcode(p, qw, dto.getPcode(), false);
         return R.success(page.getRecords());
     }
 

@@ -1,7 +1,9 @@
 package cn.hiauth.server.config;
 
-import cn.hiauth.server.config.web.auth.*;
-import cn.hiauth.server.config.web.security.CustomLoginUrlAuthenticationEntryPoint;
+import cn.hiauth.server.config.web.auth.AuthFailureHandler;
+import cn.hiauth.server.config.web.auth.CustomJdbcRegisteredClientRepository;
+import cn.hiauth.server.config.web.auth.CustomOidcUserInfoMapper;
+import cn.hiauth.server.config.web.auth.FederatedIdentityIdTokenCustomizer;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
 import cn.hiauth.server.utils.jose.Jwks;
 import cn.webestar.scms.cache.CacheUtil;
@@ -11,7 +13,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -27,7 +29,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
@@ -38,32 +39,38 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
+import org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcUserInfoAuthenticationContext;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Function;
 
+/**
+ * 认证授权配置
+ */
 @Configuration
 public class AuthServerConfig {
 
-    private final static Long EXPIRE = 10 * 60 * 60L;
-
-    @Autowired
+    @Resource
     private CacheUtil cacheUtil;
 
-    @Autowired
+    @Resource
     private MultiAuthUserService multiAuthUserService;
 
+    @Resource
+    private LoginUrlAuthenticationEntryPoint authenticationEntryPoint;
+
     /**
-     * Spring Authorization Server 相关配置
-     * 主要配置OAuth 2.1和OpenID Connect 1.0
+     * Spring Authorization Server 相关配置，主要配置OAuth 2.1和OpenID Connect 1.0
      */
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -81,39 +88,10 @@ public class AuthServerConfig {
                                         //自定义异常处理
                                         .errorResponseHandler(new AuthFailureHandler())
                                 )
-                                //开启OpenID Connect 1.0（其中oidc为OpenID Connect的缩写）
-                                .oidc(oidcConfigurer -> oidcConfigurer.userInfoEndpoint(userInfoEndpointConfigurer -> userInfoEndpointConfigurer.userInfoMapper(userInfoAuthenticationContext -> {
-                                    String accessToken = userInfoAuthenticationContext.getAccessToken().getTokenValue();
-                                    String clientId = userInfoAuthenticationContext.getAuthorization().getRegisteredClientId();
-                                    JwtAuthenticationToken token = (JwtAuthenticationToken) userInfoAuthenticationContext.getAuthentication().getPrincipal();
-                                    Jwt jwt = (Jwt) token.getPrincipal();
-                                    Long userId = (Long) jwt.getClaims().get("userId");
-                                    AuthUser user = multiAuthUserService.loadUserByUserId(clientId, userId);
-                                    cacheUtil.set("userinfo:" + accessToken, user, EXPIRE);
-                                    Map<String, Object> claims = new HashMap<>(10);
-                                    claims.put("sub", user.getUsername());
-                                    claims.put("appId", user.getAppId());
-                                    claims.put("cid", user.getCid());
-                                    claims.put("userId", user.getUserId());
-                                    claims.put("empId", user.getEmpId());
-                                    claims.put("name", user.getName());
-                                    claims.put("username", user.getUsername());
-                                    claims.put("phoneNum", user.getPhoneNum());
-                                    claims.put("avatarUrl", user.getAvatarUrl());
-                                    claims.put("isCorpAdmin", user.getIsCorpAdmin());
-                                    if (user.getAuthorities() != null) {
-                                        Set<Map<String, String>> authorities = new HashSet<>();
-                                        user.getAuthorities().forEach(i -> {
-                                            Map<String, String> map = new HashMap<>();
-                                            map.put("code", i.getCode());
-                                            map.put("page", i.getPage());
-                                            map.put("api", i.getApi());
-                                            authorities.add(map);
-                                        });
-                                        claims.put("authorities", authorities);
-                                    }
-                                    return new OidcUserInfo(claims);
-                                })))
+                                //开启OpenID Connect 1.0（其中oidc为OpenID Connect的缩写，默认配置位于OidcUserInfoAuthenticationProvider
+                                .oidc(oidcConfigurer -> oidcConfigurer.userInfoEndpoint(userInfoEndpointConfigurer ->
+                                        userInfoEndpointConfigurer.userInfoMapper(oidcUserInfoMapper())
+                                ))
                 )
                 .authorizeHttpRequests((authorize) ->
                         authorize.anyRequest().authenticated()
@@ -121,8 +99,10 @@ public class AuthServerConfig {
                 // Redirect to the login page when not authenticated from the authorization endpoint
                 // 将需要认证的请求，重定向到login进行登录认证。
                 .exceptionHandling((exceptions) -> exceptions
+                        // 此处自定义，解决登录失败后，在url中保持client_id参数
+                        .authenticationEntryPoint(authenticationEntryPoint)
                         .defaultAuthenticationEntryPointFor(
-                                new CustomLoginUrlAuthenticationEntryPoint("/login"),
+                                authenticationEntryPoint,
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
                 )
@@ -138,16 +118,18 @@ public class AuthServerConfig {
         return http.build();
     }
 
+    /**
+     * jdbc注册客户端管理
+     */
     @Bean
-    public SimpleJdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-        SimpleJdbcRegisteredClientRepository registeredClientRepository = new SimpleJdbcRegisteredClientRepository(jdbcTemplate);
+    public CustomJdbcRegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+        CustomJdbcRegisteredClientRepository registeredClientRepository = new CustomJdbcRegisteredClientRepository(jdbcTemplate);
         // this.createDemoRegisteredClient(registeredClientRepository);
         return registeredClientRepository;
     }
 
     /**
-     * 授权信息
-     * 对应表：oauth2_authorization
+     * 授权信息，对应表：oauth2_authorization
      */
     @Bean
     public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
@@ -159,8 +141,8 @@ public class AuthServerConfig {
         ObjectMapper om = new ObjectMapper();
         om.registerModules(securityModules);
         om.registerModule(new OAuth2AuthorizationServerJackson2Module());
-        om.addMixIn(AuthUser.class, AuthUserMixin.class);
-        om.addMixIn(AuthGrantedAuthority.class, AuthGrantedAuthorityMixin.class);
+        //om.addMixIn(AuthUser.class, AuthUserMixin.class);
+        //om.addMixIn(AuthGrantedAuthority.class, AuthGrantedAuthorityMixin.class);
         om.addMixIn(Long.class, Object.class);
         authorizationRowMapper.setObjectMapper(om);
         service.setAuthorizationRowMapper(authorizationRowMapper);
@@ -168,12 +150,17 @@ public class AuthServerConfig {
     }
 
     /**
-     * 授权确认
-     * 对应表：oauth2_authorization_consent
+     * 授权确认，对应表：oauth2_authorization_consent
      */
     @Bean
     public JdbcOAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
+    }
+
+
+    @Bean
+    public Function<OidcUserInfoAuthenticationContext, OidcUserInfo> oidcUserInfoMapper() {
+        return new CustomOidcUserInfoMapper(cacheUtil, multiAuthUserService);
     }
 
     @Bean

@@ -1,4 +1,3 @@
-
 spring.mvc.pathmatch.matching-strategy: ant-path-matcher
 
 spring.jackson:

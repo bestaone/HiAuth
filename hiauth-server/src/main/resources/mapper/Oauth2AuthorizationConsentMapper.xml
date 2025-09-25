@@ -4,9 +4,9 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="Oauth2AuthorizationConsent">
-        <id column="registered_client_id" property="registeredClientId" />
-        <id column="principal_name" property="principalName" />
-        <result column="authorities" property="authorities" />
+        <id column="registered_client_id" property="registeredClientId"/>
+        <id column="principal_name" property="principalName"/>
+        <result column="authorities" property="authorities"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

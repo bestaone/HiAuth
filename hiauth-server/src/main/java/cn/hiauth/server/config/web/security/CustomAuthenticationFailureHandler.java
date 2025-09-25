@@ -24,6 +24,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         this.defaultFailureUrl = failureUrl;
     }
 
+    /**
+     * 认证失败后，如果存在client_id参数，则添加到失败的页面url中，以助于再次尝试登录后能跳转到指定的应用
+     */
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String clientId = request.getParameter(MultiAppHttpSessionRequestCache.CLIENT_ID_KEY);

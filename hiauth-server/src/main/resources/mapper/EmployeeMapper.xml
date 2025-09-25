@@ -4,26 +4,27 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="Employee">
-        <result column="id" property="id" />
-        <result column="cid" property="cid" />
-        <result column="user_id" property="userId" />
-        <result column="no" property="no" />
-        <result column="name" property="name" />
-        <result column="email" property="email" />
-        <result column="is_corp_admin" property="isCorpAdmin" />
-        <result column="last_login_time" property="lastLoginTime" />
-        <result column="creator" property="creator" />
-        <result column="updater" property="updater" />
-        <result column="deleter" property="deleter" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="delete_time" property="deleteTime" />
-        <result column="is_deleted" property="isDeleted" />
+        <result column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="user_id" property="userId"/>
+        <result column="no" property="no"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="is_corp_admin" property="isCorpAdmin"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="creator" property="creator"/>
+        <result column="updater" property="updater"/>
+        <result column="deleter" property="deleter"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="delete_time" property="deleteTime"/>
+        <result column="is_deleted" property="isDeleted"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, cid, user_id, no, name, email, creator, updater, deleter, create_time, update_time, delete_time, is_deleted, is_corp_admin last_login_time
+        id, cid, user_id, no, name, email, creator, updater, deleter, create_time, update_time, delete_time, is_deleted,
+        is_corp_admin last_login_time
     </sql>
 
 </mapper>

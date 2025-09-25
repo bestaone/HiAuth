@@ -19,7 +19,7 @@ public interface AppMapper extends BaseMapper<App> {
     @Select("""
                 SELECT DISTINCT O.* FROM t_app O
                 LEFT JOIN t_corp_app AS O1 ON O1.app_id = O.id
-                WHERE o1.corp_id = #{cid}
+                WHERE O1.corp_id = #{cid}
             """)
     List<App> findByCid(@Param("cid") Long cid);
 
@@ -28,7 +28,7 @@ public interface AppMapper extends BaseMapper<App> {
                 WHERE id NOT IN(
                     SELECT O.id FROM t_app O
                     LEFT JOIN oauth2_registered_client AS O1 ON O1.app_id = O.id
-                    WHERE o1.cid = #{dto.cid}
+                    WHERE O1.cid = #{dto.cid}
                 )
                 OFFSET #{dto.offset} LIMIT #{dto.limit}
             """)
@@ -37,7 +37,7 @@ public interface AppMapper extends BaseMapper<App> {
     @Select("""
                 SELECT O.* FROM t_app O
                 LEFT JOIN oauth2_registered_client AS O1 ON O1.app_id = O.id
-                WHERE o1.cid = #{dto.cid}
+                WHERE O1.cid = #{dto.cid}
                 OFFSET #{dto.offset} LIMIT #{dto.limit}
             """)
     List<App> limitHaveApp(@Param("dto") AppClientLimitDto dto);

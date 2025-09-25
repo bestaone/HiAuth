@@ -124,7 +124,7 @@ public class HiAuthClientGatewayController {
         List<Map<String, String>> authorities = (List<Map<String, String>>) userinfoMap.get("authorities");
 
         Boolean isCorpAdmin = null;
-        if(userinfoMap.containsKey("isCorpAdmin")){
+        if (userinfoMap.containsKey("isCorpAdmin")) {
             isCorpAdmin = (Boolean) userinfoMap.get("isCorpAdmin");
         }
 

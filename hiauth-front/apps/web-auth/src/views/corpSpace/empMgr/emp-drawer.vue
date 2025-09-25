@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { EmpVo } from '#/api/core/emp';
+
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
@@ -17,6 +19,7 @@ defineOptions({ name: 'EmpDrawer' });
 const userKeyword = ref('');
 const roleKeyword = ref('');
 const drawerAction = ref<ACTION>(ACTION.VIEW);
+const empRef = ref<EmpVo>();
 let gridCallback = () => {};
 
 const [Form, formApi] = useVbenForm({
@@ -105,7 +108,7 @@ const [Form, formApi] = useVbenForm({
         // 搜索词变化时记录下来， 使用useDebounceFn防抖。
         onSearch: useDebounceFn((value: string) => {
           roleKeyword.value = value;
-        }, 300),
+        }, 1000),
         // 远程搜索参数。当搜索词变化时，params也会更新
         params: { keyword: roleKeyword.value },
         showSearch: true,
@@ -115,20 +118,22 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'ApiSelect',
-      componentProps: {
-        api: findUserApi,
-        labelField: 'name',
-        valueField: 'id',
-        allowClear: true,
-        // 禁止本地过滤
-        filterOption: false,
-        // 搜索词变化时记录下来， 使用useDebounceFn防抖。
-        onSearch: useDebounceFn((value: string) => {
-          userKeyword.value = value;
-        }, 300),
-        // 远程搜索参数。当搜索词变化时，params也会更新
-        params: { keyword: userKeyword.value },
-        showSearch: true,
+      componentProps: () => {
+        return {
+          api: findUserApi,
+          labelField: 'name',
+          valueField: 'id',
+          allowClear: true,
+          // 禁止本地过滤
+          filterOption: false,
+          // 搜索词变化时记录下来， 使用useDebounceFn防抖。
+          onSearch: useDebounceFn((value: string) => {
+            userKeyword.value = value;
+          }, 1000),
+          // 远程搜索参数。当搜索词变化时，params也会更新
+          params: { keyword: userKeyword.value, userId: empRef?.value?.userId },
+          showSearch: true,
+        };
       },
       fieldName: 'userId',
       label: '绑定账号：',
@@ -155,6 +160,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       drawerAction.value = action;
       gridCallback = callback;
       if (emp) {
+        empRef.value = emp;
         formApi.setValues(emp);
       }
     }

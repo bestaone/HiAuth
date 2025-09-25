@@ -20,15 +20,16 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
     @Select("""
             <script>
             SELECT DISTINCT * FROM (
-                SELECT o.* FROM t_employee AS o
-                LEFT JOIN t_dep_emp AS o1 ON o1.emp_id = o.id
+                SELECT O.* FROM t_employee AS O
+                LEFT JOIN t_dep_emp AS O1 ON O1.emp_id = O.id
                 <if test="depIds!=null and depIds.size()>0">
-                WHERE o1.dep_id IN <foreach collection='depIds' item='id' open='(' separator=',' close=')'>#{id}</foreach>
+                WHERE O1.dep_id IN <foreach collection='depIds' item='id' open='(' separator=',' close=')'>#{id}</foreach>
                 </if>
-            ) AS q ${ew.customSqlSegment}
+                ORDER BY O.create_time DESC
+            ) AS Q ${ew.customSqlSegment}
             </script>
             """)
-    IPage<Employee> pageByDepId(@Param("page") IPage page, @Param("ew") Wrapper queryWrapper, @Param("depIds") Set<Long> depIds);
+    IPage<Employee> pageByDepId(@Param("page") IPage page, @Param("ew") Wrapper<Employee> queryWrapper, @Param("depIds") Set<Long> depIds);
 
     @ResultMap("BaseResultMap")
     @Select("""

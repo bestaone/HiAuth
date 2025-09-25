@@ -24,8 +24,9 @@ public interface Oauth2RegisteredClientMapper extends BaseMapper<Oauth2Registere
             SELECT DISTINCT * FROM (
                 SELECT * FROM oauth2_registered_client O
                 LEFT JOIN t_corp_app AS O1 ON O1.app_id = O.app_id
-                WHERE O1.corp_id = #{corpId}   
-            ) AS q ${ew.customSqlSegment}
+                WHERE O1.corp_id = #{corpId}
+                ORDER BY O.id DESC
+            ) AS Q ${ew.customSqlSegment}
             </script>
             """)
     IPage<Oauth2RegisteredClient> pageByCorpId(@Param("page") IPage<Oauth2RegisteredClient> page, @Param("ew") Wrapper<Oauth2RegisteredClient> queryWrapper, @Param("corpId") Long corpId);

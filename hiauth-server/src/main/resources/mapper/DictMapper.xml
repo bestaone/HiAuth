@@ -4,16 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="Dict">
-        <result column="id" property="id" />
-        <result column="cid" property="cid" />
-        <result column="sort" property="sort" />
-        <result column="code" property="code" />
-        <result column="p_code" property="pCode" />
-        <result column="name" property="name" />
-        <result column="value" property="value" />
-        <result column="is_enable" property="isEnable" />
-        <result column="create_time" property="createTime" />
-        <result column="has_child" property="hasChild" />
+        <result column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="sort" property="sort"/>
+        <result column="code" property="code"/>
+        <result column="p_code" property="pCode"/>
+        <result column="name" property="name"/>
+        <result column="value" property="value"/>
+        <result column="is_enable" property="isEnable"/>
+        <result column="create_time" property="createTime"/>
+        <result column="has_child" property="hasChild"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

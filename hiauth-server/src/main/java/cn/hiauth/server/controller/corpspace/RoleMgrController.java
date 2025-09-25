@@ -9,6 +9,7 @@ import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
 import cn.webestar.scms.commons.api.PageVO;
 import cn.webestar.scms.security.SessionContextHolder;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -37,7 +38,9 @@ public class RoleMgrController {
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Role> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
-        IPage<Role> page = roleService.page(p, dto.toQueryWapper());
+        LambdaQueryWrapper<Role> qw = dto.toQueryWapper();
+        qw.orderByDesc(Role::getCreateTime);
+        IPage<Role> page = roleService.page(p, qw);
         return R.success(new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
     }
 

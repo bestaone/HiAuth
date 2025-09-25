@@ -1,5 +1,6 @@
 package cn.hiauth.server.controller;
 
+import cn.hiauth.server.api.dto.login.CaptchaVerifyDto;
 import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.config.web.security.MultiAppHttpSessionRequestCache;
@@ -26,9 +27,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ import java.util.stream.Stream;
 @Controller
 public class LoginController {
 
-    private final static long timeout = 180;
+    private final static long timeout = 600;
 
     @Autowired
     private AppProperties appProperties;
@@ -125,6 +124,20 @@ public class LoginController {
     }
 
     /**
+     * 生成一个有效期为180秒的验证码，适用于滑动验证码，需要验证用户行为，验证成功后返回验证码
+     * 并将此验证码和需要保护的数据进行绑定（如:账号、手机号）
+     */
+    @ResponseBody
+    @PostMapping("/auth/code/captcha")
+    public R<String> captcha(@RequestBody CaptchaVerifyDto dto) {
+        String formToken = dto.getToken();
+        ICaptcha captcha = CaptchaUtil.createCircleCaptcha(90, 30, randomGenerator, 10);
+        cacheUtil.set(Constant.CACHE_KEY_CAPTCHA + ":" + formToken, captcha.getCode(), 60);
+        log.debug("生成图形验证码：{}, 有效期:{}妙", captcha.getCode(), timeout);
+        return R.success(captcha.getCode());
+    }
+
+    /**
      * 发送一个短信验证码，验证码有效时间为180秒，
      * 每申请发送一次短信验证码，就需要提供一次不同的imgCode，从而防止接口被刷
      */
@@ -172,7 +185,7 @@ public class LoginController {
         smsUtils.sendSms(telNo, smsTemplateCode, paramMap);
 
         log.debug("生成短信验证码：{}, 有效期:{}妙", smsCode, timeout);
-        return R.success(smsCode);
+        return R.success();
     }
 
     @GetMapping("/unpapi/logoutWithRedirect")

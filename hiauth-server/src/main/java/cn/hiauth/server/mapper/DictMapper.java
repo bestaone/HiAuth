@@ -22,10 +22,10 @@ public interface DictMapper extends BaseMapper<Dict> {
             SELECT DISTINCT * FROM (
                 SELECT (O1.id IS NOT NULL) AS has_child, O.*  FROM t_dict O
                 LEFT JOIN t_dict O1 ON O1.p_code = O.code
-            ) AS q ${ew.customSqlSegment}
+            ) AS Q ${ew.customSqlSegment}
             </script>
             """)
-    IPage<Dict> pageByPcode(@Param("page") IPage page, @Param("ew") Wrapper queryWrapper, @Param("pCode") String pCode, @Param("isRoot") boolean isRoot);
+    IPage<Dict> pageByPcode(@Param("page") IPage page, @Param("ew") Wrapper<Dict> queryWrapper, @Param("pCode") String pCode, @Param("isRoot") boolean isRoot);
 
     @Select("""
             <script>

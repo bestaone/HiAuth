@@ -103,7 +103,7 @@ $ mvn spring-boot:run
 ## 认证模式
 
 **authorization_code模式：**
-- 访问授权端点获取`授权码`: http://auth.hiauth.cn/oauth2/authorize?response_type=code&client_id=himall&scope=profile&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code
+- 访问授权端点获取`授权码`: http://auth.hiauth.cn/oauth2/authorize?response_type=code&client_id=himall&scope=openid%20profile&redirect_uri=http://127.0.0.1:9000/login/oauth2/code/hiauth-code
 - 用户登录并授权后，重定向到`redirect_uri`并附带`授权码`，如下（注意：浏览器开发模式下，网络控制台中，url的参数code值）：
 ```shell
 http://127.0.0.1:9000/login/oauth2/code/hiauth-code?code=u_ZK_pZKzhie9wbR4vhO65LvdsNqQ9A3KHwjb...
@@ -113,27 +113,35 @@ http://127.0.0.1:9000/login/oauth2/code/hiauth-code?code=u_ZK_pZKzhie9wbR4vhO65L
 # 最后的yourCode替换为上面步骤获取的授权码
 $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Authorization: Basic aGltYWxsOnNlY3JldA==' \
 --data-urlencode 'grant_type=authorization_code' \
---data-urlencode 'client_id=himall' \
---data-urlencode 'client_secret=secret' \
 --data-urlencode 'redirect_uri=http://127.0.0.1:9000/login/oauth2/code/hiauth-code' \
---data-urlencode 'code=yourCode'
+--data-urlencode 'code=YourCode'
 
 # 或者
 $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
---header 'Content-Type: application/x-www-form-urlencoded' \
---data 'grant_type=authorization_code&redirect_uri=http%3A%2F%2F127.0.0.1%3A9000%2Flogin%2Foauth2%2Fcode%2Fhiauth-code&client_id=himall&client_secret=secret&code=yourCode'
+--header 'Content-Type: application/x-www-form-urlencoded;charset=UTF-8' \
+--header 'Authorization: Basic aGltYWxsOnNlY3JldA==' \
+--data 'grant_type=authorization_code&redirect_uri=http://127.0.0.1:9000/login/oauth2/code/hiauth-code&client_id=himall&client_secret=secret&code=YourCode'
 ```
+> 上述“Authorization: Basic aGltYWxsOnNlY3JldA==”中的值“aGltYWxsOnNlY3JldA==”，
+> 计算方式为：Base64.encode(client_id:client_secret)，
+> 例如：client_id=himall,client_secret=secret时，base64解码为：Base64.encode("himall:secret")
+
 返回结果：
 ```json
 {
     "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
     "refresh_token": "8WS6liiSW0gmUy8yudFAPIHGor3Hf6yBtaBTUNjj3-q9y4JXRlBZ",
-    "scope": "profile",
+    "scope": "openid profile",
     "token_type": "Bearer",
     "expires_in": 35999
 }
 ```
+
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/hiauth-1.jpg">
+</p>
 
 **client_credentials模式：**
 ```shell
@@ -142,18 +150,18 @@ $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --data-urlencode 'grant_type=client_credentials' \
 --data-urlencode 'client_id=himall' \
 --data-urlencode 'client_secret=secret' \
---data-urlencode 'scope=profile'
+--data-urlencode 'scope=profile user'
 
 # 或者
 $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile'
+--data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile user'
 ```
 返回结果：
 ```json
 {
   "access_token": "eyJraWQiOiJkZTYxMjVmNi0wYTQ5LTQwMGYtYWMzMC02M2U2Zm",
-  "scope": "profile",
+  "scope": "profile user",
   "token_type": "Bearer",
   "expires_in": 35999
 }
@@ -166,7 +174,9 @@ $ curl --location --request POST 'http://auth.hiauth.cn/userinfo' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer accessToken'
 ```
-返回结果
+> 注意：只在code码模式`grant_type=authorization_code`下生效。
+
+返回结果：
 ```shell
 {
     "sub": "corpadmin",
@@ -182,12 +192,16 @@ $ curl --location --request POST 'http://auth.hiauth.cn/userinfo' \
 }
 ```
 
+<p align="center">
+  <img width="900" src="https://hiauth.oss-cn-zhangjiakou.aliyuncs.com/github/hiauth-2.jpg">
+</p>
+
 **scop权限：**
 - 在授权请求中包含所需scope
 - 获取的访问令牌将包含授予的scope
 - 资源服务器验证请求的scope是否匹配
 ```java
-@PreAuthorize("#oauth2.hasScope('profile')")
+@PreAuthorize("hasAuthority('SCOPE_profile')")
 @GetMapping("/protected")
 public String protectedResource() {
     return "Accessed protected resource";

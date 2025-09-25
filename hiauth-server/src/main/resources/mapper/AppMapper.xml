@@ -4,15 +4,16 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="App">
-        <result column="id" property="id" />
-        <result column="cid" property="cid" />
-        <result column="name" property="name" />
-        <result column="icon" property="icon" />
-        <result column="home" property="home" />
-        <result column="create_time" property="createTime" />
-        <result column="creator" property="creator" />
-        <result column="remark" property="remark" />
-        <result column="extend" property="extend" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="id" property="id"/>
+        <result column="cid" property="cid"/>
+        <result column="name" property="name"/>
+        <result column="icon" property="icon"/>
+        <result column="home" property="home"/>
+        <result column="create_time" property="createTime"/>
+        <result column="creator" property="creator"/>
+        <result column="remark" property="remark"/>
+        <result column="extend" property="extend"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

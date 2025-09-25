@@ -8,6 +8,15 @@
     --code-border-color: #DDDDDD;
     --input-bgcolor: #FFFFFF;
     --input-border-color: #DDDDDD;
+    --slider-color: rgba(255, 255, 255, 0.5);
+    --slider-captcha-bg: rgba(255, 255, 255, 1);
+    --slider-thumb-color: #0b0b0b;
+    --slider-track-bg: #eee;
+    --code-text-color: rgba(71, 141, 255, 1);
+    --disabled-color: rgba(255, 255, 255, 1);
+    --disabled-submit-bg: rgba(181, 199, 255, 1);
+    --code-disabled-color: rgba(71, 141, 255, 0.4);
+    --code-disabled-bg: #eee;
 }
 
 body {
@@ -172,7 +181,7 @@ body {
 }
 
 .get-code-btn {
-    color: var(--text-primary-color);
+    color: var(--code-text-color);
     border: 1px solid var(--code-border-color);
     padding: 0 15px;
     border-radius: 4px;
@@ -184,7 +193,8 @@ body {
 }
 
 .get-code-btn:disabled {
-    background: #ccc;
+    color: var(--code-disabled-color);
+    background-color: var(--code-disabled-bg);
     cursor: not-allowed;
 }
 
@@ -193,13 +203,23 @@ body {
     background: var(--primary-color);
     color: white;
     padding: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     border: none;
     border-radius: 4px;
     font-size: 16px;
-    line-height: 24px;
+    line-height: 36px;
     cursor: pointer;
     transition: opacity 0.3s;
+}
+
+.submit-btn:disabled {
+    color: var(--disabled-color);
+    background-color: var(--disabled-submit-bg);
+    cursor: not-allowed;
+
+    &:hover {
+        opacity: 1;
+    }
 }
 
 .submit-btn:hover {
@@ -354,7 +374,6 @@ input.invalid + .error-message {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-
 }
 
 .switch-inner > .inner-box img {
@@ -414,14 +433,86 @@ input.invalid + .error-message {
     color: var(--text-primary-color);
 }
 
+.slider-captcha {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--code-border-color);
+    background-color: var(--slider-captcha-bg) !important;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--text-black-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.slider-track {
+    height: 100%;
+    width: 0;
+    background-color: var(--slider-track-bg);
+    z-index: 1;
+}
+
+.slider-captcha.success {
+    background-color: var(--input-bgcolor) !important;
+}
+
+.slider-thumb {
+    width: 58px;
+    height: 50px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    position: absolute;
+    left: 0;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* transition: left 0.3s; */
+    z-index: 2;
+    background-color: var(--input-bgcolor);
+}
+
+.slider-thumb.success {
+    color: rgba(70, 182, 91, 1);
+}
+
+.slider-title {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+    transition: opacity 0.3s;
+    color: var(--slider-color);
+}
+
+.slider-title.success {
+    /*opacity: 0;*/
+    z-index: 1;
+    background-color: transparent;
+    color: rgba(70, 182, 91, 1);
+}
+
 /* 深色模式 */
 .dark-box {
     --text-black-color: rgba(255, 255, 255, 0.9);
     --text-gray-color: rgba(255, 255, 255, 0.5);
-    --input-bgcolor: rgba(0, 0, 0, 0.3);
-    --input-border-color: rgba(255, 255, 255, 0.2);
-    --code-bgcolor: rgba(255, 255, 255, 0.1);
+    --input-bgcolor: rgba(32 35 43);
+    --input-border-color: rgba(50, 56, 67, 1);
+    --code-bgcolor: rgba(50, 56, 67, 1);
     --code-border-color: rgba(255, 255, 255, 0.1);
+    --slider-color: rgba(255, 255, 255, 0.5);
+    --slider-captcha-bg: rgba(50, 56, 67, 1);
+    --slider-track-bg: rgba(32 35 43);
+    --code-text-color: rgba(255, 255, 255, 0.9);
+    --code-disabled-color: rgba(255, 255, 255, 0.2);
+    --code-disabled-bg: rgba(50, 56, 67, 1);
+    --disabled-submit-bg: #2174FF;
+    --disabled-color: rgba(255, 255, 255, 0.2);
 }
 
 /* 白色模式模式 */
@@ -432,6 +523,14 @@ input.invalid + .error-message {
     --input-border-color: #DDDDDD;
     --code-bgcolor: #FFFFFF;
     --code-border-color: #DDDDDD;
+    --slider-color: rgba(0, 0, 0, 0.5);
+    --slider-captcha-bg: rgba(255, 255, 255, 1);
+    --slider-track-bg: #eee;
+    --code-text-color: rgba(71, 141, 255, 1);
+    --code-disabled-color: rgba(71, 141, 255, 0.4);
+    --code-disabled-bg: #eee;
+    --disabled-submit-bg: rgba(181, 199, 255, 1);
+    --disabled-color: rgba(255, 255, 255, 1);
 }
 
 

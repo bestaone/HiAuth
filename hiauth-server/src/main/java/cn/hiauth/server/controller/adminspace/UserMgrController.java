@@ -9,6 +9,7 @@ import cn.hiauth.server.entity.User;
 import cn.hiauth.server.service.UserService;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.api.PageVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -39,7 +40,9 @@ public class UserMgrController {
     @PostMapping("/page")
     public R<PageVO<UserVo>> page(@RequestBody @Valid UserPageDto dto) {
         Page<User> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
-        IPage<User> page = userService.page(p, dto.toQueryWapper());
+        LambdaQueryWrapper<User> qw = dto.toQueryWapper();
+        qw.orderByDesc(User::getCreateTime);
+        IPage<User> page = userService.page(p, qw);
         PageVO<UserVo> pageVo = UserVo.toPageVo(page);
         return R.success(pageVo);
     }

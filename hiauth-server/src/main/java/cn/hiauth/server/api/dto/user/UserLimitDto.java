@@ -13,6 +13,9 @@ public class UserLimitDto extends LimitBody {
     @Schema(description = "关键字")
     private String keyword;
 
+    @Schema(description = "用户ID")
+    private Long userId;
+
     @Override
     public LambdaQueryWrapper<User> toQueryWapper() {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -22,8 +25,14 @@ public class UserLimitDto extends LimitBody {
                     .or().like(User::getPhoneNum, keyword)
                     .or().like(User::getName, keyword)
             );
+            queryWrapper.orderByDesc(User::getCreateTime);
+            queryWrapper.last("OFFSET " + this.getOffset() + " LIMIT " + this.getLimit());
+        } else {
+            // 如果没有搜索条件，说明是初始化查找，则把传过来的id排在第一位，确保前端显示没有问题
+            queryWrapper.last("ORDER BY CASE WHEN id = " + userId + " THEN 0 ELSE 1 END, create_time DESC "
+                    + "OFFSET " + this.getOffset() + " LIMIT " + this.getLimit());
         }
-        queryWrapper.last("OFFSET " + this.getOffset() + " LIMIT " + this.getLimit());
+
         return queryWrapper;
     }
 

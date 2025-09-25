@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import java.util.List;
 import java.util.Set;
 
-public class SimpleJdbcRegisteredClientRepository extends JdbcRegisteredClientRepository {
+public class CustomJdbcRegisteredClientRepository extends JdbcRegisteredClientRepository {
 
     private static final String TABLE_NAME = "oauth2_registered_client";
 
@@ -28,7 +28,7 @@ public class SimpleJdbcRegisteredClientRepository extends JdbcRegisteredClientRe
 
     private static final String LOAD_REGISTERED_CLIENT_SQL = "SELECT " + COLUMN_NAMES + " FROM " + TABLE_NAME + " WHERE ";
 
-    public SimpleJdbcRegisteredClientRepository(JdbcOperations jdbcOperations) {
+    public CustomJdbcRegisteredClientRepository(JdbcOperations jdbcOperations) {
         super(jdbcOperations);
     }
 

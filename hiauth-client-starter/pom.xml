@@ -15,6 +15,7 @@
         <module>hiauth-client-spring-boot-starter</module>
         <module>hiauth-client-session-spring-boot-starter</module>
         <module>hiauth-client-spring-cloud-gateway-starter</module>
+        <module>hiauth-client-resource-spring-boot-starter</module>
     </modules>
 
 </project>

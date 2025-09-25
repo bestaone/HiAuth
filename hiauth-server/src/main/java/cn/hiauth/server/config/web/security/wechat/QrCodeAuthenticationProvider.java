@@ -4,11 +4,9 @@ import cn.hiauth.server.config.web.auth.AuthUser;
 import cn.hiauth.server.config.web.security.MultiAuthUserService;
 import cn.hiauth.server.entity.App;
 import cn.hiauth.server.mapper.AppMapper;
-import cn.webestar.scms.commons.CommonException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +28,10 @@ public class QrCodeAuthenticationProvider implements AuthenticationProvider {
 
     private AppMapper appMapper;
 
+    /**
+     * 直接从登录页登录时：获取url中的client_id，并且在登录成功后跳转到对应的应；
+     * 第三方集成、调整过来进行登录授权：判断savedRequest与url中的client_id是否相等，通常都是相等的，所以登录成功后会按照savedRequest设定跳转到对应的应用；
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         QrCodeAuthenticationToken authenticationToken = (QrCodeAuthenticationToken) authentication;
@@ -49,8 +51,9 @@ public class QrCodeAuthenticationProvider implements AuthenticationProvider {
         if (StringUtils.hasText(loginClientId) && !loginClientId.equals(clientId)) {
             clientId = loginClientId;
             App app = appMapper.findByClientId(loginClientId);
-            if (app!=null && StringUtils.hasText(app.getHome())) {
+            if (app != null && StringUtils.hasText(app.getHome())) {
                 savedRequest = new SimpleSavedRequest(app.getHome());
+                // TODO 这里是否可以优化封装到 MultiAppHttpSessionRequestCache 中
                 request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST", savedRequest);
                 request.getSession().setAttribute("SPRING_SECURITY_SAVED_REQUEST" + "_" + clientId, savedRequest);
             }
@@ -60,13 +63,11 @@ public class QrCodeAuthenticationProvider implements AuthenticationProvider {
         AuthUser authUser = null;
         try {
             authUser = userDetailsService.loadUserWeChatCode(clientId, code);
-        } catch (CommonException | BadCredentialsException ex) {
-            throw new InternalAuthenticationServiceException("登录失败:" + ex.getMessage(), ex);
         } catch (Exception ex) {
-            throw new InternalAuthenticationServiceException("登录失败:账号异常", ex);
+            throw new InternalAuthenticationServiceException("登录失败，请重新登陆", ex);
         }
         if (authUser == null) {
-            throw new InternalAuthenticationServiceException("登录失败：账号未注册");
+            throw new InternalAuthenticationServiceException("账号未注册，请先注册账号");
         }
         return new UsernamePasswordAuthenticationToken(authUser, authUser.getPassword(), authUser.getAuthorities());
     }

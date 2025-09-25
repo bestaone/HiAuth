@@ -14,7 +14,6 @@ import cn.hutool.json.JSONUtil;
 import cn.webestar.scms.commons.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -48,14 +47,14 @@ public class MultiAuthUserService {
     @Resource
     private RestTemplate restTemplate;
 
-    @Autowired
+    @Resource
     private WechatProperties wechatProperties;
 
     public AuthUser loadUserByUsername(String clientId, String username) throws UsernameNotFoundException {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username);
         User user = userMapper.selectOne(queryWrapper);
-        Assert.notNull(user, "用户名或者密码错误");
+        Assert.notNull(user, "账号不存在请先注册");
         Oauth2RegisteredClient client = oauth2RegisteredClientService.findByClientId(clientId);
         return loadAuthUser(client, user);
     }
@@ -64,14 +63,14 @@ public class MultiAuthUserService {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getPhoneNum, phoneNum);
         User user = userMapper.selectOne(queryWrapper);
-        Assert.notNull(user, "手机号或者验证码错误");
+        Assert.notNull(user, "账号不存在请先注册");
         Oauth2RegisteredClient client = oauth2RegisteredClientService.findByClientId(clientId);
         return loadAuthUser(client, user);
     }
 
     public AuthUser loadUserByUserId(String registeredClientId, Long userId) {
         User user = userMapper.selectById(userId);
-        Assert.notNull(user, "用户名或者密码错误");
+        Assert.notNull(user, "账号不存在请先注册");
         Oauth2RegisteredClient client = oauth2RegisteredClientService.getById(registeredClientId);
         Assert.notNull(client, "用户名或者密码错误");
         return loadAuthUser(client, user);
@@ -87,7 +86,7 @@ public class MultiAuthUserService {
                 corpAdminOnly = (Boolean) app.getExtend().get("corpAdminOnly");
             }
             employee = employeeMapper.findOneByAppIdAndUserId(client.getAppId(), user.getId(), corpAdminOnly);
-            Assert.notNull(employee, String.format("不是应用%s的用户", client.getClientName()));
+            Assert.notNull(employee, String.format("不是应用“%s”的用户", client.getClientName()));
             List<Role> roles = roleService.findByEmpId(employee.getId());
             Set<Long> roleIds = new HashSet<>();
             roles.forEach(i -> roleIds.add(i.getId()));
