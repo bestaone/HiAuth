@@ -35,12 +35,11 @@ app.security.enable: true
 hiauth.client:
   cachePrefix: hiauthclient
   checkPermission: false
+  authSuccessRedirectUri: http://127.0.0.1:9000
   authUris:
     - /api/**
   ignoreUris:
     - /unpapi/**
-
-  authSuccessRedirectUri: http://127.0.0.1:9000
 
 spring.data.redis:
   host: 192.168.3.143

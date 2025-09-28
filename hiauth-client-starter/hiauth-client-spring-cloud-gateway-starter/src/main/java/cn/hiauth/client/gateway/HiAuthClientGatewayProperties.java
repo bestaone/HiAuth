@@ -33,16 +33,4 @@ public class HiAuthClientGatewayProperties {
      */
     private Set<String> ignorePermissionUris = Set.of("/api/common/**");
 
-//    @Data
-//    public static class Client {
-//        private String clientId;
-//        private String clientSecret;
-//        private String[] scope;
-//        private String redirectUri;
-//        private String authSuccessRedirectUri;
-//        private Boolean checkPermission;
-//        private String cachePrefix;
-//        private Integer cacheExpire;
-//    }
-
 }

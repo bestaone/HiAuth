@@ -1,36 +1,14 @@
 server.port: 9000
 spring.application.name: gateway
-spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
 logging.level.root: INFO
 
-spring.security.oauth2.client:
-  provider:
-    #认证服务器信息
-    hiauth-server:
-      # 如果你私有化部署了 HiAuth服务，请将此地址替换为私有部署的认证服务器地址
-      issuer-uri: http://auth.hiauth.cn
-      authorizationUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/authorize
-      #令牌获取地址
-      tokenUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/token
-      userInfoUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/userinfo
-      jwkSetUri: ${spring.security.oauth2.client.provider.hiauth-server.issuer-uri}/oauth2/jwks
-      #userNameAttribute: name
-  registration:
-    hiauth-code:
-      #认证提供者，标识由哪个认证服务器进行认证，和上面的hiauth-server进行关联
-      provider: hiauth-server
-      client-name: himall
-      client-id: himall
-      client-secret: secret
-      #客户端认证方式 client_secret_basic\client_secret_post
-      client-authentication-method: client_secret_basic
-      #使用授权码模式获取令牌（token）
-      authorization-grant-type: authorization_code
-      # 认证完成后回调的地址，需要在数据库表oauth2_registered_client中登记这个地址，否则会拒绝回调
-      redirect-uri: http://127.0.0.1:9000/login/oauth2/code/hiauth-code
-      #redirect-uri: http://127.0.0.1:9000/home
-      scope: openid,profile
+# 网关启动方式
+spring.main.web-application-type: reactive
 
+# Nacos注册中心配置
+spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
+
+# 网关路由配置
 spring.cloud.gateway.routes:
   - id: ordersvc
     uri: lb://ordersvc/
@@ -38,4 +16,31 @@ spring.cloud.gateway.routes:
       - Path=/ordersvc/**
     filters:
       - StripPrefix=1
-      - Custom=my-custom-filter,true
+
+# HiAuth客户端配置
+hiauth.client.gateway:
+  issuerUri: http://auth.hiauth.cn
+  authorizationUri: ${hiauth.client.gateway.issuerUri}/oauth2/authorize
+  tokenUri: ${hiauth.client.gateway.issuerUri}/oauth2/token
+  userInfoUri: ${hiauth.client.gateway.issuerUri}/userinfo
+  clients:
+    himall:
+      clientId: himall
+      clientSecret: secret
+      scope: profile,openid
+      redirectUri: http://127.0.0.1:9000/unpapi/himall/oauth2/token/redirect
+      # 登录成功后会将accessToken通过这个地址返回给前端
+      authSuccessRedirectUri: http://127.0.0.1:9000/ordersvc/api/info
+      cachePrefix: himall
+      cacheExpire: 2592000
+      checkPermission: false
+
+# Redis配置
+spring.data.redis:
+  host: 192.168.3.143
+  port: 26379
+  database: 5
+  username:
+  password: Vking1357!
+  timeout: 10000
+  connect-timeout: 10000

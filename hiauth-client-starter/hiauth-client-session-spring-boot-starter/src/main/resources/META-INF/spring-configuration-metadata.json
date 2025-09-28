@@ -1,8 +1,20 @@
 {
   "properties": {
-    "spring.security.oauth2.client.provider.hiauth-server.issuerUri": {
-      "description": "授权服务端地址",
+    "app.security.enable": {
+      "description": "开启安全拦截。默认值：false",
+      "type": "boolean"
+    },
+    "hiauth.client.cachePrefix": {
+      "description": "缓存前缀。默认值：hiauth",
       "type": "string"
+    },
+    "hiauth.client.authUris": {
+      "description": "需要登录，并且需要拥有权限，才可访问的接口。默认值：/api/**",
+      "type": "string[]"
+    },
+    "hiauth.client.ignoreUris": {
+      "description": "无需登录也无需鉴权的接口(暂时未启用)。默认值：/unpapi/**",
+      "type": "string[]"
     }
   }
 }

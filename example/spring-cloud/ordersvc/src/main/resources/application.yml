@@ -1,4 +1,6 @@
 server.port: 9001
 spring.application.name: ordersvc
-spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
 logging.level.root: INFO
+
+# Nacos注册中心配置
+spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848

@@ -27,12 +27,16 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
 ```
 ├─cicd                              持续集成
 ├─docs                              开发文档
-├─example                           实例
-│ ├─demo                            基础实例
-│ ├─hiauth-client                   使用hiauth-client-spring-boot-starter集成hiauth的实例
-│ ├─himall                          带有页面的实例
-│ ├─spring-cloud                    spring-cloud-gateway的集成实例
-│ ├─spring-cloud-with-hiauth-client hiauth-client-spring-cloud-gateway-starter的集成实例
+├─example                           样例
+│ ├─demo                            基础样例
+│ ├─hiauth-client                   使用hiauth-client-spring-boot-starter集成hiauth的样例
+│ ├─hiauth-client-exp               hiauth-client的简易版，用于做实验
+│ ├─hiauth-server-exp               hiauth-server的简易版，用于做实验
+│ ├─himall                          带有页面的样例
+│ ├─resource                        资源服务样例
+│ ├─spring-cloud                    spring-cloud微服务集成样例，原生集成
+│ ├─spring-cloud-with-hiauth-client spring-cloud微服务集成样例，使用starter集成
+│ ├─wechat-login                    微信登录样例
 ├─hiauth-client-starter             hiauth-client SDK
 │ ├─hiauth-client-commons                       基础包
 │ ├─hiauth-client-spring-boot-starter           适用于SpringBoot直接集成
@@ -106,11 +110,11 @@ $ mvn spring-boot:run
 - 访问授权端点获取`授权码`: http://auth.hiauth.cn/oauth2/authorize?response_type=code&client_id=himall&scope=openid%20profile&redirect_uri=http://127.0.0.1:9000/login/oauth2/code/hiauth-code
 - 用户登录并授权后，重定向到`redirect_uri`并附带`授权码`，如下（注意：浏览器开发模式下，网络控制台中，url的参数code值）：
 ```shell
-http://127.0.0.1:9000/login/oauth2/code/hiauth-code?code=u_ZK_pZKzhie9wbR4vhO65LvdsNqQ9A3KHwjb...
+http://127.0.0.1:9000/login/oauth2/code/hiauth-code?code=R4vhO65LvdsNqQ9A3KHwjb...
 ```
 - 使用`授权码`换取访问`令牌`
 ```shell
-# 最后的yourCode替换为上面步骤获取的授权码
+# 最后的YourCode替换为上面步骤获取的授权码
 $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --header 'Authorization: Basic aGltYWxsOnNlY3JldA==' \
@@ -150,12 +154,12 @@ $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --data-urlencode 'grant_type=client_credentials' \
 --data-urlencode 'client_id=himall' \
 --data-urlencode 'client_secret=secret' \
---data-urlencode 'scope=profile user'
+--data-urlencode 'scope=profile'
 
 # 或者
 $ curl --location --request POST 'http://auth.hiauth.cn/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
---data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile user'
+--data 'grant_type=client_credentials&client_id=himall&client_secret=secret&scope=profile'
 ```
 返回结果：
 ```json
@@ -212,9 +216,9 @@ public String protectedResource() {
 - 获取认证服务器配置信息：http://auth.hiauth.cn/.well-known/openid-configuration
 
 ### 更多集成方式
-- 直接使用SaaS版集成，[参考文档](http://docs.hiauth.cn/guide/saas)；
-- 安装Docker版并集成，[参考文档](http://docs.hiauth.cn/guide/docker)；
-- 源码编译安装并集成，[参考文档](http://docs.hiauth.cn/guide/sourcecode)；
+- 云端SaaS版集成，[参考文档](http://docs.hiauth.cn/guide/saas)；
+- 本地Docker版集成，[参考文档](http://docs.hiauth.cn/guide/docker)；
+- 源码编译安装集成，[参考文档](http://docs.hiauth.cn/guide/sourcecode)；
 
 ## 社区与作者
 <p align="center">

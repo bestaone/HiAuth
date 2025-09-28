@@ -1,8 +1,21 @@
 server.port: 9000
 spring.application.name: gateway
-spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
 logging.level.root: INFO
 
+# Nacos注册中心配置
+spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
+
+# 网关路由配置
+spring.cloud.gateway.routes:
+  - id: ordersvc
+    uri: lb://ordersvc/
+    predicates:
+      - Path=/ordersvc/**
+    filters:
+      - StripPrefix=1
+      - TokenRelay=
+
+# oauth2客户端配置
 spring.security.oauth2.client:
   provider:
     #认证服务器信息
@@ -30,12 +43,3 @@ spring.security.oauth2.client:
       redirect-uri: http://127.0.0.1:9000/login/oauth2/code/hiauth-code
       #redirect-uri: http://127.0.0.1:9000/home
       scope: openid,profile
-
-spring.cloud.gateway.routes:
-  - id: ordersvc
-    uri: lb://ordersvc/
-    predicates:
-      - Path=/ordersvc/**
-    filters:
-      - StripPrefix=1
-      - TokenRelay=
