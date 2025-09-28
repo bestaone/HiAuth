@@ -1,0 +1,2 @@
+- 访问：http://auth.hiauth.cn，如果是登录状态，先退出登录
+- 然后访问：http://127.0.0.1:9000/ordersvc

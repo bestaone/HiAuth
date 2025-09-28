@@ -15,10 +15,10 @@ public class SimpleAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
-        if(request.getUserPrincipal() instanceof AbstractOAuth2TokenAuthenticationToken){
-            ResponseTools.write(response, R.fail(10403,"没有权限访问"));
-        }else {
-            ResponseTools.write(response, R.fail(10403,exception.getMessage()));
+        if (request.getUserPrincipal() instanceof AbstractOAuth2TokenAuthenticationToken) {
+            ResponseTools.write(response, R.fail(10403, "没有权限访问"));
+        } else {
+            ResponseTools.write(response, R.fail(10403, exception.getMessage()));
         }
     }
 

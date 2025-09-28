@@ -1,0 +1,4 @@
+- 清空登录状态：访问 http://auth.hiauth.cn，如果是登录状态，先退出登录；
+- 登录授权：访问 http://127.0.0.1:9000/unpapi/himall/oauth2/login
+- 访问接口：登录成功后，浏览器会自动跳转到配置文件中指定的地址，并在参数中携带accessToken；
+- 退出：访问 http://127.0.0.1:9000/unpapi/himall/oauth2/logout

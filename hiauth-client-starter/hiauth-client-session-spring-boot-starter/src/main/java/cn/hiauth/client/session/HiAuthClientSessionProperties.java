@@ -13,7 +13,7 @@ public class HiAuthClientSessionProperties implements Serializable {
     /**
      * 缓存前缀
      */
-    private String cachePrefix = "auth";
+    private String cachePrefix = "hiauth";
 
     /**
      * 无需登录也无需鉴权的接口(暂时未启用)

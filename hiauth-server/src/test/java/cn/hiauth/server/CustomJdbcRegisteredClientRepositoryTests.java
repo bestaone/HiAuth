@@ -1,7 +1,7 @@
 package cn.hiauth.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import cn.hiauth.server.config.web.auth.CustomJdbcRegisteredClientRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,6 @@ import java.util.Set;
 @SpringBootTest(classes = ServerStarter.class)
 class CustomJdbcRegisteredClientRepositoryTests {
 
-
     @Resource
     private CustomJdbcRegisteredClientRepository repository;
 
@@ -33,7 +32,6 @@ class CustomJdbcRegisteredClientRepositoryTests {
     public void test() throws JsonProcessingException {
         Set<String> clientIds = new HashSet<>();
         clientIds.add("himall");
-        clientIds.add("dcss");
         List<RegisteredClient> list = repository.findByClientIds(clientIds);
         Assert.isTrue(!list.isEmpty(), "查询失败");
     }

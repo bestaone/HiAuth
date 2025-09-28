@@ -25,7 +25,8 @@
         <result column="delete_time" property="deleteTime"/>
         <result column="is_deleted" property="isDeleted"/>
         <result column="is_sys_admin" property="isSysAdmin"/>
-        <result column="extend" property="extend" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="extend" property="extend"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->

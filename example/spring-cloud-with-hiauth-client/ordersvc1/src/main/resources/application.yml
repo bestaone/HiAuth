@@ -1,4 +1,20 @@
 server.port: 9001
 spring.application.name: ordersvc
-spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
 logging.level.root: INFO
+
+# Nacos注册中心配置
+spring.cloud.nacos.discovery.server-addr: 192.168.1.250:8848
+
+# HiAuth Client 配置
+app.security.enable: true
+hiauth.client.cachePrefix: himall
+
+# Redis配置
+spring.data.redis:
+  host: 192.168.3.143
+  port: 26379
+  database: 5
+  username:
+  password: Vking1357!
+  timeout: 10000
+  connect-timeout: 10000

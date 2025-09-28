@@ -18,7 +18,7 @@ public class HiAuthClientProperties implements Serializable {
     /**
      * 缓存前缀
      */
-    private String cachePrefix = "auth";
+    private String cachePrefix = "hiauth";
 
     /**
      * 缓存过期时间（秒），默认值：10天

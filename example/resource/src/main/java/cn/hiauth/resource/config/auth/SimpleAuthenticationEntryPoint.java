@@ -18,20 +18,20 @@ public class SimpleAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        if(exception instanceof InsufficientAuthenticationException){
+        if (exception instanceof InsufficientAuthenticationException) {
             String accept = request.getHeader("accept");
-            if(accept.contains(MediaType.TEXT_HTML_VALUE)){
+            if (accept.contains(MediaType.TEXT_HTML_VALUE)) {
                 //如果是html请求类型，则返回登录页
                 LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
-                loginUrlAuthenticationEntryPoint.commence(request,response,exception);
-            }else {
+                loginUrlAuthenticationEntryPoint.commence(request, response, exception);
+            } else {
                 //如果是api请求类型，则返回json
-                ResponseTools.write(response, R.fail(10401,"缺少访问令牌"));
+                ResponseTools.write(response, R.fail(10401, "缺少访问令牌"));
             }
-        }else if(exception instanceof InvalidBearerTokenException){
-            ResponseTools.write(response, R.fail(10401,"令牌无效或过期"));
-        }else{
-            ResponseTools.write(response, R.fail(10401,exception.getMessage()));
+        } else if (exception instanceof InvalidBearerTokenException) {
+            ResponseTools.write(response, R.fail(10401, "令牌无效或过期"));
+        } else {
+            ResponseTools.write(response, R.fail(10401, exception.getMessage()));
         }
     }
 
