@@ -135,7 +135,8 @@ public class AuthServerConfig {
     public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
         JdbcOAuth2AuthorizationService service = new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
         JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper authorizationRowMapper = new JdbcOAuth2AuthorizationService.OAuth2AuthorizationRowMapper(registeredClientRepository);
-        authorizationRowMapper.setLobHandler(new DefaultLobHandler());
+        // 在现代 JDBC 驱动（JDBC 4.0+）中，通常不需要显式设置 LobHandler
+        //authorizationRowMapper.setLobHandler(new DefaultLobHandler());
         ClassLoader classLoader = JdbcOAuth2AuthorizationService.class.getClassLoader();
         List<Module> securityModules = SecurityJackson2Modules.getModules(classLoader);
         ObjectMapper om = new ObjectMapper();

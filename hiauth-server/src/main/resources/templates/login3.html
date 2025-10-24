@@ -338,6 +338,8 @@
         const imgCode = imgCodeEl.val();
         const formToken = formTokenEl.val();
 
+        $(this).prop("disabled", true)
+
         // 发送短信验证码请求
         $.ajax({
             url: "auth/code/sms?telNo=" + phone + "&formToken=" + formToken + "&imgCode=" + imgCode + "&r=" + Math.random(),
@@ -345,16 +347,24 @@
             success: function (data) {
                 $(".error-alert").remove();
                 if (data.code !== 10000) {
+                    let message = data.message;
+                    if(data.code===20101){
+                        message = "验证码已失效，请重试！";
+                    } else
+                    if(data.code===20102){
+                        message = "验证码已失效，请重试！";
+                    } else if(data.code===20103){
+                        message = "手机号未注册！";
+                    }
                     $("body").prepend(`
                             <div class="error-alert" onclick="this.remove()">
-                                ${data.message}
+                                ${message}
                                 <svg viewBox="0 0 24 24" class="close-icon">
                                     <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
                                 </svg>
                             </div>
                         `);
-                    const formToken = $("#formToken").val();
-                    getCaptcha(formToken);
+                    $('#slider-captcha-phone').sliderCaptcha('reset');
                 } else {
                     startCountdown();
                 }
@@ -364,7 +374,6 @@
 
     // 在页面加载时读取存储的登录信息
     document.addEventListener('DOMContentLoaded', function () {
-        const lastLoginType = localStorage.getItem('hiauth_last_loginType') || 'account';
         const lastUsername = localStorage.getItem('hiauth_last_username');
         if (lastUsername) {
             document.querySelector(`#accountForm input[name="username"]`).value = lastUsername;

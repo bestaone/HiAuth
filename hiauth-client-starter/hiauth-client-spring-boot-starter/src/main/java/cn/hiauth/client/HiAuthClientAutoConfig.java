@@ -20,12 +20,6 @@ import org.springframework.web.client.RestTemplate;
 public class HiAuthClientAutoConfig {
 
     @Autowired
-    private HiAuthClientProviderProperties hiAuthClientProviderProperties;
-
-    @Autowired
-    private HiAuthClientRegistrationProperties hiAuthClientRegistrationProperties;
-
-    @Autowired
     private HiAuthClientProperties authClientProperties;
 
     @Autowired
