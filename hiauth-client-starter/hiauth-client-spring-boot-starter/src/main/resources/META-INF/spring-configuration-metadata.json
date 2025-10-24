@@ -1,5 +1,9 @@
 {
   "properties": {
+    "app.security.enable": {
+      "description": "是否启用安全拦截。默认值：false",
+      "type": "boolean"
+    },
     "hiauth.client.cachePrefix": {
       "description": "缓存前缀。默认值：hiauth",
       "type": "string"

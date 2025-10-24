@@ -5,7 +5,9 @@ import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.props.WechatProperties;
 import cn.hiauth.server.config.web.security.MultiAppHttpSessionRequestCache;
 import cn.hiauth.server.entity.App;
+import cn.hiauth.server.entity.User;
 import cn.hiauth.server.mapper.AppMapper;
+import cn.hiauth.server.service.UserService;
 import cn.hiauth.server.utils.Constant;
 import cn.hiauth.server.utils.SmsUtils;
 import cn.hutool.captcha.CaptchaUtil;
@@ -15,6 +17,8 @@ import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.RandomUtil;
 import cn.webestar.scms.cache.CacheUtil;
 import cn.webestar.scms.commons.R;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -42,29 +46,32 @@ public class LoginController {
 
     private final static long timeout = 600;
 
-    @Autowired
+    @Resource
     private AppProperties appProperties;
 
-    @Autowired
+    @Resource
     private WechatProperties wechatProperties;
 
-    @Autowired
+    @Resource
     private CacheUtil cacheUtil;
 
-    @Autowired
+    @Resource
     private Snowflake idGenerator;
 
-    @Autowired
+    @Resource
     private SmsUtils smsUtils;
 
-    @Autowired
+    @Resource
     private AppMapper appMapper;
 
     @Value("${smsUils.smsTemplateCode:}")
     private String smsTemplateCode;
 
-    @Autowired
+    @Resource
     private RandomGenerator randomGenerator;
+
+    @Resource
+    private UserService userService;
 
     @GetMapping(value = {"/login"}, produces = "text/html")
     public String login(@RequestParam(value = OAuth2ParameterNames.CLIENT_ID, required = false) String clientId, HttpServletRequest request, Model model) {
@@ -157,7 +164,7 @@ public class LoginController {
         {
             String imgCodeCache = (String) cacheUtil.get(Constant.CACHE_KEY_CAPTCHA + ":" + formToken);
             if (imgCodeCache == null || !imgCodeCache.equalsIgnoreCase(imgCode)) {
-                return R.fail(20101, "图形验证码错误");
+                return R.fail(20101, "验证码错误");
             }
         }
 
@@ -166,8 +173,16 @@ public class LoginController {
             // TODO 暂时未实现
             String telNoCache = (String) cacheUtil.get(Constant.CACHE_KEY_SMS_CODE + ":" + formToken + ":" + imgCode);
             if (telNoCache != null) {
-                return R.fail(20102, "图形验证码已经使用过");
+                return R.fail(20102, "验证码已失效");
             }
+        }
+
+        LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
+        qw.eq(User::getIsDeleted, false);
+        qw.eq(User::getPhoneNum, telNo);
+        boolean exists = userService.exists(qw);
+        if (!exists) {
+            return R.fail(20103, "手机号未注册");
         }
 
         String smsCode = RandomUtil.randomNumbers(6);

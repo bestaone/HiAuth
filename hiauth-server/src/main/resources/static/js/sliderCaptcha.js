@@ -1,6 +1,23 @@
 (function ($) {
     // 滑块验证码插件
     $.fn.sliderCaptcha = function (options) {
+
+        if (typeof options === 'string') {
+            const methodName = options;
+            const args = Array.prototype.slice.call(arguments, 1);
+
+            // 如果是 reset 方法
+            if (methodName === 'reset') {
+                return this.each(function() {
+                    const $sliderTrack = $(this);
+                    const sliderInstance = $sliderTrack.data('sliderCaptcha');
+                    if (sliderInstance && typeof sliderInstance.reset === 'function') {
+                        sliderInstance.reset.apply(sliderInstance, args);
+                    }
+                });
+            }
+        }
+
         // 默认配置
         const defaults = {
             token: null,
@@ -27,11 +44,28 @@
             let endTime = 0;
             let startLeft = 0;
 
+            // 重置方法
+            function reset() {
+                $sliderThumb.animate({left: 0}, 300);
+                $thumbTrack.animate({width: 0}, 300);
+                $sliderTrack.removeClass('success');
+                $sliderThumb.removeClass('success');
+                $sliderTitle.removeClass('success');
+                $sliderTitle.text('按住滑块，拖动到最右边');
+                $sliderThumb.html('<img src="../static/img/chevron-right-light.png" alt="">');
+                isVerified = false;
+                $captchaInput.val('');
+            }
+
+            // 将 reset 方法暴露给元素
+            $sliderTrack.data('sliderCaptcha', {
+                reset: reset
+            });
+
             // 鼠标按下事件
             $sliderThumb.on('mousedown', function (e) {
                 // 如果已经验证成功，则不再允许拖动
                 if (isVerified) return;
-                
                 isDragging = true;
                 startX = e.clientX;
                 startTime = new Date().getTime();
@@ -100,11 +134,14 @@
                                 // 设置验证状态为已验证
                                 isVerified = true;
                                 $captchaInput.val(response.data)
+                            } else {
+                                // 验证失败时重置
+                                reset();
                             }
                         },
                         error: function() {
-                            // 如果没有拖动到最右边，回到初始位置
-                            $sliderThumb.animate({left: 0}, 300);
+                            // 请求失败时重置
+                            reset();
                         }
                     });
 
@@ -118,7 +155,6 @@
                         settings.errorCallback.call($sliderTrack);
                     }
                 }
-                
             });
         });
     };

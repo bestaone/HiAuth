@@ -44,7 +44,6 @@ HiAuth是一个开源的基于OAuth2.0协议的认证、授权系统，除了标
 │ ├─hiauth-client-spring-cloud-gateway-starter  SpringCloudGateway中集成认证授权
 ├─hiauth-front                      管理端前端项目
 ├─hiauth-server                     HiAuth服务端
-├─hiauth-resource                   HiAuth资源服务端
 ├─other                             其他内容，数据库脚本等
 ```
 ## 效果图
