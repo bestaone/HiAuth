@@ -376,8 +376,8 @@ catalogs:
       specifier: ^1.5.4
       version: 1.5.4
     qs:
-      specifier: ^6.14.0
-      version: 6.14.0
+      specifier: ^6.14.1
+      version: 6.14.1
     radix-vue:
       specifier: ^1.9.17
       version: 1.9.17
@@ -704,6 +704,72 @@ importers:
       dayjs:
         specifier: 'catalog:'
         version: 1.11.13
+      pinia:
+        specifier: ^3.0.3
+        version: 3.0.3(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      vue:
+        specifier: ^3.5.17
+        version: 3.5.17(typescript@5.8.3)
+      vue-router:
+        specifier: 'catalog:'
+        version: 4.5.1(vue@3.5.17(typescript@5.8.3))
+
+  apps/web-auth:
+    dependencies:
+      '@vben/access':
+        specifier: workspace:*
+        version: link:../../packages/effects/access
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../packages/effects/common-ui
+      '@vben/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:../../packages/effects/hooks
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@vben/layouts':
+        specifier: workspace:*
+        version: link:../../packages/effects/layouts
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../packages/locales
+      '@vben/plugins':
+        specifier: workspace:*
+        version: link:../../packages/effects/plugins
+      '@vben/preferences':
+        specifier: workspace:*
+        version: link:../../packages/preferences
+      '@vben/request':
+        specifier: workspace:*
+        version: link:../../packages/effects/request
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../../packages/stores
+      '@vben/styles':
+        specifier: workspace:*
+        version: link:../../packages/styles
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.4.0(vue@3.5.17(typescript@5.8.3))
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.17(typescript@5.8.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.13
+      jsencrypt:
+        specifier: ^3.3.2
+        version: 3.5.4
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
@@ -1731,7 +1797,7 @@ importers:
         version: 1.10.0
       qs:
         specifier: 'catalog:'
-        version: 6.14.0
+        version: 6.14.1
     devDependencies:
       '@types/qs':
         specifier: 'catalog:'
@@ -8122,6 +8188,9 @@ packages:
     resolution: {integrity: sha512-Hicd6JK5Njt2QB6XYFS7ok9e37O8AYk3jTcppG4YVQnYjOemymvTcmc7OWsmq/Qqj5TdRFO5/x/tIPmBeRtGHg==}
     engines: {node: '>=12.0.0'}
 
+  jsencrypt@3.5.4:
+    resolution: {integrity: sha512-kNjfYEMNASxrDGsmcSQh/rUTmcoRfSUkxnAz+MMywM8jtGu+fFEZ3nJjHM58zscVnwR0fYmG9sGkTDjqUdpiwA==}
+
   jsesc@3.0.2:
     resolution: {integrity: sha512-xKqzzWXDttJuOcawBt4KnKHHIf5oQ/Cxax+0PWFG+DFDgHNAdi+TXECADI+RYiFUMmx8792xsMbbgXj4CwnP4g==}
     engines: {node: '>=6'}
@@ -9857,6 +9926,10 @@ packages:
 
   qs@6.14.0:
     resolution: {integrity: sha512-YWWTjgABSKcvs/nWBi9PycY/JiPJqOD4JA6o9Sej2AtvSGarXxKC3OQSk4pAarbdQlKAh5D4FCQkJNkW+GAn3w==}
+    engines: {node: '>=0.6'}
+
+  qs@6.14.1:
+    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
     engines: {node: '>=0.6'}
 
   quansync@0.2.10:
@@ -18749,6 +18822,8 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
+  jsencrypt@3.5.4: {}
+
   jsesc@3.0.2: {}
 
   jsesc@3.1.0: {}
@@ -20516,6 +20591,10 @@ snapshots:
       yargs: 15.4.1
 
   qs@6.14.0:
+    dependencies:
+      side-channel: 1.1.0
+
+  qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
 
