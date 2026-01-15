@@ -16,7 +16,7 @@ import cn.hiauth.server.service.UserService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -52,7 +52,7 @@ public class EmpMgrController {
     private UserService userService;
 
     @PostMapping("/page")
-    public R<PageVO<EmpVo>> page(@RequestBody @Valid EmpPageDto dto) {
+    public R<PageVo<EmpVo>> page(@RequestBody @Valid EmpPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);

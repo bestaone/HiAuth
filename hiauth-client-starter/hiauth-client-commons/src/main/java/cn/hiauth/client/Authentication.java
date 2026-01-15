@@ -10,6 +10,7 @@ public class Authentication {
 
     private Long appId;
     private Long cid;
+    private Long orgId;
     private Long userId;
     private Long empId;
     private String name;

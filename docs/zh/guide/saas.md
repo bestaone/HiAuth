@@ -56,7 +56,7 @@ $ mvn spring-boot:run
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
+		<version>3.5.0</version>
 		<relativePath/>
 	</parent>
     

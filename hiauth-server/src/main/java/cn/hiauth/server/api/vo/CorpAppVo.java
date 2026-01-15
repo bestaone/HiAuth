@@ -2,7 +2,7 @@ package cn.hiauth.server.api.vo;
 
 import cn.hiauth.server.entity.App;
 import cn.hiauth.server.entity.Oauth2RegisteredClient;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.commons.entity.BasicDO;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -92,9 +92,9 @@ public class CorpAppVo extends BasicDO<String> {
         return vos;
     }
 
-    public static PageVO<CorpAppVo> toPageVo(IPage<Oauth2RegisteredClient> page, Map<Long, App> apps) {
+    public static PageVo<CorpAppVo> toPageVo(IPage<Oauth2RegisteredClient> page, Map<Long, App> apps) {
         List<CorpAppVo> vos = convert(page.getRecords(), apps);
-        PageVO<CorpAppVo> pageVo = new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), vos);
+        PageVo<CorpAppVo> pageVo = new PageVo<>(page.getCurrent(), page.getSize(), page.getTotal(), vos);
         return pageVo;
     }
 

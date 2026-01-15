@@ -25,17 +25,17 @@ public class HiAuthClientSessionController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/api/common/myCorps")
-    public R<List<SecurityCorp>> myCorps() {
+    @PostMapping(value = "/api/common/myOrgs")
+    public R<List<SecurityOrg>> myOrgs() {
         Authentication auth = SessionContextHolder.getContext().getAuth();
-        List<SecurityCorp> corps = securityService.loadUserCorps(auth.getUserId());
-        return R.success(corps);
+        List<SecurityOrg> orgs = securityService.loadUserOrgs(auth.getUserId());
+        return R.success(orgs);
     }
 
     @ResponseBody
-    @PostMapping(value = "/api/common/switchCorp")
-    public R<Boolean> switchCorp(@RequestParam("id") Long id) {
-        return R.success(securityService.switchCorp(id));
+    @PostMapping(value = "/api/common/intoOrgSpace")
+    public R<Boolean> intoOrgSpace(@RequestParam(name = "orgId", required = false) Long orgId) {
+        return R.success(securityService.intoOrgSpace(orgId));
     }
 
 }

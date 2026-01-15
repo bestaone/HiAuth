@@ -19,7 +19,7 @@ import { computed, ref } from 'vue';
 import { Copy, Pin, PinOff, RotateCw } from '@vben/icons';
 import { $t, loadLocaleMessages } from '@vben/locales';
 import {
-  clearPreferencesCache,
+  clearCache,
   preferences,
   resetPreferences,
   usePreferences,
@@ -43,6 +43,7 @@ import {
   ColorMode,
   Content,
   Copyright,
+  FontSize,
   Footer,
   General,
   GlobalShortcutKeys,
@@ -85,6 +86,7 @@ const themeColorPrimary = defineModel<string>('themeColorPrimary');
 const themeBuiltinType = defineModel<BuiltinThemeType>('themeBuiltinType');
 const themeMode = defineModel<ThemeModeType>('themeMode');
 const themeRadius = defineModel<string>('themeRadius');
+const themeFontSize = defineModel<number>('themeFontSize');
 const themeSemiDarkSidebar = defineModel<boolean>('themeSemiDarkSidebar');
 const themeSemiDarkHeader = defineModel<boolean>('themeSemiDarkHeader');
 
@@ -226,7 +228,7 @@ async function handleCopy() {
 
 async function handleClearCache() {
   resetPreferences();
-  clearPreferencesCache();
+  clearCache();
   emit('clearPreferencesAndLogout');
 }
 
@@ -327,6 +329,9 @@ async function handleReset() {
             </Block>
             <Block :title="$t('preferences.theme.radius')">
               <Radius v-model="themeRadius" />
+            </Block>
+            <Block :title="$t('preferences.theme.fontSize')">
+              <FontSize v-model="themeFontSize" />
             </Block>
             <Block :title="$t('preferences.other')">
               <ColorMode
@@ -483,6 +488,6 @@ async function handleReset() {
 :deep(.sticky-tabs-header [role='tablist']) {
   position: sticky;
   top: -12px;
-  z-index: 10;
+  z-index: 9999;
 }
 </style>

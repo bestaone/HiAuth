@@ -18,7 +18,7 @@
 //
 //import java.io.IOException;
 //
-///**
+/// **
 // * 改进,使用只验证一次的过滤器 extends OncePerRequestFilter implements InitializingBean
 // */
 //public class CaptchaFilter extends AbstractAuthenticationProcessingFilter {

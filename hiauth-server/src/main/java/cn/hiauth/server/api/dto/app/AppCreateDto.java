@@ -25,7 +25,7 @@ public class AppCreateDto extends CreateBody {
     private String name;
 
     @Schema(description = "主页地址")
-    @NotBlank(message = "不能为空")
+//    @NotBlank(message = "不能为空")
     @Size(min = 5, max = 100, message = "长度必须在5到100个字符之间")
     private String home;
 

@@ -5,6 +5,7 @@ import cn.hutool.core.codec.Base64;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -39,6 +40,11 @@ public class HiAuthClientGatewayController {
 
     @Autowired
     private HiAuthClientGatewayProperties hiauthClientProperties;
+
+    @PostConstruct
+    public void init() {
+        log.info("HiAuthClientGatewayController初始化完毕");
+    }
 
     @GetMapping("/unpapi/{clientName}/oauth2/login")
     public Mono<Void> login(@PathVariable("clientName") String clientName, ServerWebExchange exchange) {

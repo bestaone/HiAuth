@@ -9,6 +9,7 @@ import java.util.List;
 public class UserinfoVo {
 
     private Long cid;
+    private Long orgId;
     private Long appId;
     private Long userId;
     private Long empId;
@@ -22,6 +23,7 @@ public class UserinfoVo {
     public static UserinfoVo toVo(Authentication auth) {
         UserinfoVo vo = new UserinfoVo();
         vo.setCid(auth.getCid());
+        vo.setOrgId(auth.getOrgId());
         vo.setAppId(auth.getAppId());
         vo.setUserId(auth.getUserId());
         vo.setEmpId(auth.getEmpId());

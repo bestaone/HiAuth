@@ -12,11 +12,11 @@ public interface SecurityService {
     /**
      * 根据用户ID查询所属租户列表，按照最近登录时间排序
      */
-    List<SecurityCorp> loadUserCorps(Long userId);
+    List<SecurityOrg> loadUserOrgs(Long userId);
 
     /**
      * 切换租户
      */
-    Boolean switchCorp(Long id);
+    Boolean intoOrgSpace(Long orgId);
 
 }

@@ -11,7 +11,7 @@ import cn.hiauth.server.service.DepartmentService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -37,14 +37,14 @@ public class DepMgrController {
     private DepartmentService departmentService;
 
     @PostMapping("/page")
-    public R<PageVO<Department>> page(@RequestBody @Valid DepPageDto dto) {
+    public R<PageVo<Department>> page(@RequestBody @Valid DepPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
         Page<Department> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
         IPage<Department> page = departmentService.page(p, dto.toQueryWapper());
         page.getRecords().sort(Comparator.comparing(Department::getSort));
-        return R.success(new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
+        return R.success(new PageVo<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
     }
 
     @PostMapping("/limit")

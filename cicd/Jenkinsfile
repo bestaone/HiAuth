@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    tools {
+        jdk 'JDK21'
+    }
+
     // 设置环境变量
     environment {
         BUILD_VERSION = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()

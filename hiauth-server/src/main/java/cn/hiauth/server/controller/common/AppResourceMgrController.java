@@ -9,7 +9,7 @@ import cn.hiauth.server.config.rest.ResourceApi;
 import cn.hiauth.server.entity.AppResource;
 import cn.hiauth.server.service.AppResourceService;
 import cn.webestar.scms.commons.R;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.validation.Valid;
@@ -34,11 +34,11 @@ public class AppResourceMgrController {
     private AppResourceService appResourceService;
 
     @PostMapping("/page")
-    public R<PageVO<AppResource>> page(@RequestBody @Valid AppResourcePageDto dto) {
+    public R<PageVo<AppResource>> page(@RequestBody @Valid AppResourcePageDto dto) {
         Page<AppResource> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
         IPage<AppResource> page = appResourceService.page(p, dto.toQueryWapper());
         page.getRecords().sort(Comparator.comparing(AppResource::getSort));
-        return R.success(new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
+        return R.success(new PageVo<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
     }
 
     @PostMapping("/findById")

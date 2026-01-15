@@ -4,8 +4,10 @@ import cn.hiauth.server.api.dto.RegisterDto;
 import cn.hiauth.server.config.props.AppProperties;
 import cn.hiauth.server.config.rest.ResourceApi;
 import cn.hiauth.server.entity.File;
+import cn.hiauth.server.entity.Oauth2Authorization;
 import cn.hiauth.server.service.CorpService;
 import cn.hiauth.server.service.FileService;
+import cn.hiauth.server.service.Oauth2AuthorizationService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
@@ -38,6 +40,9 @@ public class UnpController {
 
     @Autowired
     private CorpService corpService;
+
+    @Autowired
+    private Oauth2AuthorizationService oauth2AuthorizationService;
 
     @GetMapping("/info")
     public R<Map<String, String>> info() {
@@ -74,6 +79,20 @@ public class UnpController {
     public R<Boolean> register(@RequestBody @Validated RegisterDto dto) {
         corpService.register(dto);
         return R.success(Boolean.TRUE);
+    }
+
+    @GetMapping("/userinfo")
+    public Map<String, Object> getUserInfo(@RequestHeader("Authorization") String auth) {
+        Assert.isTrue(auth.startsWith("Bearer "), SysCode.biz(2), "Authorization错误");
+        String token = auth.substring(7);
+        LambdaQueryWrapper<Oauth2Authorization> qw = new LambdaQueryWrapper<>();
+        qw.eq(Oauth2Authorization::getAccessTokenValue, token);
+        Oauth2Authorization oauth2Authorization = oauth2AuthorizationService.getOne(qw);
+        Assert.notNull(oauth2Authorization, SysCode.biz(3), "账号未绑定");
+        Map<String, Object> claims = new HashMap<>(2);
+        claims.put("userId", oauth2Authorization.getPrincipalName());
+        claims.put("username", oauth2Authorization.getPrincipalName());
+        return claims;
     }
 
 }

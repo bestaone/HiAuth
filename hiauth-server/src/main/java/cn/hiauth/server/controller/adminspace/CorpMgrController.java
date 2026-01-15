@@ -15,7 +15,7 @@ import cn.hiauth.server.service.UserService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -47,10 +47,10 @@ public class CorpMgrController {
     private DepartmentService departmentService;
 
     @PostMapping("/page")
-    public R<PageVO<CorpVo>> page(@RequestBody @Valid CorpPageDto dto) {
+    public R<PageVo<CorpVo>> page(@RequestBody @Valid CorpPageDto dto) {
         Page<Corp> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);
         IPage<Corp> page = corpService.page(p, dto.toQueryWapper());
-        PageVO<CorpVo> pageVo = CorpVo.toPageVo(page);
+        PageVo<CorpVo> pageVo = CorpVo.toPageVo(page);
         return R.success(pageVo);
     }
 

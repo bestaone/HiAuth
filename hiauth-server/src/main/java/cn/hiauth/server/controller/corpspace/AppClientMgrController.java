@@ -16,7 +16,7 @@ import cn.hiauth.server.utils.Oauth2RegisteredClientUtils;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -51,7 +51,7 @@ public class AppClientMgrController {
     private CorpAppService corpAppService;
 
     @PostMapping("/page")
-    public R<PageVO<CorpAppVo>> page(@RequestBody @Valid AppClientPageDto dto) {
+    public R<PageVo<CorpAppVo>> page(@RequestBody @Valid AppClientPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         Page<Oauth2RegisteredClient> p = new Page<>(dto.getPageNum(), dto.getPageSize(), true);

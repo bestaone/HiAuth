@@ -7,7 +7,7 @@ import cn.hiauth.server.service.RoleService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -33,7 +33,7 @@ public class RoleMgrController {
     private RoleService roleService;
 
     @PostMapping("/page")
-    public R<PageVO<Role>> page(@RequestBody @Valid RolePageDto dto) {
+    public R<PageVo<Role>> page(@RequestBody @Valid RolePageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
@@ -41,7 +41,7 @@ public class RoleMgrController {
         LambdaQueryWrapper<Role> qw = dto.toQueryWapper();
         qw.orderByDesc(Role::getCreateTime);
         IPage<Role> page = roleService.page(p, qw);
-        return R.success(new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
+        return R.success(new PageVo<>(page.getCurrent(), page.getSize(), page.getTotal(), page.getRecords()));
     }
 
     @PostMapping("/limit")

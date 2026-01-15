@@ -1,7 +1,7 @@
 package cn.hiauth.server.api.vo;
 
 import cn.hiauth.server.entity.Corp;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
 
@@ -37,9 +37,9 @@ public class CorpVo {
         return corpVos;
     }
 
-    public static PageVO<CorpVo> toPageVo(IPage<Corp> page) {
+    public static PageVo<CorpVo> toPageVo(IPage<Corp> page) {
         List<CorpVo> vos = convert(page.getRecords());
-        PageVO<CorpVo> pageVo = new PageVO<>(page.getCurrent(), page.getSize(), page.getTotal(), vos);
+        PageVo<CorpVo> pageVo = new PageVo<>(page.getCurrent(), page.getSize(), page.getTotal(), vos);
         return pageVo;
     }
 }

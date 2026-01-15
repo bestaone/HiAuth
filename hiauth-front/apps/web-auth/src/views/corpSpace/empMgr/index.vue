@@ -163,7 +163,7 @@ onMounted(async () => {
   <Page auto-content-height>
     <Flex :vertical="false" class="h-full">
       <div
-        class="bg-card rounded-md"
+        class="rounded-md bg-card"
         style="width: 15%; padding-top: 0.3em; margin-right: 0.6em"
       >
         <div class="item w-full">

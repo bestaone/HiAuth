@@ -32,6 +32,7 @@
     "build:docs": "pnpm run build --filter=@vben/docs",
     "build:ele": "pnpm run build --filter=@vben/web-ele",
     "build:naive": "pnpm run build --filter=@vben/web-naive",
+    "build:tdesign": "pnpm run build --filter=@vben/web-tdesign",
     "build:play": "pnpm run build --filter=@vben/playground",
     "build:auth": "pnpm run build --filter=@vben/web-auth",
     "changeset": "pnpm exec changeset",
@@ -47,6 +48,7 @@
     "dev:docs": "pnpm -F @vben/docs run dev",
     "dev:ele": "pnpm -F @vben/web-ele run dev",
     "dev:naive": "pnpm -F @vben/web-naive run dev",
+    "dev:tdesign": "pnpm -F @vben/web-tdesign run dev",
     "dev:play": "pnpm -F @vben/playground run dev",
     "dev:auth": "pnpm -F @vben/web-auth run dev",
     "format": "vsh lint --format",
@@ -97,10 +99,10 @@
     "vue-tsc": "catalog:"
   },
   "engines": {
-    "node": ">=20.10.0",
-    "pnpm": ">=9.12.0"
+    "node": ">=20.12.0",
+    "pnpm": ">=10.0.0"
   },
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.22.0",
   "pnpm": {
     "peerDependencyRules": {
       "allowedVersions": {
@@ -112,6 +114,7 @@
       "@ctrl/tinycolor": "catalog:",
       "clsx": "catalog:",
       "esbuild": "0.25.3",
+      "jiti": "catalog:",
       "pinia": "catalog:",
       "vue": "catalog:"
     },

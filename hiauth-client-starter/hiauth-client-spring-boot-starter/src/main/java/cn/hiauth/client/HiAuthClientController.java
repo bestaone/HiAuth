@@ -168,17 +168,17 @@ public class HiAuthClientController {
     }
 
     @ResponseBody
-    @PostMapping(value = "/api/common/myCorps")
-    public R<List<SecurityCorp>> myCorps() {
+    @PostMapping(value = "/api/common/myOrgs")
+    public R<List<SecurityOrg>> myOrgs() {
         Authentication auth = SessionContextHolder.getContext().getAuth();
-        List<SecurityCorp> corps = securityService.loadUserCorps(auth.getUserId());
+        List<SecurityOrg> corps = securityService.loadUserOrgs(auth.getUserId());
         return R.success(corps);
     }
 
     @ResponseBody
-    @PostMapping(value = "/api/common/switchCorp")
-    public R<Boolean> switchCorp(@RequestParam("id") Long id) {
-        return R.success(securityService.switchCorp(id));
+    @PostMapping(value = "/api/common/intoOrgSpace")
+    public R<Boolean> intoOrgSpace(@RequestParam("orgId") Long orgId) {
+        return R.success(securityService.intoOrgSpace(orgId));
     }
 
     private Map<?, ?> getTokenByOauthServer(String code) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hiauth.server.mapper.CorpLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="CorpLog">
+        <result column="id" property="id" />
+        <result column="operator" property="operator" />
+        <result column="opt_time" property="optTime" />
+        <result column="opt_ip" property="optIp" />
+        <result column="opt_desc" property="optDesc" />
+        <result column="opt_type" property="optType" />
+        <result column="source_sys" property="sourceSys" />
+        <result column="source_target" property="sourceTarget" />
+        <result column="source_api" property="sourceApi" />
+        <result column="metadata" property="metadata" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        operator, opt_time, opt_ip, opt_desc, opt_type, source_sys, source_target, source_api, metadata
+    </sql>
+
+</mapper>

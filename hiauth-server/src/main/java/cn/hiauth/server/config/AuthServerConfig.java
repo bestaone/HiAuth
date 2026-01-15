@@ -20,7 +20,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -109,12 +108,12 @@ public class AuthServerConfig {
                 // Accept access tokens for User Info and/or Client Registration
                 // 使用jwt处理接收到的access token
                 .oauth2ResourceServer((resourceServer) -> resourceServer.jwt(Customizer.withDefaults()));
-                //.oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
-                //   .jwt(Customizer.withDefaults()) // 使用jwt
-                //   .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 请求未携带Token处理
-                //   .accessDeniedHandler(new MyAccessDeniedHandler()) // 权限不足处理
-                //   //.authenticationFailureHandler(this::failureHandler) // Token解析失败处理
-                //);
+        //.oauth2ResourceServer((oauth2ResourceServer) -> oauth2ResourceServer
+        //   .jwt(Customizer.withDefaults()) // 使用jwt
+        //   .authenticationEntryPoint(new MyAuthenticationEntryPoint()) // 请求未携带Token处理
+        //   .accessDeniedHandler(new MyAccessDeniedHandler()) // 权限不足处理
+        //   //.authenticationFailureHandler(this::failureHandler) // Token解析失败处理
+        //);
         return http.build();
     }
 

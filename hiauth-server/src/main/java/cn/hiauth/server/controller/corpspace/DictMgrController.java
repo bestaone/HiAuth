@@ -10,7 +10,7 @@ import cn.hiauth.server.service.DictService;
 import cn.webestar.scms.commons.Assert;
 import cn.webestar.scms.commons.R;
 import cn.webestar.scms.commons.SysCode;
-import cn.webestar.scms.commons.api.PageVO;
+import cn.webestar.scms.commons.api.PageVo;
 import cn.webestar.scms.security.SessionContextHolder;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -36,7 +36,7 @@ public class DictMgrController {
     private DictService dictService;
 
     @PostMapping("/page")
-    public R<PageVO<Dict>> page(@RequestBody @Valid DictPageDto dto) {
+    public R<PageVo<Dict>> page(@RequestBody @Valid DictPageDto dto) {
         Long cid = SessionContextHolder.getPrincipal().getCid();
         Assert.notNull(cid, SysCode.biz(1), "未登录租户空间");
         dto.setCid(cid);
@@ -45,7 +45,7 @@ public class DictMgrController {
         qw.orderByAsc(Dict::getSort);
         qw.orderByDesc(Dict::getCreateTime);
         IPage<Dict> page = dictService.pageByPcode(p, qw, dto.getPCode(), dto.getIsRoot());
-        return R.success(new PageVO<>(page));
+        return R.success(new PageVo<>(page));
     }
 
     @PostMapping("/findById")
